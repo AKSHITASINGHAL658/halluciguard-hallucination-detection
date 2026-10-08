@@ -42,3 +42,18 @@ def test_retrieve_and_query_endpoint(monkeypatch):
         body = r.json()
         assert body["retrieved_chunk_ids"] and body["answer"] == "Stub."
         assert c.get(f"/response/{body['response_id']}").json()["answer"] == "Stub."
+
+
+def test_query_populates_sentences(monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    monkeypatch.setattr(rag_pipeline, "generate", lambda q, c: {
+        "answer": "About 345 gigawatts of new solar capacity were added in 2023. The moon is made of cheese.",
+        "token_logprobs": None, "avg_logprob": None, "logprobs_source": "none"})
+    with TestClient(app) as c:
+        body = c.post("/query", json={"text": "How much solar capacity was added in 2023?"}).json()
+        assert len(body["sentences"]) == 2
+        assert all(s["nli_label"] and s["nli_confidence"] is not None for s in body["sentences"])
+        assert body["sentences"][1]["is_hallucination"] is True
+        assert body["sentences"][0]["is_hallucination"] is False
