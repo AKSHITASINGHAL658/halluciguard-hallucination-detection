@@ -1,5 +1,6 @@
 import logging
-import math
+import re
+import time
 
 from app import config
 from app.core import vector_store
@@ -9,6 +10,7 @@ from app.core.mi_pruning import prune_chunks
 log = logging.getLogger("halluciguard.rag")
 
 _client = None
+_NO_LOGPROBS: set[str] = set()  # models that rejected logprobs; skip the doomed first request next time
 
 
 def _get_client():
@@ -74,13 +76,29 @@ def generate(query: str, chunks: list[dict]) -> dict:
         return _get_client().models.generate_content(
             model=config.GEMINI_MODEL, contents=prompt, config=types.GenerateContentConfig(**kwargs))
 
+    def call_with_backoff(with_logprobs: bool):
+        for attempt in range(4):
+            try:
+                return call(with_logprobs)
+            except Exception as e:  # noqa: BLE001
+                msg = str(e)
+                if ("429" in msg or "RESOURCE_EXHAUSTED" in msg) and attempt < 3 and "PerDay" not in msg:
+                    m = re.search(r"retry in ([\d.]+)s", msg) or re.search(r"'retryDelay': '(\d+)s'", msg)
+                    delay = min(float(m.group(1)) + 1 if m else 20.0, 70.0)
+                    log.warning("rate limited; sleeping %.0fs", delay)
+                    time.sleep(delay)
+                    continue
+                raise
+
     try:
-        resp = call(True)
+        resp = call_with_backoff(config.GEMINI_MODEL not in _NO_LOGPROBS)
     except Exception as e:
         if not _is_retryable_logprob_error(e):
             raise
+        if "logprobs" in str(e).lower():
+            _NO_LOGPROBS.add(config.GEMINI_MODEL)
         log.warning("logprobs request failed (%s); retrying without logprobs", str(e)[:120])
-        resp = call(False)
+        resp = call_with_backoff(False)
 
     token_logprobs, avg_logprob, source = _extract_logprobs(resp)
     return {"answer": (resp.text or "").strip(), "token_logprobs": token_logprobs,

@@ -3,13 +3,10 @@ import json
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app import config
-from app.core.attention_extractor import top_contributing_tokens
-from app.core.rag_pipeline import run_pipeline
-from app.core.sentence_localizer import localize_hallucinations, split_sentences
+from app.core.query_service import process_query
 from app.db import get_db
-from app.models import Chunk, Query, Response, ResponseSentence
-from app.schemas import QueryIn, ResponseOut, SentenceOut
+from app.models import Chunk, Response
+from app.schemas import EntityOut, QueryIn, ResponseOut, SentenceOut, TrustOut
 
 router = APIRouter()
 
@@ -23,8 +20,14 @@ def build_response_out(db: Session, resp: Response) -> ResponseOut:
             is_hallucination=s.is_hallucination, supporting_chunk_id=s.supporting_chunk_id,
             supporting_chunk_text=chunk.text if chunk else None,
             top_attention_tokens=json.loads(s.top_attention_tokens) if s.top_attention_tokens else []))
+    t = resp.trust
+    trust = TrustOut(entity_level_score=t.entity_level_score, sentence_level_score=t.sentence_level_score,
+                     document_level_score=t.document_level_score, token_prob_component=t.token_prob_component,
+                     final_score=t.final_score) if t else None
+    entities = [EntityOut(text=e.text, entity_type=e.entity_type, supported=e.supported,
+                          entity_trust_score=e.entity_trust_score) for e in resp.entities]
     return ResponseOut(
-        sentences=sentences,
+        sentences=sentences, entities=entities, trust=trust,
         response_id=resp.id, query=resp.query.text, answer=resp.raw_text, model_name=resp.model_name,
         logprobs_source=resp.logprobs_source,
         retrieved_chunk_ids=json.loads(resp.retrieved_chunk_ids), pruned_chunk_ids=json.loads(resp.pruned_chunk_ids),
@@ -33,27 +36,7 @@ def build_response_out(db: Session, resp: Response) -> ResponseOut:
 
 @router.post("/query", response_model=ResponseOut)
 def post_query(body: QueryIn, db: Session = Depends(get_db)):
-    result = run_pipeline(body.text, body.k)
-    q = Query(text=body.text)
-    db.add(q)
-    db.flush()
-    resp = Response(query_id=q.id, raw_text=result["answer"], model_name=config.GEMINI_MODEL,
-                    retrieved_chunk_ids=json.dumps([c["chunk_id"] for c in result["retrieved"]]),
-                    pruned_chunk_ids=json.dumps([c["chunk_id"] for c in result["pruned"]]),
-                    logprobs_source=result["logprobs_source"])
-    db.add(resp)
-    db.flush()
-    loc = localize_hallucinations(split_sentences(result["answer"]), result["pruned"])
-    for s in loc:
-        db.add(ResponseSentence(
-            response_id=resp.id, sentence_index=s["index"], text=s["text"], nli_label=s["label"],
-            nli_confidence=s["confidence"], is_hallucination=s["is_hallucination"],
-            supporting_chunk_id=s["best_chunk_id"],
-            top_attention_tokens=json.dumps(top_contributing_tokens(s["text"], s["best_chunk_text"]))
-            if s["is_hallucination"] and s["best_chunk_text"] else None))
-    db.commit()
-    db.refresh(resp)
-    return build_response_out(db, resp)
+    return build_response_out(db, process_query(db, body.text, body.k))
 
 
 @router.get("/response/{response_id}", response_model=ResponseOut)

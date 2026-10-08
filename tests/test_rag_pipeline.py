@@ -17,6 +17,7 @@ def test_extract_logprobs_order():
 
 def test_generate_falls_back_without_logprobs(monkeypatch):
     calls = []
+    rag_pipeline._NO_LOGPROBS.clear()
 
     class Models:
         def generate_content(self, model, contents, config):
@@ -57,3 +58,18 @@ def test_query_populates_sentences(monkeypatch):
         assert all(s["nli_label"] and s["nli_confidence"] is not None for s in body["sentences"])
         assert body["sentences"][1]["is_hallucination"] is True
         assert body["sentences"][0]["is_hallucination"] is False
+
+
+def test_generate_skips_logprobs_after_rejection(monkeypatch):
+    rag_pipeline._NO_LOGPROBS.add(rag_pipeline.config.GEMINI_MODEL)
+    calls = []
+
+    class Models:
+        def generate_content(self, model, contents, config):
+            calls.append(config.response_logprobs)
+            return _resp()
+
+    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: SimpleNamespace(models=Models()))
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    rag_pipeline._NO_LOGPROBS.clear()
+    assert calls == [None]
