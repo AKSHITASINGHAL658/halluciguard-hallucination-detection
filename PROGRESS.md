@@ -9,6 +9,7 @@
 - Step 6: nli_verifier.py + test (4 pass)
 - Step 7: sentence_localizer.py, wired into /query (test added to test_rag_pipeline.py, 4 pass)
 - Step 8: attention_extractor.py + test (1 pass), wired into /query for flagged sentences. Weights normalized over the top-5. Optional mask-and-rerun check skipped.
+- Step 9: adversarial_agent.py, router, run_adversarial_eval.py, test_adversarial_agent.py. First run: negation 1.00, stale_fact 0.96, noise 1.00, control FP 0.125 (12 chunks available, 24 sentences). Each run replaces previous adversarial_tests rows.
 
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
@@ -28,4 +29,4 @@
 (none)
 
 ## Next step
-Step 9
+Step 10
