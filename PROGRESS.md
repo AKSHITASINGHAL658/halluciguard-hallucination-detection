@@ -11,6 +11,7 @@
 - Step 8: attention_extractor.py + test (1 pass), wired into /query for flagged sentences. Weights normalized over the top-5. Optional mask-and-rerun check skipped.
 - Step 9: adversarial_agent.py, router, run_adversarial_eval.py, test_adversarial_agent.py. First run: negation 1.00, stale_fact 0.96, noise 1.00, control FP 0.125 (12 chunks available, 24 sentences). Each run replaces previous adversarial_tests rows.
 - Step 10: trust_engine.py + test (4 pass), new app/core/query_service.py (process_query: full pipeline + persistence; used by /query and /evaluate). /evaluate now also returns avg_trust and hallucination_rate. generate() got 429 backoff and remembers models that reject logprobs (skips the doomed request).
+- Step 11: dashboard/streamlit_app.py (Query, Robustness, Evaluation tabs); smoke-tested with streamlit AppTest + TestClient, no exceptions.
 
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
@@ -32,4 +33,4 @@
 (none)
 
 ## Next step
-Step 11
+Step 12
