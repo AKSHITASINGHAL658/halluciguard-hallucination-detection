@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app import config
+from app.core.attention_extractor import top_contributing_tokens
 from app.core.rag_pipeline import run_pipeline
 from app.core.sentence_localizer import localize_hallucinations, split_sentences
 from app.db import get_db
@@ -47,7 +48,9 @@ def post_query(body: QueryIn, db: Session = Depends(get_db)):
         db.add(ResponseSentence(
             response_id=resp.id, sentence_index=s["index"], text=s["text"], nli_label=s["label"],
             nli_confidence=s["confidence"], is_hallucination=s["is_hallucination"],
-            supporting_chunk_id=s["best_chunk_id"]))
+            supporting_chunk_id=s["best_chunk_id"],
+            top_attention_tokens=json.dumps(top_contributing_tokens(s["text"], s["best_chunk_text"]))
+            if s["is_hallucination"] and s["best_chunk_text"] else None))
     db.commit()
     db.refresh(resp)
     return build_response_out(db, resp)

@@ -8,6 +8,7 @@
 - Step 5: qa_eval_set.json (22 QA), metrics.py, /evaluate (retrieval-only so far; trust/hallucination metrics added in step 10)
 - Step 6: nli_verifier.py + test (4 pass)
 - Step 7: sentence_localizer.py, wired into /query (test added to test_rag_pipeline.py, 4 pass)
+- Step 8: attention_extractor.py + test (1 pass), wired into /query for flagged sentences. Weights normalized over the top-5. Optional mask-and-rerun check skipped.
 
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
@@ -27,4 +28,4 @@
 (none)
 
 ## Next step
-Step 8
+Step 9
