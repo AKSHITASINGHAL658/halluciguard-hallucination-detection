@@ -5,6 +5,7 @@
 - Step 2: chunking, embeddings, vector_store, ingestion helper, seed_corpus, 6 renewable-energy docs
 - Step 3: rag_pipeline, ingest/query routers, test_rag_pipeline.py (3 pass)
 - Step 4: mi_pruning.py + test (3 pass), wired into run_pipeline
+- Step 5: qa_eval_set.json (22 QA), metrics.py, /evaluate (retrieval-only so far; trust/hallucination metrics added in step 10)
 
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
@@ -20,7 +21,8 @@
 - PMI threshold: if top PMI score <= 0, threshold = top/keep_ratio (lenient). Prompt tokens approximated as words*1.3. Redundancy check always applies; min_keep top-up prefers non-redundant chunks.
 
 ## Known issues
+- precision@6 is structurally capped at ~0.33: each doc has only 2 chunks (~400 words) so at most 2 of 6 retrieved can be relevant. /evaluate also reports precision_after_pruning.
 (none)
 
 ## Next step
-Step 5
+Step 6

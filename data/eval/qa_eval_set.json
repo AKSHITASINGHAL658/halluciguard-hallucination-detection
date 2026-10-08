@@ -1,0 +1,156 @@
+[
+ {
+  "question": "How much new solar capacity was added globally in 2023?",
+  "gold_answer": "About 345 gigawatts.",
+  "relevant_docs": [
+   "Solar Power"
+  ]
+ },
+ {
+  "question": "What is the Bhadla Solar Park's capacity?",
+  "gold_answer": "2,245 megawatts.",
+  "relevant_docs": [
+   "Solar Power"
+  ]
+ },
+ {
+  "question": "What efficiency did LONGi report for a perovskite-silicon tandem cell in 2023?",
+  "gold_answer": "33.9 percent.",
+  "relevant_docs": [
+   "Solar Power"
+  ]
+ },
+ {
+  "question": "How much did the levelized cost of utility-scale solar fall between 2010 and 2023?",
+  "gold_answer": "From about 0.38 to 0.044 dollars per kWh, roughly 89 percent.",
+  "relevant_docs": [
+   "Solar Power"
+  ]
+ },
+ {
+  "question": "What was global installed wind capacity at the end of 2023?",
+  "gold_answer": "About 1,017 gigawatts.",
+  "relevant_docs": [
+   "Wind Power"
+  ]
+ },
+ {
+  "question": "What is the rotor diameter of the Vestas V236-15.0 MW turbine?",
+  "gold_answer": "236 meters.",
+  "relevant_docs": [
+   "Wind Power"
+  ]
+ },
+ {
+  "question": "What share of Denmark's electricity came from wind in 2023?",
+  "gold_answer": "Roughly 58 percent.",
+  "relevant_docs": [
+   "Wind Power"
+  ]
+ },
+ {
+  "question": "What capacity does the Hornsea 2 wind farm have?",
+  "gold_answer": "1.32 gigawatts.",
+  "relevant_docs": [
+   "Wind Power"
+  ]
+ },
+ {
+  "question": "What is the installed capacity of the Three Gorges Dam?",
+  "gold_answer": "22,500 megawatts.",
+  "relevant_docs": [
+   "Hydropower"
+  ]
+ },
+ {
+  "question": "What share of global electricity did hydropower generate in 2023?",
+  "gold_answer": "About 14 percent.",
+  "relevant_docs": [
+   "Hydropower"
+  ]
+ },
+ {
+  "question": "How many people were displaced by the Three Gorges project?",
+  "gold_answer": "About 1.3 million people.",
+  "relevant_docs": [
+   "Hydropower"
+  ]
+ },
+ {
+  "question": "What percentage of its electricity does Norway generate from hydropower?",
+  "gold_answer": "Around 88 percent.",
+  "relevant_docs": [
+   "Hydropower"
+  ]
+ },
+ {
+  "question": "How much geothermal electricity capacity was installed worldwide at the end of 2023?",
+  "gold_answer": "About 16.9 gigawatts.",
+  "relevant_docs": [
+   "Geothermal Energy"
+  ]
+ },
+ {
+  "question": "What share of Kenya's electricity comes from geothermal energy?",
+  "gold_answer": "Close to 45 percent.",
+  "relevant_docs": [
+   "Geothermal Energy"
+  ]
+ },
+ {
+  "question": "Which earthquake stopped the Basel geothermal project?",
+  "gold_answer": "A magnitude 3.4 earthquake in 2006.",
+  "relevant_docs": [
+   "Geothermal Energy"
+  ]
+ },
+ {
+  "question": "What was the average lithium-ion battery pack price in 2023?",
+  "gold_answer": "139 dollars per kilowatt-hour.",
+  "relevant_docs": [
+   "Energy Storage"
+  ]
+ },
+ {
+  "question": "What is the capacity of the Moss Landing Energy Storage Facility?",
+  "gold_answer": "750 megawatts and 3,000 megawatt-hours.",
+  "relevant_docs": [
+   "Energy Storage"
+  ]
+ },
+ {
+  "question": "How much battery storage capacity was added globally in 2023?",
+  "gold_answer": "About 42 gigawatts.",
+  "relevant_docs": [
+   "Energy Storage"
+  ]
+ },
+ {
+  "question": "What did COP28 agree about renewable capacity?",
+  "gold_answer": "To triple renewable capacity to at least 11,000 gigawatts by 2030.",
+  "relevant_docs": [
+   "Renewable Policy Investment"
+  ]
+ },
+ {
+  "question": "What is the EU's binding renewables target for 2030?",
+  "gold_answer": "42.5 percent of final energy consumption.",
+  "relevant_docs": [
+   "Renewable Policy Investment"
+  ]
+ },
+ {
+  "question": "How much did the Inflation Reduction Act authorize for energy and climate programs?",
+  "gold_answer": "Roughly 369 billion dollars over ten years.",
+  "relevant_docs": [
+   "Renewable Policy Investment"
+  ]
+ },
+ {
+  "question": "How much renewable capacity was added worldwide in 2023?",
+  "gold_answer": "A record 473 gigawatts.",
+  "relevant_docs": [
+   "Renewable Policy Investment"
+  ]
+ }
+]
