@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+sqlalchemy
+chromadb
+sentence-transformers
+google-genai
+python-dotenv
+transformers
+torch
+spacy
+nltk
+scikit-learn
+streamlit
+plotly
+requests
+pytest
+httpx
