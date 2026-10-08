@@ -4,6 +4,7 @@ import math
 from app import config
 from app.core import vector_store
 from app.core.embeddings import embed_texts
+from app.core.mi_pruning import prune_chunks
 
 log = logging.getLogger("halluciguard.rag")
 
@@ -88,6 +89,6 @@ def generate(query: str, chunks: list[dict]) -> dict:
 
 def run_pipeline(query: str, k: int = config.RETRIEVE_K) -> dict:
     retrieved = retrieve(query, k)
-    used = retrieved
+    used = prune_chunks(query, retrieved)
     gen = generate(query, used)
     return {"query": query, "retrieved": retrieved, "pruned": used, **gen}

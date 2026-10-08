@@ -4,6 +4,7 @@
 - Step 1: skeleton, config, db, models, main
 - Step 2: chunking, embeddings, vector_store, ingestion helper, seed_corpus, 6 renewable-energy docs
 - Step 3: rag_pipeline, ingest/query routers, test_rag_pipeline.py (3 pass)
+- Step 4: mi_pruning.py + test (3 pass), wired into run_pipeline
 
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
@@ -16,8 +17,10 @@
 - Added app/core/ingestion.py (shared ingest helper used by router + seed script); not in §3 layout.
 - Chunks are ~250 words, so each ~400-word doc yields 2 chunks.
 
+- PMI threshold: if top PMI score <= 0, threshold = top/keep_ratio (lenient). Prompt tokens approximated as words*1.3. Redundancy check always applies; min_keep top-up prefers non-redundant chunks.
+
 ## Known issues
 (none)
 
 ## Next step
-Step 4
+Step 5
