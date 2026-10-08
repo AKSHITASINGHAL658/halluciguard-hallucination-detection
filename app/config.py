@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL") or "gemini-2.5-flash"
+GEMINI_MODEL = os.getenv("GEMINI_MODEL") or "gemini-3.1-flash-lite"
 TEMPERATURE = 0.0
 
 DB_URL = f"sqlite:///{BASE_DIR / 'app.db'}"

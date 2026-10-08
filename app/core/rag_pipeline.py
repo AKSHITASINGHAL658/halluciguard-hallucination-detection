@@ -82,7 +82,7 @@ def generate(query: str, chunks: list[dict]) -> dict:
                 return call(with_logprobs)
             except Exception as e:  # noqa: BLE001
                 msg = str(e)
-                if ("429" in msg or "RESOURCE_EXHAUSTED" in msg) and attempt < 3 and "PerDay" not in msg:
+                if ("429" in msg or "RESOURCE_EXHAUSTED" in msg or "503" in msg or "UNAVAILABLE" in msg) and attempt < 3 and "PerDay" not in msg:
                     m = re.search(r"retry in ([\d.]+)s", msg) or re.search(r"'retryDelay': '(\d+)s'", msg)
                     delay = min(float(m.group(1)) + 1 if m else 20.0, 70.0)
                     log.warning("rate limited; sleeping %.0fs", delay)
