@@ -1,3 +1,6 @@
+import hashlib
+import json
+import logging
 import random
 import re
 from functools import lru_cache
@@ -5,12 +8,18 @@ from functools import lru_cache
 from sqlalchemy.orm import Session
 
 from app import config
+from app.core import rag_pipeline
 from app.core.metrics import detection_rate, false_positive_rate
 from app.core.nli_verifier import batch_verify
 from app.core.sentence_localizer import split_sentences
 from app.models import AdversarialTest, Chunk
 
-ATTACKS = ("negation", "stale_fact", "noise")
+log = logging.getLogger("halluciguard.adversarial")
+ATTACKS = ("negation", "stale_fact", "noise", "llm_contradiction")
+LLM_CONTRADICTION_PROMPT = (
+    "Rewrite this sentence so it remains fluent and plausible but states something factually different. "
+    "Output only the sentence.\n\nSentence: {sentence}"
+)
 UNRELATED_CLAUSES = [
     "and the Eiffel Tower was repainted in 1889",
     "while the city of Lisbon banned all bicycles last winter",
@@ -71,6 +80,37 @@ def inject_noise(s: str, entity_pool: list[str] | None = None, rng: random.Rando
     return s.rstrip(" .") + ", " + clause + "."
 
 
+def inject_llm_contradiction(s: str) -> str | None:
+    """Ask the local Ollama model for a fluent but factually different rewrite. Cached on disk.
+
+    Returns None if Ollama is unavailable or the rewrite is empty/identical.
+    """
+    key = hashlib.sha256("\n".join(["llm_contradiction", config.OLLAMA_MODEL, s]).encode()).hexdigest()
+    path = config.LLM_CACHE_DIR / f"adv-{key}.json"
+    if config.LLM_CACHE and path.exists():
+        try:
+            return json.loads(path.read_text())["text"]
+        except (OSError, ValueError, KeyError):
+            pass
+    try:
+        resp = rag_pipeline._get_ollama_client().chat(
+            model=config.OLLAMA_MODEL, options={"temperature": 0},
+            messages=[{"role": "user", "content": LLM_CONTRADICTION_PROMPT.format(sentence=s)}])
+        msg = resp["message"] if isinstance(resp, dict) else resp.message
+        raw = msg["content"] if isinstance(msg, dict) else msg.content
+    except Exception as e:  # noqa: BLE001
+        log.warning("llm_contradiction failed: %s", str(e)[:120])
+        return None
+    lines = [ln.strip().strip('"\'') for ln in (raw or "").strip().splitlines() if ln.strip()]
+    out = lines[0] if lines else ""
+    if not out or out == s:
+        return None
+    if config.LLM_CACHE:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"text": out}))
+    return out
+
+
 def _candidate_sentences(chunk_text: str) -> list[str]:
     out = []
     for s in split_sentences(chunk_text):
@@ -103,6 +143,9 @@ def run_attack_suite(db: Session, n_chunks: int = config.ADV_N_CHUNKS, seed: int
             if re.search(r"\d", s):
                 items.append((c, "stale_fact", s, inject_stale_fact(s, rng)))
             items.append((c, "noise", s, inject_noise(s, pool, rng)))
+            llm = inject_llm_contradiction(s)
+            if llm:
+                items.append((c, "llm_contradiction", s, llm))
     items = [it for it in items if it[1] == "control" or it[3] != it[2]]
 
     results = batch_verify([(corrupt, c.text) for c, _, _, corrupt in items])

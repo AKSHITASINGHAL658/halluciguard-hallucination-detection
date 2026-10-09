@@ -19,6 +19,8 @@
 - Ollama task step 1: GENERATOR/OLLAMA_MODEL/OLLAMA_HOST in config (default GENERATOR=ollama since Gemini quota is tight; set GENERATOR=gemini to switch back), Ollama path in generate(), cache key includes generator+model, responses.generator column (auto-migrated in init_db), ollama added to requirements.
 - Ollama task step 2: scripts/probe_ollama_logprobs.py. RESULT: qwen2.5:3b via ollama SDK 0.6.3 chat(logprobs=True) DOES return per-token logprobs (logprobs_source="tokens"); token_prob_component is now non-null. One real /query: ~24s cold (includes model loads), trust 0.91, token_prob 0.89.
 
+- Ollama task step 3: inject_llm_contradiction (qwen2.5:3b, cached as cache/llm/adv-<sha>.json), new attack_type "llm_contradiction" in the suite (Robustness tab iterates detection_rate keys, so it appears automatically). New run (120 tests): negation 1.00, stale_fact 0.96, noise 1.00, llm_contradiction 0.29, control FP 0.125. Spot checks show the 3B model often returns near-paraphrases ("approximately", year-only tweaks), so the low rate partly reflects weak rewrites, not only NLI misses.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).

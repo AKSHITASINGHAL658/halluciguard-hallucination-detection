@@ -1,6 +1,10 @@
 import random
 
-from app.core.adversarial_agent import inject_negation, inject_noise, inject_stale_fact
+from types import SimpleNamespace
+
+from app.core import adversarial_agent, rag_pipeline
+from app.core.adversarial_agent import (inject_llm_contradiction, inject_negation, inject_noise,
+                                        inject_stale_fact)
 
 
 def test_negation_roundtrip():
@@ -17,3 +21,34 @@ def test_stale_fact_changes_numbers():
 
 def test_noise_changes_sentence():
     assert inject_noise("China installed solar panels.", ["Brazil"], random.Random(0)) != "China installed solar panels."
+
+
+def _client(content, seen):
+    class C:
+        def chat(self, **kw):
+            seen.append(kw)
+            if isinstance(content, Exception):
+                raise content
+            return SimpleNamespace(message=SimpleNamespace(content=content))
+
+    return C()
+
+
+def test_llm_contradiction_cleans_and_caches(monkeypatch, tmp_path):
+    monkeypatch.setattr(adversarial_agent.config, "LLM_CACHE_DIR", tmp_path)
+    monkeypatch.setattr(adversarial_agent.config, "LLM_CACHE", True)
+    seen = []
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _client('"China added 90 gigawatts."\nextra', seen))
+    s = "China added 217 gigawatts."
+    assert inject_llm_contradiction(s) == "China added 90 gigawatts."
+    assert inject_llm_contradiction(s) == "China added 90 gigawatts."
+    assert len(seen) == 1 and "factually different" in seen[0]["messages"][0]["content"]
+
+
+def test_llm_contradiction_failure_or_identical_returns_none(monkeypatch, tmp_path):
+    monkeypatch.setattr(adversarial_agent.config, "LLM_CACHE_DIR", tmp_path)
+    s = "China added 217 gigawatts."
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _client(RuntimeError("down"), []))
+    assert inject_llm_contradiction(s) is None
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _client(s, []))
+    assert inject_llm_contradiction(s) is None
