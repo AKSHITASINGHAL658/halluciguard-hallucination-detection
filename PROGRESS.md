@@ -16,6 +16,9 @@
 
 - Usage-reduction task: USE_LOGPROBS=False and LLM_CACHE (config, env override); disk cache in generate(); /evaluate + scripts/run_eval.py got retrieval_only / rescore / limit; cache tests added (22 pass). Real Gemini not called.
 
+- Ollama task step 1: GENERATOR/OLLAMA_MODEL/OLLAMA_HOST in config (default GENERATOR=ollama since Gemini quota is tight; set GENERATOR=gemini to switch back), Ollama path in generate(), cache key includes generator+model, responses.generator column (auto-migrated in init_db), ollama added to requirements.
+- Ollama task step 2: scripts/probe_ollama_logprobs.py. RESULT: qwen2.5:3b via ollama SDK 0.6.3 chat(logprobs=True) DOES return per-token logprobs (logprobs_source="tokens"); token_prob_component is now non-null. One real /query: ~24s cold (includes model loads), trust 0.91, token_prob 0.89.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).
