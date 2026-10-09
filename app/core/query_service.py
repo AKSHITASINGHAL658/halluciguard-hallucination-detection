@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from app import config
 from app.core.attention_extractor import top_contributing_tokens
+from app.core import rag_pipeline
 from app.core.rag_pipeline import run_pipeline
 from app.core.sentence_localizer import localize_hallucinations, split_sentences
 from app.core.trust_engine import (aggregate_trust, doc_score, entity_score, sentence_score,
@@ -28,7 +29,7 @@ def rescore_response(db: Session, old: Response) -> Response:
 
     result = {"answer": old.raw_text, "retrieved": [to_dict(i) for i in retrieved_ids if i in rows],
               "pruned": [to_dict(i) for i in pruned_ids if i in rows], "token_logprobs": None, "avg_logprob": None,
-              "logprobs_source": old.logprobs_source, "model_name": old.model_name,
+              "logprobs_source": old.logprobs_source, "model_name": old.model_name, "generator": old.generator,
               "token_prob": old.trust.token_prob_component if old.trust else None}
     return score_and_store(db, old.query.text, result)
 
@@ -37,7 +38,8 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
     q = Query(text=text)
     db.add(q)
     db.flush()
-    resp = Response(query_id=q.id, raw_text=result["answer"], model_name=result.get("model_name", config.GEMINI_MODEL),
+    resp = Response(query_id=q.id, raw_text=result["answer"], model_name=result.get("model_name", rag_pipeline.active_model()),
+                    generator=result.get("generator", config.GENERATOR),
                     retrieved_chunk_ids=json.dumps([c["chunk_id"] for c in result["retrieved"]]),
                     pruned_chunk_ids=json.dumps([c["chunk_id"] for c in result["pruned"]]),
                     logprobs_source=result["logprobs_source"])

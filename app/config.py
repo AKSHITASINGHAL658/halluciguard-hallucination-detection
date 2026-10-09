@@ -16,6 +16,9 @@ def _env_bool(name: str, default: bool) -> bool:
     return default if v is None or v == "" else v.strip().lower() in ("1", "true", "yes", "on")
 
 
+GENERATOR = os.getenv("GENERATOR", "ollama").strip().lower()  # "ollama" | "gemini"
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL") or "qwen2.5:3b"
+OLLAMA_HOST = os.getenv("OLLAMA_HOST") or "http://localhost:11434"
 USE_LOGPROBS = _env_bool("USE_LOGPROBS", False)  # current Gemini models reject logprobs; skip the doomed request
 LLM_CACHE = _env_bool("LLM_CACHE", True)
 LLM_CACHE_DIR = BASE_DIR / "cache" / "llm"

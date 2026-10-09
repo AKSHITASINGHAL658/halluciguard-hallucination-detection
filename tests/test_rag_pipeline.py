@@ -11,6 +11,7 @@ def _isolate(monkeypatch, tmp_path):
     monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE_DIR", tmp_path / "llm")
     monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", False)
     monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", True)
+    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "gemini")
 
 
 def _resp(chosen=None, avg=None):
@@ -120,3 +121,60 @@ def test_logprobs_disabled_skips_logprobs_request(monkeypatch):
     monkeypatch.setattr(rag_pipeline, "_get_client", lambda: SimpleNamespace(models=Models()))
     out = rag_pipeline.generate("q?", [{"text": "ctx"}])
     assert seen == [None] and out["logprobs_source"] == "none" and out["token_logprobs"] is None
+
+
+def _ollama_resp(logprobs, content="Ollama answer."):
+    return SimpleNamespace(message=SimpleNamespace(content=content), logprobs=logprobs)
+
+
+def _ollama_client(resp, seen):
+    class Client:
+        def chat(self, **kw):
+            seen.append(kw)
+            return resp
+
+    return Client()
+
+
+def test_ollama_parses_token_logprobs(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "ollama")
+    seen = []
+    lp = [SimpleNamespace(token="a", logprob=-0.2), SimpleNamespace(token="b", logprob=-0.4)]
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(_ollama_resp(lp), seen))
+    out = rag_pipeline.generate("q?", [{"text": "ctx"}])
+    assert out["logprobs_source"] == "tokens" and out["token_logprobs"] == [-0.2, -0.4]
+    assert abs(out["avg_logprob"] + 0.3) < 1e-9 and out["generator"] == "ollama"
+    assert out["model_name"] == rag_pipeline.config.OLLAMA_MODEL
+    assert seen[0]["logprobs"] is True and seen[0]["options"]["temperature"] == 0
+
+
+def test_ollama_dict_logprobs_and_fallback_when_missing(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "ollama")
+    resp = {"message": {"content": "x"}, "logprobs": [{"token": "a", "logprob": -1.0}]}
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(resp, []))
+    assert rag_pipeline.generate("q?", [{"text": "ctx"}])["logprobs_source"] == "tokens"
+    for empty in (None, []):
+        monkeypatch.setattr(rag_pipeline, "_get_ollama_client",
+                            lambda e=empty: _ollama_client(_ollama_resp(e), []))
+        out = rag_pipeline.generate("q?", [{"text": "ctx"}])
+        assert out["logprobs_source"] == "none" and out["token_logprobs"] is None and out["avg_logprob"] is None
+
+
+def test_cache_key_includes_generator_and_model(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
+    seen = []
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(_ollama_resp(None), seen))
+    calls = []
+    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: _counting_client(calls))
+    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", False)
+    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "ollama")
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    assert len(seen) == 1
+    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "gemini")
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    assert len(calls) == 1  # same prompt, different generator -> miss
+    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "ollama")
+    monkeypatch.setattr(rag_pipeline.config, "OLLAMA_MODEL", "other:1b")
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    assert len(seen) == 2

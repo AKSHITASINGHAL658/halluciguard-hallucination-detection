@@ -41,6 +41,7 @@ class Response(Base):
     query_id = Column(Integer, ForeignKey("queries.id"))
     raw_text = Column(Text)
     model_name = Column(String)
+    generator = Column(String, nullable=True)  # ollama | gemini
     retrieved_chunk_ids = Column(Text)  # JSON list
     pruned_chunk_ids = Column(Text)  # JSON list
     trust_score_overall = Column(Float, nullable=True)

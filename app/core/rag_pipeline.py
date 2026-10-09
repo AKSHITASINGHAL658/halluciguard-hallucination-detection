@@ -12,7 +12,9 @@ from app.core.mi_pruning import prune_chunks
 log = logging.getLogger("halluciguard.rag")
 
 _client = None
-_api_calls = 0  # real Gemini requests made by this process
+_ollama_client = None
+_api_calls = 0  # real LLM requests made by this process (either generator)
+_gen_latencies: list[float] = []  # seconds per real (non-cached) generation
 _NO_LOGPROBS: set[str] = set()  # models that rejected logprobs; skip the doomed first request next time
 
 
@@ -70,8 +72,54 @@ def get_api_call_count() -> int:
     return _api_calls
 
 
+def get_generation_latencies() -> list[float]:
+    return _gen_latencies
+
+
+def active_model() -> str:
+    return config.OLLAMA_MODEL if config.GENERATOR == "ollama" else config.GEMINI_MODEL
+
+
+def _get_ollama_client():
+    global _ollama_client
+    if _ollama_client is None:
+        import ollama
+
+        _ollama_client = ollama.Client(host=config.OLLAMA_HOST)
+    return _ollama_client
+
+
+def _parse_ollama_logprobs(resp) -> list[float] | None:
+    lp = resp.get("logprobs") if isinstance(resp, dict) else getattr(resp, "logprobs", None)
+    if not lp:
+        return None
+    vals = []
+    for t in lp:
+        v = t.get("logprob") if isinstance(t, dict) else getattr(t, "logprob", None)
+        if v is not None:
+            vals.append(float(v))
+    return vals or None
+
+
+def _generate_ollama(prompt: str) -> dict:
+    global _api_calls
+    _api_calls += 1
+    resp = _get_ollama_client().chat(
+        model=config.OLLAMA_MODEL, logprobs=True, options={"temperature": config.TEMPERATURE},
+        messages=[{"role": "system", "content": config.SYSTEM_PROMPT}, {"role": "user", "content": prompt}])
+    msg = resp["message"] if isinstance(resp, dict) else resp.message
+    answer = (msg["content"] if isinstance(msg, dict) else msg.content) or ""
+    toks = _parse_ollama_logprobs(resp)
+    if toks:
+        return {"answer": answer.strip(), "token_logprobs": toks, "avg_logprob": sum(toks) / len(toks),
+                "logprobs_source": "tokens"}
+    log.warning("Ollama returned no logprobs; token-prob component will be null")
+    return {"answer": answer.strip(), "token_logprobs": None, "avg_logprob": None, "logprobs_source": "none"}
+
+
 def _cache_path(prompt: str):
-    key = hashlib.sha256((config.GEMINI_MODEL + "\n" + config.SYSTEM_PROMPT + "\n" + prompt).encode()).hexdigest()
+    key = hashlib.sha256(
+        "\n".join([config.GENERATOR, active_model(), config.SYSTEM_PROMPT, prompt]).encode()).hexdigest()
     return config.LLM_CACHE_DIR / f"{key}.json"
 
 
@@ -87,7 +135,11 @@ def generate(query: str, chunks: list[dict]) -> dict:
             log.warning("unreadable cache entry %s; treating as miss", path.name)
     if path is not None:
         log.info("LLM cache miss (%s)", path.stem[:8])
-    result = _generate_uncached(prompt)
+    t0 = time.time()
+    result = _generate_ollama(prompt) if config.GENERATOR == "ollama" else _generate_uncached(prompt)
+    _gen_latencies.append(time.time() - t0)
+    result["generator"] = config.GENERATOR
+    result["model_name"] = active_model()
     if path is not None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(result))

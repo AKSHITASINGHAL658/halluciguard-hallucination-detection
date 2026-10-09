@@ -12,6 +12,13 @@ def init_db():
     from app import models  # noqa: F401
 
     Base.metadata.create_all(engine)
+    # lightweight migration: add columns introduced after the first release
+    from sqlalchemy import inspect, text
+
+    cols = {c["name"] for c in inspect(engine).get_columns("responses")}
+    if "generator" not in cols:
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TABLE responses ADD COLUMN generator VARCHAR"))
 
 
 def get_db():

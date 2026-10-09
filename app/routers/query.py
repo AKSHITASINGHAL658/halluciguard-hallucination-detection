@@ -28,7 +28,7 @@ def build_response_out(db: Session, resp: Response) -> ResponseOut:
                           entity_trust_score=e.entity_trust_score) for e in resp.entities]
     return ResponseOut(
         sentences=sentences, entities=entities, trust=trust,
-        response_id=resp.id, query=resp.query.text, answer=resp.raw_text, model_name=resp.model_name,
+        response_id=resp.id, query=resp.query.text, answer=resp.raw_text, model_name=resp.model_name, generator=resp.generator,
         logprobs_source=resp.logprobs_source,
         retrieved_chunk_ids=json.loads(resp.retrieved_chunk_ids), pruned_chunk_ids=json.loads(resp.pruned_chunk_ids),
         trust_score_overall=resp.trust_score_overall)

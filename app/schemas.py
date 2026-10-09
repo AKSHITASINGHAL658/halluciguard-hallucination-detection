@@ -54,6 +54,7 @@ class ResponseOut(BaseModel):
     query: str
     answer: str
     model_name: str
+    generator: Optional[str] = None
     logprobs_source: Optional[str] = None
     retrieved_chunk_ids: list[int]
     pruned_chunk_ids: list[int]
