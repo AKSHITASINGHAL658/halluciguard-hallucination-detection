@@ -14,6 +14,8 @@
 - Step 11: dashboard/streamlit_app.py (Query, Robustness, Evaluation tabs); smoke-tested with streamlit AppTest + TestClient, no exceptions.
 - Step 12: README with setup + final numbers; full suite 20 passed. Gemini 2.5-flash hit its 20/day free quota, so default model switched to gemini-3.1-flash-lite (same: no logprobs). Added 503 retry.
 
+- Usage-reduction task: USE_LOGPROBS=False and LLM_CACHE (config, env override); disk cache in generate(); /evaluate + scripts/run_eval.py got retrieval_only / rescore / limit; cache tests added (22 pass). Real Gemini not called.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).
@@ -28,6 +30,7 @@
 - PMI threshold: if top PMI score <= 0, threshold = top/keep_ratio (lenient). Prompt tokens approximated as words*1.3. Redundancy check always applies; min_keep top-up prefers non-redundant chunks.
 
 ## Known issues
+- Eval logic moved to app/core/evaluation.py and rescoring to query_service.rescore_response (rescore writes new response rows copying the stored answer). scripts/run_eval.py is new ("its script" did not exist). The README results table predates this change and was produced with logprobs attempted (outcome identical: none).
 - Gemini free-tier rate limits (429) can make /evaluate slow or fail some questions (n_failed reported).
 - Pronoun sentences ("It was completed in 2012") can be flagged by NLI because the premise chunk lacks the antecedent; kept per spec.
 - precision@6 is structurally capped at ~0.33: each doc has only 2 chunks (~400 words) so at most 2 of 6 retrieved can be relevant. /evaluate also reports precision_after_pruning.

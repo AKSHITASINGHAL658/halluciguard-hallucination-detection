@@ -1,3 +1,5 @@
+import hashlib
+import json
 import logging
 import re
 import time
@@ -10,6 +12,7 @@ from app.core.mi_pruning import prune_chunks
 log = logging.getLogger("halluciguard.rag")
 
 _client = None
+_api_calls = 0  # real Gemini requests made by this process
 _NO_LOGPROBS: set[str] = set()  # models that rejected logprobs; skip the doomed first request next time
 
 
@@ -63,16 +66,44 @@ def build_prompt(query: str, chunks: list[dict]) -> str:
     return f"Context:\n{ctx}\n\nQuestion: {query}\nAnswer:"
 
 
-def generate(query: str, chunks: list[dict]) -> dict:
-    from google.genai import types
+def get_api_call_count() -> int:
+    return _api_calls
 
+
+def _cache_path(prompt: str):
+    key = hashlib.sha256((config.GEMINI_MODEL + "\n" + config.SYSTEM_PROMPT + "\n" + prompt).encode()).hexdigest()
+    return config.LLM_CACHE_DIR / f"{key}.json"
+
+
+def generate(query: str, chunks: list[dict]) -> dict:
     prompt = build_prompt(query, chunks)
+    path = _cache_path(prompt) if config.LLM_CACHE else None
+    if path is not None and path.exists():
+        try:
+            cached = json.loads(path.read_text())
+            log.info("LLM cache hit (%s) | real API calls so far: %d", path.stem[:8], _api_calls)
+            return cached
+        except (OSError, ValueError):
+            log.warning("unreadable cache entry %s; treating as miss", path.name)
+    if path is not None:
+        log.info("LLM cache miss (%s)", path.stem[:8])
+    result = _generate_uncached(prompt)
+    if path is not None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(result))
+    return result
+
+
+def _generate_uncached(prompt: str) -> dict:
+    from google.genai import types
 
     def call(with_logprobs: bool):
         kwargs = dict(system_instruction=config.SYSTEM_PROMPT, temperature=config.TEMPERATURE,
                       thinking_config=types.ThinkingConfig(thinking_budget=0))
         if with_logprobs:
             kwargs.update(response_logprobs=True, logprobs=1)
+        global _api_calls
+        _api_calls += 1
         return _get_client().models.generate_content(
             model=config.GEMINI_MODEL, contents=prompt, config=types.GenerateContentConfig(**kwargs))
 
@@ -89,6 +120,11 @@ def generate(query: str, chunks: list[dict]) -> dict:
                     time.sleep(delay)
                     continue
                 raise
+
+    if not config.USE_LOGPROBS:
+        resp = call_with_backoff(False)
+        return {"answer": (resp.text or "").strip(), "token_logprobs": None, "avg_logprob": None,
+                "logprobs_source": "none"}
 
     try:
         resp = call_with_backoff(config.GEMINI_MODEL not in _NO_LOGPROBS)

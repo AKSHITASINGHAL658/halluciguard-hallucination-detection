@@ -19,6 +19,16 @@ pytest
 
 `GEMINI_MODEL` defaults to `gemini-3.1-flash-lite` (see `app/config.py`). Gemini model access and daily quotas vary per key; `gemini-2.0-flash` is retired.
 
+## Reducing Gemini usage
+
+- `USE_LOGPROBS` (default `false`, env override): skips the logprobs request, which current Gemini models reject. `logprobs_source` is then `none`.
+- `LLM_CACHE` (default `true`, env override): `generate()` caches responses in `cache/llm/<sha256(model+prompt)>.json` and logs cache hit/miss plus the count of real API calls.
+- `POST /evaluate` and `python scripts/run_eval.py` accept:
+  - `retrieval_only` / `--retrieval-only`: retrieval and pruning metrics only, no generation.
+  - `rescore` / `--rescore`: reuse the latest stored answer per question from SQLite and rerun NLI, localization and trust only.
+  - `limit` / `--limit N`: first N questions.
+  The response includes `api_calls` (real Gemini requests made).
+
 ## Final results
 
 Corpus: 6 renewable-energy documents (12 chunks). Eval set: 22 QA pairs (`data/eval/qa_eval_set.json`). Model: `gemini-3.1-flash-lite`.

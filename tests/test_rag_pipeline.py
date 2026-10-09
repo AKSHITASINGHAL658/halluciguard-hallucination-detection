@@ -1,6 +1,16 @@
 from types import SimpleNamespace
 
+import pytest
+
 from app.core import rag_pipeline
+
+
+@pytest.fixture(autouse=True)
+def _isolate(monkeypatch, tmp_path):
+    # never touch the real cache dir or the real Gemini API from tests
+    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE_DIR", tmp_path / "llm")
+    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", False)
+    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", True)
 
 
 def _resp(chosen=None, avg=None):
@@ -73,3 +83,40 @@ def test_generate_skips_logprobs_after_rejection(monkeypatch):
     rag_pipeline.generate("q?", [{"text": "ctx"}])
     rag_pipeline._NO_LOGPROBS.clear()
     assert calls == [None]
+
+
+def _counting_client(calls):
+    class Models:
+        def generate_content(self, model, contents, config):
+            calls.append(contents)
+            return _resp()
+
+    return SimpleNamespace(models=Models())
+
+
+def test_cache_second_identical_call_makes_no_api_request(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
+    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", False)
+    calls = []
+    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: _counting_client(calls))
+    before = rag_pipeline.get_api_call_count()
+    first = rag_pipeline.generate("q?", [{"text": "ctx"}])
+    second = rag_pipeline.generate("q?", [{"text": "ctx"}])
+    assert len(calls) == 1 and rag_pipeline.get_api_call_count() - before == 1
+    assert first == second and first["logprobs_source"] == "none"
+    rag_pipeline.generate("different?", [{"text": "ctx"}])  # different prompt -> miss
+    assert len(calls) == 2
+
+
+def test_logprobs_disabled_skips_logprobs_request(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", False)
+    seen = []
+
+    class Models:
+        def generate_content(self, model, contents, config):
+            seen.append(config.response_logprobs)
+            return _resp(chosen=[-0.1], avg=-0.1)
+
+    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: SimpleNamespace(models=Models()))
+    out = rag_pipeline.generate("q?", [{"text": "ctx"}])
+    assert seen == [None] and out["logprobs_source"] == "none" and out["token_logprobs"] is None

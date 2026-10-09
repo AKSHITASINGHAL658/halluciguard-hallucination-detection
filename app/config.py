@@ -10,6 +10,16 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL") or "gemini-3.1-flash-lite"
 TEMPERATURE = 0.0
 
+
+def _env_bool(name: str, default: bool) -> bool:
+    v = os.getenv(name)
+    return default if v is None or v == "" else v.strip().lower() in ("1", "true", "yes", "on")
+
+
+USE_LOGPROBS = _env_bool("USE_LOGPROBS", False)  # current Gemini models reject logprobs; skip the doomed request
+LLM_CACHE = _env_bool("LLM_CACHE", True)
+LLM_CACHE_DIR = BASE_DIR / "cache" / "llm"
+
 DB_URL = f"sqlite:///{BASE_DIR / 'app.db'}"
 CHROMA_DIR = str(BASE_DIR / "chroma")
 CHROMA_COLLECTION = "halluciguard_chunks"
