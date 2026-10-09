@@ -1,4 +1,5 @@
 import math
+import re
 from functools import lru_cache
 
 from app import config
@@ -11,17 +12,31 @@ def _nlp():
     return spacy.load(config.SPACY_MODEL)
 
 
+_MODIFIERS = re.compile(
+    r"^(?:(?:approximately|approx\.?|roughly|about|around|nearly|almost|over|under|more than|less than|"
+    r"up to|some|the|a|an)\s+)+", re.I)
+_RELATIVE_DATE = re.compile(r"\b(that|this|last|next|previous|current|same|following|earlier|later)\b|"
+                            r"\b(end|start|beginning|middle) of\b|\b(today|yesterday|tomorrow|now|recently)\b", re.I)
+
+
+def _normalize_entity(text: str) -> str:
+    return _MODIFIERS.sub("", text.strip()).strip()
+
+
 def entity_score(answer: str, chunks: list[dict]) -> tuple[float, list[dict]]:
     """Fraction of spaCy entities in the answer found (case-insensitive) in the surviving chunk text."""
     context = " ".join(c["text"] for c in chunks).lower()
     seen, entities = set(), []
     for e in _nlp()(answer).ents:
-        key = (e.text.lower(), e.label_)
+        if e.label_ in ("DATE", "TIME") and _RELATIVE_DATE.search(e.text):
+            continue  # relative wording ("the end of that year") can't appear verbatim in sources
+        text = _normalize_entity(e.text) or e.text
+        key = (text.lower(), e.label_)
         if key in seen:
             continue
         seen.add(key)
-        ok = e.text.lower() in context
-        entities.append({"text": e.text, "entity_type": e.label_, "supported": ok, "score": 1.0 if ok else 0.0})
+        ok = text.lower() in context
+        entities.append({"text": text, "entity_type": e.label_, "supported": ok, "score": 1.0 if ok else 0.0})
     if not entities:
         return 1.0, []
     return sum(e["supported"] for e in entities) / len(entities), entities

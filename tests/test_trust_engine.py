@@ -35,3 +35,13 @@ def test_aggregate_with_and_without_token_prob():
     assert math.isclose(aggregate_trust(1, 1, 1, 1), 1.0)
     assert math.isclose(aggregate_trust(1, 1, 1, None), 1.0)  # renormalized
     assert math.isclose(aggregate_trust(1, 0, 0, None), w["sentence"] / (1 - w["token_prob"]))
+
+
+def test_entity_modifiers_stripped_and_relative_dates_skipped():
+    chunks = [{"text": "About 345 gigawatts of solar were added in 2023, reaching 1,600 gigawatts in total."}]
+    score, ents = entity_score(
+        "In 2023, approximately 345 gigawatts were added, for roughly 1,600 gigawatts by the end of that year.", chunks)
+    texts = {e["text"]: e["supported"] for e in ents}
+    assert "345" in texts and texts["345"] and texts["1,600"] and texts["2023"]
+    assert not any("end of" in t for t in texts)
+    assert score == 1.0
