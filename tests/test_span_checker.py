@@ -40,3 +40,18 @@ def test_fix_split_decimals():
     from app.core.query_service import fix_split_decimals
     assert fix_split_decimals("It is 42. 5 percent and magnitude 3. 4.") == "It is 42.5 percent and magnitude 3.4."
     assert fix_split_decimals("It ended. Then 5 people left.") == "It ended. Then 5 people left."
+
+
+def test_nli_preference_does_not_override_topic():
+    s = "In 2030, about 172 gigawatts of new solar capacity was added globally."
+    spans, ref = find_wrong_spans(s, CHUNKS, nli_best_id=2)  # NLI preferred the policy chunk
+    assert ref["chunk_id"] == 1 and [sp["text"] for sp in spans] == ["2030", "172"]
+
+
+def test_strong_nli_rescues_number_from_other_chunk():
+    s = "In 2030, about 172 gigawatts of new solar capacity was added globally."
+    # NLI very sure about the policy chunk -> its numbers (2030) are accepted; 172 is still wrong
+    spans, _ = find_wrong_spans(s, CHUNKS, nli_best_id=2, nli_entailment=0.95)
+    assert [sp["text"] for sp in spans] == ["172"]
+    spans, _ = find_wrong_spans(s, CHUNKS, nli_best_id=2, nli_entailment=0.68)
+    assert [sp["text"] for sp in spans] == ["2030", "172"]

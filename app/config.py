@@ -55,6 +55,9 @@ CONTRADICTION_THRESHOLD = 0.5
 ATTENTION_LAST_LAYERS = 4
 ATTENTION_TOP_N = 5
 
+# Span checking: a number found only in the NLI-preferred chunk still counts as supported if NLI is this sure
+SPAN_STRONG_ENTAILMENT = 0.9
+
 # Trust
 TRUST_WEIGHTS = {"sentence": 0.35, "entity": 0.25, "document": 0.20, "token_prob": 0.20}
 

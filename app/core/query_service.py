@@ -65,7 +65,7 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
 
     loc = localize_hallucinations(split_sentences(result["answer"]), result["pruned"])
     for s in loc:
-        spans, ref = find_wrong_spans(s["text"], result["pruned"], s["best_chunk_id"])
+        spans, ref = find_wrong_spans(s["text"], result["pruned"], s["best_chunk_id"], s["max_entailment"])
         s["wrong_spans"] = spans
         if spans and ref:  # numbers/names the source doesn't back up: flag the sentence, show the passage it is about
             s["is_hallucination"] = True
