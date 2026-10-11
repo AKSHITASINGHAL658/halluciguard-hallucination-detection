@@ -106,7 +106,7 @@ def _generate_ollama(prompt: str) -> dict:
     _api_calls += 1
     resp = _get_ollama_client().chat(
         model=config.OLLAMA_MODEL, logprobs=True, options={"temperature": config.TEMPERATURE},
-        messages=[{"role": "system", "content": config.SYSTEM_PROMPT}, {"role": "user", "content": prompt}])
+        messages=[{"role": "system", "content": config.get_system_prompt()}, {"role": "user", "content": prompt}])
     msg = resp["message"] if isinstance(resp, dict) else resp.message
     answer = (msg["content"] if isinstance(msg, dict) else msg.content) or ""
     toks = _parse_ollama_logprobs(resp)
@@ -119,7 +119,7 @@ def _generate_ollama(prompt: str) -> dict:
 
 def _cache_path(prompt: str):
     key = hashlib.sha256(
-        "\n".join([config.GENERATOR, active_model(), config.SYSTEM_PROMPT, prompt]).encode()).hexdigest()
+        "\n".join([config.GENERATOR, active_model(), config.get_system_prompt(), prompt]).encode()).hexdigest()
     return config.LLM_CACHE_DIR / f"{key}.json"
 
 
@@ -150,7 +150,7 @@ def _generate_uncached(prompt: str) -> dict:
     from google.genai import types
 
     def call(with_logprobs: bool):
-        kwargs = dict(system_instruction=config.SYSTEM_PROMPT, temperature=config.TEMPERATURE,
+        kwargs = dict(system_instruction=config.get_system_prompt(), temperature=config.TEMPERATURE,
                       thinking_config=types.ThinkingConfig(thinking_budget=0))
         if with_logprobs:
             kwargs.update(response_logprobs=True, logprobs=1)

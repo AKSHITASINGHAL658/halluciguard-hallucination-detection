@@ -21,6 +21,9 @@
 
 - Ollama task step 3: inject_llm_contradiction (qwen2.5:3b, cached as cache/llm/adv-<sha>.json), new attack_type "llm_contradiction" in the suite (Robustness tab iterates detection_rate keys, so it appears automatically). New run (120 tests): negation 1.00, stale_fact 0.96, noise 1.00, llm_contradiction 0.29, control FP 0.125. Spot checks show the 3B model often returns near-paraphrases ("approximately", year-only tweaks), so the low rate partly reflects weak rewrites, not only NLI misses.
 
+- Prompt mode: PROMPT_MODE=strict|loose (env; default strict). Loose lets the model add outside knowledge so unsupported sentences appear for the demo. Cache key includes the system prompt, so modes don't collide. Loose-mode spot check (qwen2.5:3b): 2 queries, 1 of 7 sentences flagged red. Tag loose-mode runs so they are not mixed with strict-mode eval numbers.
+- Observed: the Ollama server was not running at one point (ConnectionError); `ollama serve` had to be started manually. This may explain the 189s average latency in the uncommitted comparison run; re-run before trusting it.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).

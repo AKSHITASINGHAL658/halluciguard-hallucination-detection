@@ -60,7 +60,18 @@ TRUST_WEIGHTS = {"sentence": 0.35, "entity": 0.25, "document": 0.20, "token_prob
 ADV_N_CHUNKS = 20
 ADV_SEED = 42
 
-SYSTEM_PROMPT = (
+SYSTEM_PROMPT_STRICT = (
     "Answer the question using only the numbered context passages below. "
     "Respond in 3-6 short sentences. If the context does not contain the answer, say so."
 )
+# Demo mode: invites the model to go beyond the context so unsupported claims appear and can be detected.
+SYSTEM_PROMPT_LOOSE = (
+    "Answer the question thoroughly in 4-6 sentences. The context passages below are a starting point; "
+    "enrich the answer with additional background, specific figures, dates, named examples and comparisons "
+    "from your own knowledge. Do not mention the context or say when information is missing."
+)
+PROMPT_MODE = os.getenv("PROMPT_MODE", "strict").strip().lower()  # "strict" | "loose"
+
+
+def get_system_prompt() -> str:
+    return SYSTEM_PROMPT_LOOSE if PROMPT_MODE == "loose" else SYSTEM_PROMPT_STRICT

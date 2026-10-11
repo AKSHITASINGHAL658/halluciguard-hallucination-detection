@@ -29,6 +29,10 @@ pytest
   - `limit` / `--limit N`: first N questions.
   The response includes `api_calls` (real Gemini requests made).
 
+## Demo: provoking hallucinations
+
+Set `PROMPT_MODE=loose` (default `strict`) to let the generator add outside knowledge, so unsupported sentences show up red in the dashboard. Do not mix loose-mode runs with the strict-mode evaluation numbers below.
+
 ## Final results
 
 Corpus: 6 renewable-energy documents (12 chunks). Eval set: 22 QA pairs (`data/eval/qa_eval_set.json`). Model: `gemini-3.1-flash-lite`.

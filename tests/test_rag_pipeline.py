@@ -178,3 +178,21 @@ def test_cache_key_includes_generator_and_model(monkeypatch):
     monkeypatch.setattr(rag_pipeline.config, "OLLAMA_MODEL", "other:1b")
     rag_pipeline.generate("q?", [{"text": "ctx"}])
     assert len(seen) == 2
+
+
+def test_loose_prompt_mode_changes_system_prompt_and_cache_key(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
+    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", False)
+    systems = []
+
+    class Models:
+        def generate_content(self, model, contents, config):
+            systems.append(config.system_instruction)
+            return _resp()
+
+    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: SimpleNamespace(models=Models()))
+    monkeypatch.setattr(rag_pipeline.config, "PROMPT_MODE", "strict")
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    monkeypatch.setattr(rag_pipeline.config, "PROMPT_MODE", "loose")
+    rag_pipeline.generate("q?", [{"text": "ctx"}])  # same question, different prompt -> not a cache hit
+    assert systems == [rag_pipeline.config.SYSTEM_PROMPT_STRICT, rag_pipeline.config.SYSTEM_PROMPT_LOOSE]
