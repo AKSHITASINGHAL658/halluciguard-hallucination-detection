@@ -41,7 +41,7 @@ class Response(Base):
     query_id = Column(Integer, ForeignKey("queries.id"))
     raw_text = Column(Text)
     model_name = Column(String)
-    generator = Column(String, nullable=True)  # ollama | gemini
+    generator = Column(String, nullable=True)
     faults_injected = Column(Text, nullable=True)  # JSON list; set only for demo faulty-mode responses
     retrieved_chunk_ids = Column(Text)  # JSON list
     pruned_chunk_ids = Column(Text)  # JSON list

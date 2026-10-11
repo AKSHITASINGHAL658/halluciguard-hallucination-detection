@@ -35,7 +35,6 @@ def warmup() -> dict:
 
     step("embedder", embed)
     step("nli", nli)
-    if config.GENERATOR == "ollama":
-        step("ollama", ollama)
+    step("ollama", ollama)
     log.info("warmup seconds: %s", timings)
     return timings

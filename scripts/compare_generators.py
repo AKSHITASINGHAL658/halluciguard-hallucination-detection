@@ -13,8 +13,7 @@ from app.core.warmup import warmup  # noqa: E402
 from app.db import SessionLocal, init_db  # noqa: E402
 
 
-def run_one(generator: str, limit: int | None, use_cache: bool) -> dict:
-    config.GENERATOR = generator
+def run_one(limit: int | None, use_cache: bool) -> dict:
     config.LLM_CACHE = use_cache  # cache off by default so latency is real
     db = SessionLocal()
     try:
@@ -28,16 +27,13 @@ def run_one(generator: str, limit: int | None, use_cache: bool) -> dict:
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Compare generators on the QA eval set")
-    ap.add_argument("--gemini", action="store_true", help="also run Gemini (uses API quota)")
+    ap = argparse.ArgumentParser(description="Benchmark the Ollama generator on the QA eval set (latency, trust, hallucination rate)")
     ap.add_argument("--limit", type=int, default=None, help="first N questions (default: all)")
     ap.add_argument("--use-cache", action="store_true", help="allow the LLM cache (latency then not meaningful)")
     a = ap.parse_args()
     init_db()
     warmup()  # keep model-load time out of the latency numbers
-    results = {"ollama": run_one("ollama", a.limit, a.use_cache)}
-    if a.gemini:
-        results["gemini"] = run_one("gemini", a.limit, a.use_cache)
+    results = {"ollama": run_one(a.limit, a.use_cache)}
     out = ROOT / "outputs" / "generator_comparison.json"
     out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps(results, indent=2))

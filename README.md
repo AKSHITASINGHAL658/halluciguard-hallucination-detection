@@ -1,6 +1,6 @@
 # HalluciGuard
 
-RAG pipeline with hallucination detection: retrieval (ChromaDB) → MI pruning → Gemini generation → sentence-level NLI verification (DeBERTa) → attention attribution → hierarchical trust score. FastAPI backend, Streamlit dashboard, SQLite storage. CPU only, Python 3.11.
+RAG pipeline with hallucination detection: retrieval (ChromaDB) → MI pruning → local Ollama generation → sentence-level NLI verification (DeBERTa) → attention attribution → hierarchical trust score. FastAPI backend, Streamlit dashboard, SQLite storage. CPU only, Python 3.11.
 
 ## Setup
 
@@ -9,7 +9,9 @@ python3.11 -m venv .venv && source .venv/bin/activate
 pip install torch --index-url https://download.pytorch.org/whl/cpu   # CPU-only torch
 pip install -r requirements.txt
 python -m spacy download en_core_web_sm
-cp .env.example .env     # set GEMINI_API_KEY (and optionally GEMINI_MODEL)
+ollama serve &            # local LLM server
+ollama pull qwen2.5:3b
+cp .env.example .env      # optional overrides (OLLAMA_MODEL, OLLAMA_HOST)
 python scripts/seed_corpus.py
 uvicorn app.main:app --port 8000
 streamlit run dashboard/streamlit_app.py     # in a second terminal
@@ -17,17 +19,17 @@ python scripts/run_adversarial_eval.py       # optional: populate the Robustness
 pytest
 ```
 
-`GENERATOR` defaults to `ollama` (`OLLAMA_MODEL=qwen2.5:3b`, `OLLAMA_HOST=http://localhost:11434`; run `ollama serve` and `ollama pull qwen2.5:3b`). Set `GENERATOR=gemini` to use Gemini. `GEMINI_MODEL` defaults to `gemini-3.1-flash-lite` (see `app/config.py`). Gemini model access and daily quotas vary per key; `gemini-2.0-flash` is retired.
+Generation runs locally through Ollama (`OLLAMA_MODEL=qwen2.5:3b`, `OLLAMA_HOST=http://localhost:11434`). No cloud LLM or API key is used.
 
-## Reducing Gemini usage
+## LLM cache and logprobs
 
-- `USE_LOGPROBS` (default `false`, env override): skips the logprobs request, which current Gemini models reject. `logprobs_source` is then `none`.
+- Ollama returns per-token logprobs, so `logprobs_source` is `tokens` and the token-probability trust component is used. If a model returns none, the component is null and the weights renormalize.
 - `LLM_CACHE` (default `true`, env override): `generate()` caches responses in `cache/llm/<sha256(model+prompt)>.json` and logs cache hit/miss plus the count of real API calls.
 - `POST /evaluate` and `python scripts/run_eval.py` accept:
   - `retrieval_only` / `--retrieval-only`: retrieval and pruning metrics only, no generation.
   - `rescore` / `--rescore`: reuse the latest stored answer per question from SQLite and rerun NLI, localization and trust only.
   - `limit` / `--limit N`: first N questions.
-  The response includes `api_calls` (real Gemini requests made).
+  The response includes `api_calls` (real Ollama requests made).
 
 ## Marking the wrong parts
 
@@ -47,16 +49,15 @@ Faulty mode: tick "Faulty mode" in the Query tab (or send `"inject_faults": true
 
 Corpus: 6 renewable-energy documents (12 chunks). Eval set: 22 QA pairs (`data/eval/qa_eval_set.json`). Strict prompt, no faults injected.
 
-Generator comparison (`python scripts/compare_generators.py`, saved in `outputs/generator_comparison.json`; cache off, models pre-warmed):
+Benchmark (`python scripts/compare_generators.py`, saved in `outputs/generator_comparison.json`; cache off, models pre-warmed):
 
-| Generator | Hallucination rate | Avg trust | Avg token-prob | Avg generation latency |
+| Model | Hallucination rate | Avg trust | Avg token-prob | Avg generation latency |
 | --- | --- | --- | --- | --- |
 | Ollama `qwen2.5:3b` | 8.7% (2 of 23 claim sentences) | 0.90 | 0.94 | 2.5 s |
-| Gemini `gemini-3.1-flash-lite` | 13.0% (earlier run, 54 sentences) | 0.79 | n/a (no logprobs) | not measured; re-run with `--gemini` |
 
 The Ollama row uses the current checker (wrong-span flagging, filler sentences excluded from the counts).
 
-Retrieval (generator independent): precision@6 0.33 (capped: each doc has only 2 chunks, so at most 2 of 6 can be relevant), precision after MI pruning 0.74, average prune ratio 62%.
+Retrieval: precision@6 0.33 (capped: each doc has only 2 chunks, so at most 2 of 6 can be relevant), precision after MI pruning 0.74, average prune ratio 62%.
 
 Adversarial robustness (NLI premise = original chunk, hypothesis = corrupted sentence, 120 tests):
 
@@ -72,7 +73,7 @@ The low LLM-contradiction rate is partly a generator weakness: the 3B model ofte
 
 ## Notes and limitations
 
-- **Logprobs**: Ollama (`qwen2.5:3b`) returns per-token logprobs, so the token-probability component is used. The Gemini models available to this key reject `response_logprobs` (HTTP 400); with `GENERATOR=gemini` the component is null and the trust weights renormalize.
+- **Logprobs**: Ollama (`qwen2.5:3b`) returns per-token logprobs, so the token-probability component is used.
 - Attention output is described as "source words the verifier attended to most" (self-attention over premise+hypothesis), not proof of causation.
 - Sentences that rely on a pronoun ("It was completed in 2012") may be flagged because the chunk lacks the antecedent.
 - Numbers vary slightly between runs because LLM output is not fully deterministic.

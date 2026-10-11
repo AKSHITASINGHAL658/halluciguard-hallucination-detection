@@ -8,7 +8,7 @@ Full plan: docs/plan.md. Read ONLY the section named in the task.
 - Folder layout: docs/plan.md §3. DB schema: §4. API list: §5.
 
 ## Stack
-OpenAI gpt-4o-mini (logprobs=True), ChromaDB (embedded),
+Ollama qwen2.5:3b (local, logprobs=True; no cloud LLMs), ChromaDB (embedded),
 sentence-transformers/all-MiniLM-L6-v2,
 MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli, spaCy en_core_web_sm,
 nltk, scikit-learn, SQLAlchemy, Streamlit, pytest.

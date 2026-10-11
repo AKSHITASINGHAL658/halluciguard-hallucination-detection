@@ -7,39 +7,9 @@ from app.core import rag_pipeline
 
 @pytest.fixture(autouse=True)
 def _isolate(monkeypatch, tmp_path):
-    # never touch the real cache dir or the real Gemini API from tests
+    # never touch the real cache dir or a real Ollama server from tests
     monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE_DIR", tmp_path / "llm")
     monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", False)
-    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", True)
-    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "gemini")
-
-
-def _resp(chosen=None, avg=None):
-    lr = SimpleNamespace(chosen_candidates=[SimpleNamespace(log_probability=x) for x in chosen]) if chosen else None
-    return SimpleNamespace(candidates=[SimpleNamespace(logprobs_result=lr, avg_logprobs=avg)], text="Answer.")
-
-
-def test_extract_logprobs_order():
-    toks, avg, src = rag_pipeline._extract_logprobs(_resp(chosen=[-0.1, -0.3], avg=-9))
-    assert src == "tokens" and toks == [-0.1, -0.3] and abs(avg + 0.2) < 1e-9
-    assert rag_pipeline._extract_logprobs(_resp(avg=-0.5)) == (None, -0.5, "avg")
-    assert rag_pipeline._extract_logprobs(_resp()) == (None, None, "none")
-
-
-def test_generate_falls_back_without_logprobs(monkeypatch):
-    calls = []
-    rag_pipeline._NO_LOGPROBS.clear()
-
-    class Models:
-        def generate_content(self, model, contents, config):
-            calls.append(config.response_logprobs)
-            if config.response_logprobs:
-                raise RuntimeError("400 INVALID_ARGUMENT Logprobs is not enabled for this model")
-            return _resp()
-
-    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: SimpleNamespace(models=Models()))
-    out = rag_pipeline.generate("q?", [{"text": "ctx"}])
-    assert calls == [True, None] and out["logprobs_source"] == "none" and out["answer"] == "Answer."
 
 
 def test_retrieve_and_query_endpoint(monkeypatch):
@@ -71,58 +41,6 @@ def test_query_populates_sentences(monkeypatch):
         assert body["sentences"][0]["is_hallucination"] is False
 
 
-def test_generate_skips_logprobs_after_rejection(monkeypatch):
-    rag_pipeline._NO_LOGPROBS.add(rag_pipeline.config.GEMINI_MODEL)
-    calls = []
-
-    class Models:
-        def generate_content(self, model, contents, config):
-            calls.append(config.response_logprobs)
-            return _resp()
-
-    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: SimpleNamespace(models=Models()))
-    rag_pipeline.generate("q?", [{"text": "ctx"}])
-    rag_pipeline._NO_LOGPROBS.clear()
-    assert calls == [None]
-
-
-def _counting_client(calls):
-    class Models:
-        def generate_content(self, model, contents, config):
-            calls.append(contents)
-            return _resp()
-
-    return SimpleNamespace(models=Models())
-
-
-def test_cache_second_identical_call_makes_no_api_request(monkeypatch):
-    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
-    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", False)
-    calls = []
-    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: _counting_client(calls))
-    before = rag_pipeline.get_api_call_count()
-    first = rag_pipeline.generate("q?", [{"text": "ctx"}])
-    second = rag_pipeline.generate("q?", [{"text": "ctx"}])
-    assert len(calls) == 1 and rag_pipeline.get_api_call_count() - before == 1
-    assert first == second and first["logprobs_source"] == "none"
-    rag_pipeline.generate("different?", [{"text": "ctx"}])  # different prompt -> miss
-    assert len(calls) == 2
-
-
-def test_logprobs_disabled_skips_logprobs_request(monkeypatch):
-    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", False)
-    seen = []
-
-    class Models:
-        def generate_content(self, model, contents, config):
-            seen.append(config.response_logprobs)
-            return _resp(chosen=[-0.1], avg=-0.1)
-
-    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: SimpleNamespace(models=Models()))
-    out = rag_pipeline.generate("q?", [{"text": "ctx"}])
-    assert seen == [None] and out["logprobs_source"] == "none" and out["token_logprobs"] is None
-
-
 def _ollama_resp(logprobs, content="Ollama answer."):
     return SimpleNamespace(message=SimpleNamespace(content=content), logprobs=logprobs)
 
@@ -137,7 +55,6 @@ def _ollama_client(resp, seen):
 
 
 def test_ollama_parses_token_logprobs(monkeypatch):
-    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "ollama")
     seen = []
     lp = [SimpleNamespace(token="a", logprob=-0.2), SimpleNamespace(token="b", logprob=-0.4)]
     monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(_ollama_resp(lp), seen))
@@ -149,7 +66,6 @@ def test_ollama_parses_token_logprobs(monkeypatch):
 
 
 def test_ollama_dict_logprobs_and_fallback_when_missing(monkeypatch):
-    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "ollama")
     resp = {"message": {"content": "x"}, "logprobs": [{"token": "a", "logprob": -1.0}]}
     monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(resp, []))
     assert rag_pipeline.generate("q?", [{"text": "ctx"}])["logprobs_source"] == "tokens"
@@ -158,44 +74,6 @@ def test_ollama_dict_logprobs_and_fallback_when_missing(monkeypatch):
                             lambda e=empty: _ollama_client(_ollama_resp(e), []))
         out = rag_pipeline.generate("q?", [{"text": "ctx"}])
         assert out["logprobs_source"] == "none" and out["token_logprobs"] is None and out["avg_logprob"] is None
-
-
-def test_cache_key_includes_generator_and_model(monkeypatch):
-    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
-    seen = []
-    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(_ollama_resp(None), seen))
-    calls = []
-    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: _counting_client(calls))
-    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", False)
-    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "ollama")
-    rag_pipeline.generate("q?", [{"text": "ctx"}])
-    rag_pipeline.generate("q?", [{"text": "ctx"}])
-    assert len(seen) == 1
-    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "gemini")
-    rag_pipeline.generate("q?", [{"text": "ctx"}])
-    assert len(calls) == 1  # same prompt, different generator -> miss
-    monkeypatch.setattr(rag_pipeline.config, "GENERATOR", "ollama")
-    monkeypatch.setattr(rag_pipeline.config, "OLLAMA_MODEL", "other:1b")
-    rag_pipeline.generate("q?", [{"text": "ctx"}])
-    assert len(seen) == 2
-
-
-def test_loose_prompt_mode_changes_system_prompt_and_cache_key(monkeypatch):
-    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
-    monkeypatch.setattr(rag_pipeline.config, "USE_LOGPROBS", False)
-    systems = []
-
-    class Models:
-        def generate_content(self, model, contents, config):
-            systems.append(config.system_instruction)
-            return _resp()
-
-    monkeypatch.setattr(rag_pipeline, "_get_client", lambda: SimpleNamespace(models=Models()))
-    monkeypatch.setattr(rag_pipeline.config, "PROMPT_MODE", "strict")
-    rag_pipeline.generate("q?", [{"text": "ctx"}])
-    monkeypatch.setattr(rag_pipeline.config, "PROMPT_MODE", "loose")
-    rag_pipeline.generate("q?", [{"text": "ctx"}])  # same question, different prompt -> not a cache hit
-    assert systems == [rag_pipeline.config.SYSTEM_PROMPT_STRICT, rag_pipeline.config.SYSTEM_PROMPT_LOOSE]
 
 
 def test_query_inject_faults_flags_and_excludes_token_prob(monkeypatch):
@@ -228,3 +106,39 @@ def test_wrong_numbers_flag_sentence_and_return_spans(monkeypatch):
     assert sent["is_hallucination"] is True
     assert "172" in [sp["text"] for sp in sent["wrong_spans"]]
     assert "345" in sent["supporting_chunk_text"]
+
+
+
+def test_cache_second_identical_call_makes_no_llm_request(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
+    seen = []
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(_ollama_resp(None), seen))
+    before = rag_pipeline.get_api_call_count()
+    first = rag_pipeline.generate("q?", [{"text": "ctx"}])
+    second = rag_pipeline.generate("q?", [{"text": "ctx"}])
+    assert len(seen) == 1 and rag_pipeline.get_api_call_count() - before == 1
+    assert first == second and first["logprobs_source"] == "none"
+    rag_pipeline.generate("different?", [{"text": "ctx"}])  # different prompt -> miss
+    assert len(seen) == 2
+
+
+def test_cache_key_includes_model(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
+    seen = []
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(_ollama_resp(None), seen))
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    monkeypatch.setattr(rag_pipeline.config, "OLLAMA_MODEL", "other:1b")
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    assert len(seen) == 2 and seen[1]["model"] == "other:1b"
+
+
+def test_loose_prompt_mode_changes_system_prompt_and_cache_key(monkeypatch):
+    monkeypatch.setattr(rag_pipeline.config, "LLM_CACHE", True)
+    seen = []
+    monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _ollama_client(_ollama_resp(None), seen))
+    monkeypatch.setattr(rag_pipeline.config, "PROMPT_MODE", "strict")
+    rag_pipeline.generate("q?", [{"text": "ctx"}])
+    monkeypatch.setattr(rag_pipeline.config, "PROMPT_MODE", "loose")
+    rag_pipeline.generate("q?", [{"text": "ctx"}])  # same question, different prompt -> not a cache hit
+    systems = [c["messages"][0]["content"] for c in seen]
+    assert systems == [rag_pipeline.config.SYSTEM_PROMPT_STRICT, rag_pipeline.config.SYSTEM_PROMPT_LOOSE]

@@ -38,6 +38,8 @@
 
 - Re-ran compare_generators with the current checker (22/22 questions, 0 failed): Ollama qwen2.5:3b hallucination 8.7% (2/23 claim sentences), avg trust 0.90, token-prob 0.94, 2.5 s/answer generation. First attempt failed 21/22 with "database is locked" (another process held app.db); fixed with a 30s SQLite timeout and db.rollback() after a failed question in run_evaluation. README table updated.
 
+- GEMINI REMOVED (user decision): no Gemini code, config (GEMINI_*, GENERATOR, USE_LOGPROBS), tests, --gemini flag, google-genai dependency (uninstalled) or .env.example entries remain. Ollama is the only generator; responses.generator is always "ollama". Earlier Gemini entries in this file are history only. docs/plan.md still describes Gemini and is superseded. Suite: 40 passed.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).

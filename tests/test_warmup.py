@@ -4,7 +4,6 @@ from app.core import rag_pipeline, warmup as warmup_mod
 
 
 def test_warmup_loads_everything_and_survives_ollama_down(monkeypatch):
-    monkeypatch.setattr(warmup_mod.config, "GENERATOR", "ollama")
     seen = []
 
     class Down:

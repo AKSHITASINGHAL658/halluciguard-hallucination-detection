@@ -1,7 +1,6 @@
 import hashlib
 import json
 import logging
-import re
 import time
 
 from app import config
@@ -11,20 +10,9 @@ from app.core.mi_pruning import prune_chunks
 
 log = logging.getLogger("halluciguard.rag")
 
-_client = None
 _ollama_client = None
-_api_calls = 0  # real LLM requests made by this process (either generator)
+_api_calls = 0  # real Ollama requests made by this process
 _gen_latencies: list[float] = []  # seconds per real (non-cached) generation
-_NO_LOGPROBS: set[str] = set()  # models that rejected logprobs; skip the doomed first request next time
-
-
-def _get_client():
-    global _client
-    if _client is None:
-        from google import genai
-
-        _client = genai.Client(api_key=config.GEMINI_API_KEY)
-    return _client
 
 
 def retrieve(query: str, k: int = config.RETRIEVE_K) -> list[dict]:
@@ -37,30 +25,6 @@ def retrieve(query: str, k: int = config.RETRIEVE_K) -> list[dict]:
                     "title": meta.get("title"), "text": hit["text"], "embedding": hit["embedding"],
                     "distance": hit["distance"]})
     return out
-
-
-def _is_retryable_logprob_error(e: Exception) -> bool:
-    msg = str(e).lower()
-    return "logprobs" in msg or "429" in msg or "quota" in msg or "resource_exhausted" in msg
-
-
-def _extract_logprobs(response):
-    """Order: per-token logprobs -> avg_logprobs -> None."""
-    try:
-        cand = response.candidates[0]
-    except (IndexError, AttributeError, TypeError):
-        return None, None, "none"
-    lr = getattr(cand, "logprobs_result", None)
-    chosen = getattr(lr, "chosen_candidates", None) if lr else None
-    if chosen:
-        toks = [c.log_probability for c in chosen if c.log_probability is not None]
-        if toks:
-            avg = sum(toks) / len(toks)
-            return toks, avg, "tokens"
-    avg = getattr(cand, "avg_logprobs", None)
-    if avg is not None:
-        return None, avg, "avg"
-    return None, None, "none"
 
 
 def build_prompt(query: str, chunks: list[dict]) -> str:
@@ -77,7 +41,7 @@ def get_generation_latencies() -> list[float]:
 
 
 def active_model() -> str:
-    return config.OLLAMA_MODEL if config.GENERATOR == "ollama" else config.GEMINI_MODEL
+    return config.OLLAMA_MODEL
 
 
 def _get_ollama_client():
@@ -119,7 +83,7 @@ def _generate_ollama(prompt: str) -> dict:
 
 def _cache_path(prompt: str):
     key = hashlib.sha256(
-        "\n".join([config.GENERATOR, active_model(), config.get_system_prompt(), prompt]).encode()).hexdigest()
+        "\n".join(["ollama", active_model(), config.get_system_prompt(), prompt]).encode()).hexdigest()
     return config.LLM_CACHE_DIR / f"{key}.json"
 
 
@@ -129,68 +93,21 @@ def generate(query: str, chunks: list[dict]) -> dict:
     if path is not None and path.exists():
         try:
             cached = json.loads(path.read_text())
-            log.info("LLM cache hit (%s) | real API calls so far: %d", path.stem[:8], _api_calls)
+            log.info("LLM cache hit (%s) | real LLM calls so far: %d", path.stem[:8], _api_calls)
             return cached
         except (OSError, ValueError):
             log.warning("unreadable cache entry %s; treating as miss", path.name)
     if path is not None:
         log.info("LLM cache miss (%s)", path.stem[:8])
     t0 = time.time()
-    result = _generate_ollama(prompt) if config.GENERATOR == "ollama" else _generate_uncached(prompt)
+    result = _generate_ollama(prompt)
     _gen_latencies.append(time.time() - t0)
-    result["generator"] = config.GENERATOR
+    result["generator"] = "ollama"
     result["model_name"] = active_model()
     if path is not None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(result))
     return result
-
-
-def _generate_uncached(prompt: str) -> dict:
-    from google.genai import types
-
-    def call(with_logprobs: bool):
-        kwargs = dict(system_instruction=config.get_system_prompt(), temperature=config.TEMPERATURE,
-                      thinking_config=types.ThinkingConfig(thinking_budget=0))
-        if with_logprobs:
-            kwargs.update(response_logprobs=True, logprobs=1)
-        global _api_calls
-        _api_calls += 1
-        return _get_client().models.generate_content(
-            model=config.GEMINI_MODEL, contents=prompt, config=types.GenerateContentConfig(**kwargs))
-
-    def call_with_backoff(with_logprobs: bool):
-        for attempt in range(4):
-            try:
-                return call(with_logprobs)
-            except Exception as e:  # noqa: BLE001
-                msg = str(e)
-                if ("429" in msg or "RESOURCE_EXHAUSTED" in msg or "503" in msg or "UNAVAILABLE" in msg) and attempt < 3 and "PerDay" not in msg:
-                    m = re.search(r"retry in ([\d.]+)s", msg) or re.search(r"'retryDelay': '(\d+)s'", msg)
-                    delay = min(float(m.group(1)) + 1 if m else 20.0, 70.0)
-                    log.warning("rate limited; sleeping %.0fs", delay)
-                    time.sleep(delay)
-                    continue
-                raise
-
-    if not config.USE_LOGPROBS:
-        resp = call_with_backoff(False)
-        return {"answer": (resp.text or "").strip(), "token_logprobs": None, "avg_logprob": None,
-                "logprobs_source": "none"}
-
-    try:
-        resp = call_with_backoff(config.GEMINI_MODEL not in _NO_LOGPROBS)
-    except Exception as e:
-        if not _is_retryable_logprob_error(e):
-            raise
-        if "logprobs" in str(e).lower():
-            _NO_LOGPROBS.add(config.GEMINI_MODEL)
-        log.warning("logprobs request failed (%s); retrying without logprobs", str(e)[:120])
-        resp = call_with_backoff(False)
-
-    token_logprobs, avg_logprob, source = _extract_logprobs(resp)
-    return {"answer": (resp.text or "").strip(), "token_logprobs": token_logprobs,
-            "avg_logprob": avg_logprob, "logprobs_source": source}
 
 
 def run_pipeline(query: str, k: int = config.RETRIEVE_K) -> dict:

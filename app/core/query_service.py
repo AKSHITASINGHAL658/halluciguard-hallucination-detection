@@ -55,7 +55,7 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
     db.add(q)
     db.flush()
     resp = Response(query_id=q.id, raw_text=result["answer"], model_name=result.get("model_name", rag_pipeline.active_model()),
-                    generator=result.get("generator", config.GENERATOR),
+                    generator=result.get("generator", "ollama"),
                     faults_injected=json.dumps(result["faults"]) if result.get("faults") else None,
                     retrieved_chunk_ids=json.dumps([c["chunk_id"] for c in result["retrieved"]]),
                     pruned_chunk_ids=json.dumps([c["chunk_id"] for c in result["pruned"]]),

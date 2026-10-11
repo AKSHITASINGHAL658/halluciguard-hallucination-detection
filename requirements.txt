@@ -3,7 +3,6 @@ uvicorn
 sqlalchemy
 chromadb
 sentence-transformers
-google-genai
 python-dotenv
 transformers
 torch
