@@ -30,6 +30,10 @@
 
 - Ollama task steps 4-5 DONE. compare_generators (Ollama only; Gemini needs --gemini): hallucination 20.0% (6/30 sentences), avg trust 0.879, avg token-prob 0.937, 4.4 s/answer generation (warm). Adversarial re-run after year-regex fix: negation 1.00, stale_fact 1.00, noise 1.00, llm_contradiction 0.208, control FP 0.167. Mocked-Ollama tests (logprob parsing, dict/object shapes, fallback when none, cache key) are in tests/test_rag_pipeline.py. Full suite: 33 passed. README results table updated.
 
+- Span-level marking: app/core/span_checker.py finds the wrong parts of a sentence: numbers (incl. years) missing from the reference chunk (chosen by lexical topic overlap, not NLI) and named entities missing from every surviving chunk. [n] citations and "2030s"-style tokens are ignored. Wired into score_and_store: any wrong span sets is_hallucination=True and switches the shown source to the reference chunk; spans stored in response_sentences.wrong_spans (auto-migrated) and returned as sentences[].wrong_spans; dashboard marks only those words bright red inside the sentence. Also fix_split_decimals (qwen writes "42. 5"). Rescore of 22 stored answers: hallucination rate 20% (5/25), no false span flags on real answers. Faulty-mode check: "2029" and "207" both marked, trust 0.34 (was 0.69 with NLI alone). Full suite 40 passed.
+- Known: tests write stub responses into the real app.db (e.g. a fake "172 gigawatts" answer for the eval Q1 text), which can pollute --rescore. Needs a temp DB for tests.
+- Known: filler sentences ("This information is directly stated in the context") are still marked supported by NLI.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).

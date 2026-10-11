@@ -29,6 +29,10 @@ pytest
   - `limit` / `--limit N`: first N questions.
   The response includes `api_calls` (real Gemini requests made).
 
+## Marking the wrong parts
+
+Besides the sentence-level NLI label, each sentence is checked word-by-word: numbers (and years) that are not in the passage the sentence is about, and names that appear in no retrieved passage, are marked bright red inside the sentence, and the sentence counts as flagged. Caveat: a legitimate number that comes from a *different* retrieved passage than the sentence's main topic can be marked.
+
 ## Speed
 
 The API preloads the embedder, NLI model and Ollama model at startup (`WARMUP=0` disables it) and asks Ollama to keep the model loaded (`OLLAMA_KEEP_ALIVE`, default 30m). Expect roughly 8 seconds per `/query` with `qwen2.5:3b` on CPU (about 5s generation, 3s NLI).

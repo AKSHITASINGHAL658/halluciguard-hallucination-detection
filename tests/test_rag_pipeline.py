@@ -213,3 +213,18 @@ def test_query_inject_faults_flags_and_excludes_token_prob(monkeypatch):
     assert faulty["injected_faults"][0]["corrupted"] in faulty["answer"]
     assert faulty["trust"]["token_prob_component"] is None
     assert faulty["trust_score_overall"] < clean["trust_score_overall"]
+
+
+def test_wrong_numbers_flag_sentence_and_return_spans(monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    monkeypatch.setattr(rag_pipeline, "generate", lambda q, c: {
+        "answer": "About 172 gigawatts of new solar capacity were added in 2023.",
+        "token_logprobs": None, "avg_logprob": None, "logprobs_source": "none"})
+    with TestClient(app) as c:
+        body = c.post("/query", json={"text": "How much new solar capacity was added globally in 2023?"}).json()
+    sent = body["sentences"][0]
+    assert sent["is_hallucination"] is True
+    assert "172" in [sp["text"] for sp in sent["wrong_spans"]]
+    assert "345" in sent["supporting_chunk_text"]

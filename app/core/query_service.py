@@ -1,4 +1,5 @@
 import json
+import re
 
 from sqlalchemy.orm import Session
 
@@ -7,6 +8,7 @@ from app.core.attention_extractor import top_contributing_tokens
 from app.core import adversarial_agent, rag_pipeline
 from app.core.rag_pipeline import run_pipeline
 from app.core.sentence_localizer import localize_hallucinations, split_sentences
+from app.core.span_checker import find_wrong_spans
 from app.core.trust_engine import (aggregate_trust, doc_score, entity_score, sentence_score,
                                    token_prob_component)
 from app.models import Chunk, Document, Entity, Query, Response, ResponseSentence, TrustScore
@@ -42,7 +44,13 @@ def rescore_response(db: Session, old: Response) -> Response:
     return score_and_store(db, old.query.text, result)
 
 
+def fix_split_decimals(answer: str) -> str:
+    """Small models sometimes write decimals as '42. 5'; rejoin them so sentence splitting and number checks work."""
+    return re.sub(r"(?<=\d)\. (?=\d)", ".", answer)
+
+
 def score_and_store(db: Session, text: str, result: dict) -> Response:
+    result = {**result, "answer": fix_split_decimals(result["answer"])}
     q = Query(text=text)
     db.add(q)
     db.flush()
@@ -57,13 +65,19 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
 
     loc = localize_hallucinations(split_sentences(result["answer"]), result["pruned"])
     for s in loc:
+        spans, ref = find_wrong_spans(s["text"], result["pruned"], s["best_chunk_id"])
+        s["wrong_spans"] = spans
+        if spans and ref:  # numbers/names the source doesn't back up: flag the sentence, show the passage it is about
+            s["is_hallucination"] = True
+            s["best_chunk_id"], s["best_chunk_text"] = ref["chunk_id"], ref["text"]
         flagged = s["is_hallucination"] and s["best_chunk_text"]
         db.add(ResponseSentence(
             response_id=resp.id, sentence_index=s["index"], text=s["text"], nli_label=s["label"],
             nli_confidence=s["confidence"], is_hallucination=s["is_hallucination"],
             supporting_chunk_id=s["best_chunk_id"],
             top_attention_tokens=json.dumps(top_contributing_tokens(s["text"], s["best_chunk_text"]))
-            if flagged else None))
+            if flagged else None,
+            wrong_spans=json.dumps(spans) if spans else None))
 
     ent_s, entities = entity_score(result["answer"], result["pruned"])
     for e in entities:

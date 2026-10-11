@@ -19,7 +19,8 @@ def build_response_out(db: Session, resp: Response) -> ResponseOut:
             index=s.sentence_index, text=s.text, nli_label=s.nli_label, nli_confidence=s.nli_confidence,
             is_hallucination=s.is_hallucination, supporting_chunk_id=s.supporting_chunk_id,
             supporting_chunk_text=chunk.text if chunk else None,
-            top_attention_tokens=json.loads(s.top_attention_tokens) if s.top_attention_tokens else []))
+            top_attention_tokens=json.loads(s.top_attention_tokens) if s.top_attention_tokens else [],
+            wrong_spans=json.loads(s.wrong_spans) if s.wrong_spans else []))
     t = resp.trust
     trust = TrustOut(entity_level_score=t.entity_level_score, sentence_level_score=t.sentence_level_score,
                      document_level_score=t.document_level_score, token_prob_component=t.token_prob_component,

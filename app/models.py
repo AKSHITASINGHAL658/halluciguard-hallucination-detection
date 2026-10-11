@@ -65,6 +65,7 @@ class ResponseSentence(Base):
     is_hallucination = Column(Boolean, nullable=True)
     supporting_chunk_id = Column(Integer, ForeignKey("chunks.id"), nullable=True)
     top_attention_tokens = Column(Text, nullable=True)  # JSON list
+    wrong_spans = Column(Text, nullable=True)  # JSON list of {text,start,end,kind,reason}
     response = relationship("Response", back_populates="sentences")
 
 

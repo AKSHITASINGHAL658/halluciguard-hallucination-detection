@@ -24,6 +24,24 @@ def api(method: str, path: str, **kw):
         return None
 
 
+def sentence_html(s: dict) -> str:
+    """Sentence with the wrong parts (numbers/names the source doesn't back up) marked red."""
+    text, spans = s["text"], sorted(s.get("wrong_spans") or [], key=lambda x: x["start"])
+    if not spans:
+        return (f"<span style='background:{COLORS[sentence_class(s)]};padding:2px 4px;margin-right:4px;"
+                f"border-radius:4px;color:#111'>{html.escape(text)}</span>")
+    base = COLORS["supported"] if s["nli_label"] == "entailment" else COLORS["neutral"]
+    out, pos = [], 0
+    for sp in spans:
+        out.append(html.escape(text[pos:sp["start"]]))
+        out.append(f"<span title='{html.escape(sp['reason'])}' style='background:#ff5c5c;color:#111;"
+                   f"font-weight:700;padding:0 3px;border-radius:3px'>{html.escape(text[sp['start']:sp['end']])}</span>")
+        pos = sp["end"]
+    out.append(html.escape(text[pos:]))
+    return (f"<span style='background:{base};padding:2px 4px;margin-right:4px;border-radius:4px;color:#111'>"
+            f"{''.join(out)}</span>")
+
+
 def sentence_class(s: dict) -> str:
     if s["is_hallucination"]:
         return "hallucination"
@@ -42,18 +60,16 @@ with tab_query:
         st.caption(f"Model: {res['model_name']} · logprobs source: {res['logprobs_source']} · "
                    f"chunks retrieved {len(res['retrieved_chunk_ids'])} → used {len(res['pruned_chunk_ids'])}")
         st.subheader("Answer")
-        spans = "".join(
-            f"<span style='background:{COLORS[sentence_class(s)]};padding:2px 4px;margin-right:4px;border-radius:4px;"
-            f"color:#111'>{html.escape(s['text'])}</span>" for s in res["sentences"])
+        spans = "".join(sentence_html(s) for s in res["sentences"])
         st.markdown(spans, unsafe_allow_html=True)
-        st.caption("Green = supported · Amber = neutral · Red = hallucination")
+        st.caption("Green = supported · Amber = neutral · Red sentence = unsupported by NLI · Bright red words = numbers/names the source does not contain")
 
         if res.get("injected_faults"):
             st.warning("Faulty mode: the answer was deliberately corrupted. Did the checker catch it?")
             by_text = {x["text"]: x for x in res["sentences"]}
             for f in res["injected_faults"]:
                 hit = by_text.get(f["corrupted"]) or next((x for x in res["sentences"] if x["index"] == f["index"]), None)
-                caught = bool(hit and (hit["is_hallucination"] or hit["nli_label"] != "entailment"))
+                caught = bool(hit and (hit["is_hallucination"] or hit.get("wrong_spans") or hit["nli_label"] != "entailment"))
                 st.markdown(f"{'✅ Caught' if caught else '❌ Missed'} · **{f['attack_type']}** · "
                             f"~~{f['original']}~~ → {f['corrupted']}")
             st.caption("Token-probability is omitted here: logprobs describe the original answer, not the edited one.")
@@ -62,6 +78,8 @@ with tab_query:
             if s["is_hallucination"]:
                 with st.expander(f"🔴 Unsupported: {s['text'][:90]}"):
                     st.write(f"NLI: **{s['nli_label']}** (confidence {s['nli_confidence']:.2f})")
+                    for sp in s.get("wrong_spans") or []:
+                        st.write(f"🔴 **{sp['text']}**: {sp['reason']}")
                     st.write("Best source chunk:")
                     st.info(s["supporting_chunk_text"] or "n/a")
                     if s["top_attention_tokens"]:
