@@ -7,7 +7,7 @@ import requests
 import streamlit as st
 
 API = os.getenv("HALLUCIGUARD_API", "http://localhost:8000")
-COLORS = {"supported": "#c8f7c5", "neutral": "#ffe9a8", "hallucination": "#ffc2c2"}
+COLORS = {"supported": "#c8f7c5", "neutral": "#ffe9a8", "hallucination": "#ffc2c2", "filler": "#e3e3e8"}
 
 st.set_page_config(page_title="HalluciGuard", layout="wide")
 st.title("HalluciGuard — Trust Dashboard")
@@ -27,10 +27,13 @@ def api(method: str, path: str, **kw):
 def sentence_html(s: dict) -> str:
     """Sentence with the wrong parts (numbers/names the source doesn't back up) marked red."""
     text, spans = s["text"], sorted(s.get("wrong_spans") or [], key=lambda x: x["start"])
+    if s.get("is_filler"):
+        return (f"<span title='No checkable claim' style='background:{COLORS['filler']};padding:2px 4px;margin-right:4px;"
+                f"border-radius:4px;color:#555;font-style:italic'>{html.escape(text)}</span>")
     if not spans:
         return (f"<span style='background:{COLORS[sentence_class(s)]};padding:2px 4px;margin-right:4px;"
                 f"border-radius:4px;color:#111'>{html.escape(text)}</span>")
-    base = COLORS["supported"] if s["nli_label"] == "entailment" else COLORS["neutral"]
+    base = COLORS["neutral"]  # flagged by the wrong-parts check: amber, never green
     out, pos = [], 0
     for sp in spans:
         out.append(html.escape(text[pos:sp["start"]]))
@@ -62,7 +65,7 @@ with tab_query:
         st.subheader("Answer")
         spans = "".join(sentence_html(s) for s in res["sentences"])
         st.markdown(spans, unsafe_allow_html=True)
-        st.caption("Green = supported · Amber = neutral · Red sentence = unsupported by NLI · Bright red words = numbers/names the source does not contain")
+        st.caption("Green = supported · Amber = neutral or has wrong parts · Grey italic = filler (no claim) · Red sentence = unsupported by NLI · Bright red words = numbers/names the source does not contain")
 
         if res.get("injected_faults"):
             st.warning("Faulty mode: the answer was deliberately corrupted. Did the checker catch it?")
@@ -75,7 +78,7 @@ with tab_query:
             st.caption("Token-probability is omitted here: logprobs describe the original answer, not the edited one.")
 
         for s in res["sentences"]:
-            if s["is_hallucination"]:
+            if s["is_hallucination"] and not s.get("is_filler"):
                 with st.expander(f"🔴 Unsupported: {s['text'][:90]}"):
                     st.write(f"NLI: **{s['nli_label']}** (confidence {s['nli_confidence']:.2f})")
                     for sp in s.get("wrong_spans") or []:

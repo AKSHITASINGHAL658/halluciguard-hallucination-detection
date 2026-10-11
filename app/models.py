@@ -66,6 +66,7 @@ class ResponseSentence(Base):
     supporting_chunk_id = Column(Integer, ForeignKey("chunks.id"), nullable=True)
     top_attention_tokens = Column(Text, nullable=True)  # JSON list
     wrong_spans = Column(Text, nullable=True)  # JSON list of {text,start,end,kind,reason}
+    is_filler = Column(Boolean, nullable=True)  # meta sentence with no checkable claim; excluded from scoring
     response = relationship("Response", back_populates="sentences")
 
 

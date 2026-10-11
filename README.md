@@ -54,6 +54,8 @@ Generator comparison (`python scripts/compare_generators.py`, saved in `outputs/
 | Ollama `qwen2.5:3b` | 20.0% (6 of 30 sentences) | 0.88 | 0.94 | 4.4 s |
 | Gemini `gemini-3.1-flash-lite` | 13.0% (earlier run, 54 sentences) | 0.79 | n/a (no logprobs) | not measured; re-run with `--gemini` |
 
+Note: the Ollama row above predates filler-sentence exclusion and wrong-span flagging; rescoring the same stored answers with the current checker gives 13.0% (3 of 23 claim sentences) and avg trust 0.86.
+
 Retrieval (generator independent): precision@6 0.33 (capped: each doc has only 2 chunks, so at most 2 of 6 can be relevant), precision after MI pruning 0.74, average prune ratio 62%.
 
 Adversarial robustness (NLI premise = original chunk, hypothesis = corrupted sentence, 120 tests):

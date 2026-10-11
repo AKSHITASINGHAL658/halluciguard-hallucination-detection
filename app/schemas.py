@@ -34,6 +34,7 @@ class SentenceOut(BaseModel):
     supporting_chunk_text: Optional[str] = None
     top_attention_tokens: list = []
     wrong_spans: list = []
+    is_filler: bool = False
 
 
 class EntityOut(BaseModel):

@@ -55,8 +55,9 @@ def run_evaluation(db: Session, k: int = config.RETRIEVE_K, retrieval_only: bool
         trusts.append(resp.trust_score_overall)
         if resp.trust and resp.trust.token_prob_component is not None:
             token_probs.append(resp.trust.token_prob_component)
-        n_sent += len(resp.sentences)
-        n_halluc += sum(1 for s in resp.sentences if s.is_hallucination)
+        claims = [s for s in resp.sentences if not s.is_filler]
+        n_sent += len(claims)
+        n_halluc += sum(1 for s in claims if s.is_hallucination)
     n = len(qa)
     out = {"n_questions": n, "n_failed": failed, "k": k,
            "mode": "retrieval_only" if retrieval_only else "rescore" if rescore else "full",

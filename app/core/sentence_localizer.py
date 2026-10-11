@@ -1,3 +1,5 @@
+import re
+
 import nltk
 
 from app import config
@@ -49,3 +51,17 @@ def localize_hallucinations(sentences: list[str], chunks: list[dict]) -> list[di
                     "is_hallucination": max_ent < config.HALLUCINATION_ENTAIL_THRESHOLD,
                     "best_chunk_id": chunks[best]["chunk_id"], "best_chunk_text": chunks[best]["text"]})
     return out
+
+
+_REF_WORDS = re.compile(r"\b(context|passages?|sources?|provided text|text provided|documents?)\b", re.I)
+_META_VERBS = re.compile(r"\b(stated|provided|mentioned|according|based on|found|given|described|supported|discussed|"
+                         r"does not (?:contain|provide|mention|include)|do not (?:contain|provide|mention|include)|"
+                         r"no information|not (?:available|specified))\b", re.I)
+
+
+def is_filler(sentence: str) -> bool:
+    """Meta sentences like "This information is directly stated in the context provided." make no checkable claim."""
+    plain = re.sub(r"\[\d+\]", "", sentence)
+    if re.search(r"\d", plain) or len(plain.split()) > 25:
+        return False
+    return bool(_REF_WORDS.search(plain) and _META_VERBS.search(plain))

@@ -7,7 +7,7 @@ from app import config
 from app.core.attention_extractor import top_contributing_tokens
 from app.core import adversarial_agent, rag_pipeline
 from app.core.rag_pipeline import run_pipeline
-from app.core.sentence_localizer import localize_hallucinations, split_sentences
+from app.core.sentence_localizer import is_filler, localize_hallucinations, split_sentences
 from app.core.span_checker import find_wrong_spans
 from app.core.trust_engine import (aggregate_trust, doc_score, entity_score, sentence_score,
                                    token_prob_component)
@@ -65,27 +65,33 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
 
     loc = localize_hallucinations(split_sentences(result["answer"]), result["pruned"])
     for s in loc:
-        spans, ref = find_wrong_spans(s["text"], result["pruned"], s["best_chunk_id"], s["max_entailment"])
+        s["is_filler"] = is_filler(s["text"])
+        if s["is_filler"]:  # no checkable claim: never a hallucination, excluded from scoring below
+            s["is_hallucination"] = False
+        nli_flagged = s["is_hallucination"]
+        spans, ref = ([], None) if s["is_filler"] else find_wrong_spans(
+            s["text"], result["pruned"], s["best_chunk_id"], s["max_entailment"])
         s["wrong_spans"] = spans
         if spans and ref:  # numbers/names the source doesn't back up: flag the sentence, show the passage it is about
             s["is_hallucination"] = True
             s["best_chunk_id"], s["best_chunk_text"] = ref["chunk_id"], ref["text"]
-        flagged = s["is_hallucination"] and s["best_chunk_text"]
+        flagged = nli_flagged and s["best_chunk_text"]  # attention explains NLI rejections only
         db.add(ResponseSentence(
             response_id=resp.id, sentence_index=s["index"], text=s["text"], nli_label=s["label"],
             nli_confidence=s["confidence"], is_hallucination=s["is_hallucination"],
             supporting_chunk_id=s["best_chunk_id"],
             top_attention_tokens=json.dumps(top_contributing_tokens(s["text"], s["best_chunk_text"]))
             if flagged else None,
-            wrong_spans=json.dumps(spans) if spans else None))
+            wrong_spans=json.dumps(spans) if spans else None, is_filler=s["is_filler"]))
 
     ent_s, entities = entity_score(result["answer"], result["pruned"])
     for e in entities:
         db.add(Entity(response_id=resp.id, text=e["text"], entity_type=e["entity_type"],
                       supported=e["supported"], entity_trust_score=e["score"]))
     authority = {c["chunk_id"]: (db.get(Document, c["document_id"]).authority) for c in result["pruned"]}
-    sent_s = sentence_score(loc)
-    doc_s = doc_score(loc, authority)
+    claims = [s for s in loc if not s["is_filler"]]
+    sent_s = sentence_score(claims)
+    doc_s = doc_score(claims, authority)
     tok_s = result["token_prob"] if "token_prob" in result else token_prob_component(
         result["token_logprobs"], result["avg_logprob"])
     final = aggregate_trust(sent_s, ent_s, doc_s, tok_s)
