@@ -28,6 +28,8 @@
 
 - Latency profiling (Ollama qwen2.5:3b, warm): ~1.8-5s generation, ~3s NLI, attention ~1.5s per flagged sentence, ~8s per /query total. Cold first query was 18-36s (embedder ~8s, NLI load, Ollama model load). Fix: startup warmup (app/core/warmup.py, WARMUP=1) + OLLAMA_KEEP_ALIVE=30m; first query now ~8s. The earlier 189s/answer in the comparison run was NOT reproducible; re-run compare_generators before trusting any latency.
 
+- Ollama task steps 4-5 DONE. compare_generators (Ollama only; Gemini needs --gemini): hallucination 20.0% (6/30 sentences), avg trust 0.879, avg token-prob 0.937, 4.4 s/answer generation (warm). Adversarial re-run after year-regex fix: negation 1.00, stale_fact 1.00, noise 1.00, llm_contradiction 0.208, control FP 0.167. Mocked-Ollama tests (logprob parsing, dict/object shapes, fallback when none, cache key) are in tests/test_rag_pipeline.py. Full suite: 33 passed. README results table updated.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).
@@ -49,4 +51,4 @@
 (none)
 
 ## Next step
-Done
+Done (optional: numeric guard for NLI number blindness)

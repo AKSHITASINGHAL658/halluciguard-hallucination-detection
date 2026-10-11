@@ -17,7 +17,7 @@ python scripts/run_adversarial_eval.py       # optional: populate the Robustness
 pytest
 ```
 
-`GEMINI_MODEL` defaults to `gemini-3.1-flash-lite` (see `app/config.py`). Gemini model access and daily quotas vary per key; `gemini-2.0-flash` is retired.
+`GENERATOR` defaults to `ollama` (`OLLAMA_MODEL=qwen2.5:3b`, `OLLAMA_HOST=http://localhost:11434`; run `ollama serve` and `ollama pull qwen2.5:3b`). Set `GENERATOR=gemini` to use Gemini. `GEMINI_MODEL` defaults to `gemini-3.1-flash-lite` (see `app/config.py`). Gemini model access and daily quotas vary per key; `gemini-2.0-flash` is retired.
 
 ## Reducing Gemini usage
 
@@ -41,28 +41,32 @@ Faulty mode: tick "Faulty mode" in the Query tab (or send `"inject_faults": true
 
 ## Final results
 
-Corpus: 6 renewable-energy documents (12 chunks). Eval set: 22 QA pairs (`data/eval/qa_eval_set.json`). Model: `gemini-3.1-flash-lite`.
+Corpus: 6 renewable-energy documents (12 chunks). Eval set: 22 QA pairs (`data/eval/qa_eval_set.json`). Strict prompt, no faults injected.
 
-| Metric | Value |
-| --- | --- |
-| Retrieval precision@6 | 0.33 (capped: each doc has only 2 chunks, so at most 2 of 6 can be relevant) |
-| Precision after MI pruning | 0.74 |
-| Avg prune ratio (chunks dropped) | 62% |
-| Sentence hallucination rate | 13.0% (54 sentences, 22 questions, 0 failed) |
-| Avg trust score | 0.79 |
+Generator comparison (`python scripts/compare_generators.py`, saved in `outputs/generator_comparison.json`; cache off, models pre-warmed):
 
-Adversarial robustness (NLI premise = original chunk, hypothesis = corrupted sentence, 96 tests):
+| Generator | Hallucination rate | Avg trust | Avg token-prob | Avg generation latency |
+| --- | --- | --- | --- | --- |
+| Ollama `qwen2.5:3b` | 20.0% (6 of 30 sentences) | 0.88 | 0.94 | 4.4 s |
+| Gemini `gemini-3.1-flash-lite` | 13.0% (earlier run, 54 sentences) | 0.79 | n/a (no logprobs) | not measured; re-run with `--gemini` |
+
+Retrieval (generator independent): precision@6 0.33 (capped: each doc has only 2 chunks, so at most 2 of 6 can be relevant), precision after MI pruning 0.74, average prune ratio 62%.
+
+Adversarial robustness (NLI premise = original chunk, hypothesis = corrupted sentence, 120 tests):
 
 | Attack | Detection rate |
 | --- | --- |
 | Negation | 100% |
-| Stale fact | 95.8% |
+| Stale fact | 100% |
 | Noise | 100% |
-| Control false-positive rate | 12.5% |
+| LLM contradiction (`qwen2.5:3b` rewrites) | 20.8% |
+| Control false-positive rate | 16.7% |
+
+The low LLM-contradiction rate is partly a generator weakness: the 3B model often returns near-paraphrases instead of a factual change. Separately, NLI is weak on exact numbers: a corrupted sentence with a wrong figure can still be labelled "entailment" (seen in faulty mode).
 
 ## Notes and limitations
 
-- **No token-probability component**: the Gemini models available to this key reject `response_logprobs` (HTTP 400 "Logprobs is not enabled"). `generate()` falls back to no logprobs, `token_prob_component` is null, and the trust weights renormalize over sentence/entity/document.
+- **Logprobs**: Ollama (`qwen2.5:3b`) returns per-token logprobs, so the token-probability component is used. The Gemini models available to this key reject `response_logprobs` (HTTP 400); with `GENERATOR=gemini` the component is null and the trust weights renormalize.
 - Attention output is described as "source words the verifier attended to most" (self-attention over premise+hypothesis), not proof of causation.
 - Sentences that rely on a pronoun ("It was completed in 2012") may be flagged because the chunk lacks the antecedent.
 - Numbers vary slightly between runs because LLM output is not fully deterministic.
