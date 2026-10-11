@@ -52,3 +52,15 @@ def test_llm_contradiction_failure_or_identical_returns_none(monkeypatch, tmp_pa
     assert inject_llm_contradiction(s) is None
     monkeypatch.setattr(rag_pipeline, "_get_ollama_client", lambda: _client(s, []))
     assert inject_llm_contradiction(s) is None
+
+
+def test_inject_faults_changes_one_or_two_sentences():
+    ans = ("About 345 gigawatts of solar were added in 2023. China is the largest market. "
+           "The United States added 33 gigawatts. India added 7.5 gigawatts.")
+    out, faults = adversarial_agent.inject_faults(ans, random.Random(3))
+    assert out != ans and len(faults) == 2  # 4 sentences -> 2 faults
+    for f in faults:
+        assert f["corrupted"] != f["original"] and f["corrupted"] in out and f["original"] not in out
+    out1, faults1 = adversarial_agent.inject_faults("China is the largest market. India is second.", random.Random(1))
+    assert len(faults1) == 1 and faults1[0]["attack_type"] == "negation"
+    assert adversarial_agent.inject_faults("", random.Random(0)) == ("", [])

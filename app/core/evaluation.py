@@ -7,7 +7,7 @@ from app import config
 from app.core.metrics import retrieval_precision_at_k
 from app.core.mi_pruning import prune_chunks
 from app.core.query_service import process_query, rescore_response
-from app.core.rag_pipeline import get_api_call_count, retrieve
+from app.core.rag_pipeline import get_api_call_count, get_generation_latencies, retrieve
 from app.models import Query, Response
 
 log = logging.getLogger("halluciguard.eval")
@@ -15,7 +15,7 @@ log = logging.getLogger("halluciguard.eval")
 
 def _latest_response(db: Session, question: str) -> Response | None:
     return (db.query(Response).join(Query, Response.query_id == Query.id)
-            .filter(Query.text == question).order_by(Response.id.desc()).first())
+            .filter(Query.text == question, Response.faults_injected.is_(None)).order_by(Response.id.desc()).first())
 
 
 def run_evaluation(db: Session, k: int = config.RETRIEVE_K, retrieval_only: bool = False,
@@ -27,6 +27,8 @@ def run_evaluation(db: Session, k: int = config.RETRIEVE_K, retrieval_only: bool
     if limit:
         qa = qa[:limit]
     calls_before = get_api_call_count()
+    lat_before = len(get_generation_latencies())
+    token_probs = []
     precisions, pruned_prec, prune_ratios = [], [], []
     trusts, n_sent, n_halluc, failed, missing = [], 0, 0, 0, 0
     for item in qa:
@@ -51,6 +53,8 @@ def run_evaluation(db: Session, k: int = config.RETRIEVE_K, retrieval_only: bool
             failed += 1
             continue
         trusts.append(resp.trust_score_overall)
+        if resp.trust and resp.trust.token_prob_component is not None:
+            token_probs.append(resp.trust.token_prob_component)
         n_sent += len(resp.sentences)
         n_halluc += sum(1 for s in resp.sentences if s.is_hallucination)
     n = len(qa)
@@ -60,9 +64,14 @@ def run_evaluation(db: Session, k: int = config.RETRIEVE_K, retrieval_only: bool
            "precision_after_pruning": sum(pruned_prec) / n,
            "avg_prune_ratio": sum(prune_ratios) / n,
            "avg_trust": None, "hallucination_rate": None, "n_sentences": 0,
-           "api_calls": get_api_call_count() - calls_before}
+           "api_calls": get_api_call_count() - calls_before, "avg_token_prob": None,
+           "avg_generation_latency_s": None}
+    lats = get_generation_latencies()[lat_before:]
+    if lats:
+        out["avg_generation_latency_s"] = sum(lats) / len(lats)
     if not retrieval_only:
-        out.update(avg_trust=sum(trusts) / len(trusts) if trusts else None,
+        out.update(avg_token_prob=sum(token_probs) / len(token_probs) if token_probs else None,
+                   avg_trust=sum(trusts) / len(trusts) if trusts else None,
                    hallucination_rate=n_halluc / n_sent if n_sent else None, n_sentences=n_sent)
         if rescore:
             out["n_no_stored_answer"] = missing

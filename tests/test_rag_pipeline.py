@@ -196,3 +196,20 @@ def test_loose_prompt_mode_changes_system_prompt_and_cache_key(monkeypatch):
     monkeypatch.setattr(rag_pipeline.config, "PROMPT_MODE", "loose")
     rag_pipeline.generate("q?", [{"text": "ctx"}])  # same question, different prompt -> not a cache hit
     assert systems == [rag_pipeline.config.SYSTEM_PROMPT_STRICT, rag_pipeline.config.SYSTEM_PROMPT_LOOSE]
+
+
+def test_query_inject_faults_flags_and_excludes_token_prob(monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    monkeypatch.setattr(rag_pipeline, "generate", lambda q, c: {
+        "answer": "About 345 gigawatts of new solar capacity were added in 2023.",
+        "token_logprobs": [-0.1], "avg_logprob": -0.1, "logprobs_source": "tokens"})
+    with TestClient(app) as c:
+        clean = c.post("/query", json={"text": "How much solar capacity was added in 2023?"}).json()
+        faulty = c.post("/query", json={"text": "How much solar capacity was added in 2023?", "inject_faults": True}).json()
+    assert clean["injected_faults"] == [] and clean["trust"]["token_prob_component"] is not None
+    assert len(faulty["injected_faults"]) == 1 and faulty["answer"] != clean["answer"]
+    assert faulty["injected_faults"][0]["corrupted"] in faulty["answer"]
+    assert faulty["trust"]["token_prob_component"] is None
+    assert faulty["trust_score_overall"] < clean["trust_score_overall"]

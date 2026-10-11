@@ -24,6 +24,8 @@
 - Prompt mode: PROMPT_MODE=strict|loose (env; default strict). Loose lets the model add outside knowledge so unsupported sentences appear for the demo. Cache key includes the system prompt, so modes don't collide. Loose-mode spot check (qwen2.5:3b): 2 queries, 1 of 7 sentences flagged red. Tag loose-mode runs so they are not mixed with strict-mode eval numbers.
 - Observed: the Ollama server was not running at one point (ConnectionError); `ollama serve` had to be started manually. This may explain the 189s average latency in the uncommitted comparison run; re-run before trusting it.
 
+- Faulty mode (demo): POST /query {inject_faults: true} and a dashboard checkbox. adversarial_agent.inject_faults corrupts 1 sentence (2 if the answer has 4+) with wrong numbers (else negation) AFTER generation, then the normal NLI/entity/trust checks run. Tagged in responses.faults_injected (auto-migrated), excluded from rescore/eval, token-prob dropped (logprobs describe the original text). Live check on Three Gorges: 22,500 -> 33,750 MW, flagged contradiction, entity "33,750 megawatts" unsupported, attention showed "22,500", trust 0.16. Full suite 31 passed. evaluation.py also carries the (uncommitted-step-4) latency/token-prob fields.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).

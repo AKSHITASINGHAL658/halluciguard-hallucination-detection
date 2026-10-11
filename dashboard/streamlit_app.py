@@ -32,9 +32,11 @@ def sentence_class(s: dict) -> str:
 
 with tab_query:
     q = st.text_input("Ask a question about the corpus", "How much new solar capacity was added globally in 2023?")
+    faulty = st.checkbox("Faulty mode (demo): corrupt the answer before verification",
+                         help="Injects wrong numbers / negations into 1-2 sentences, then runs the normal checks.")
     if st.button("Run query") and q.strip():
         with st.spinner("Retrieving, generating and verifying..."):
-            st.session_state["result"] = api("POST", "/query", json={"text": q})
+            st.session_state["result"] = api("POST", "/query", json={"text": q, "inject_faults": faulty})
     res = st.session_state.get("result")
     if res:
         st.caption(f"Model: {res['model_name']} · logprobs source: {res['logprobs_source']} · "
@@ -45,6 +47,16 @@ with tab_query:
             f"color:#111'>{html.escape(s['text'])}</span>" for s in res["sentences"])
         st.markdown(spans, unsafe_allow_html=True)
         st.caption("Green = supported · Amber = neutral · Red = hallucination")
+
+        if res.get("injected_faults"):
+            st.warning("Faulty mode: the answer was deliberately corrupted. Did the checker catch it?")
+            by_text = {x["text"]: x for x in res["sentences"]}
+            for f in res["injected_faults"]:
+                hit = by_text.get(f["corrupted"]) or next((x for x in res["sentences"] if x["index"] == f["index"]), None)
+                caught = bool(hit and (hit["is_hallucination"] or hit["nli_label"] != "entailment"))
+                st.markdown(f"{'✅ Caught' if caught else '❌ Missed'} · **{f['attack_type']}** · "
+                            f"~~{f['original']}~~ → {f['corrupted']}")
+            st.caption("Token-probability is omitted here: logprobs describe the original answer, not the edited one.")
 
         for s in res["sentences"]:
             if s["is_hallucination"]:

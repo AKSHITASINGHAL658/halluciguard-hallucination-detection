@@ -33,6 +33,8 @@ pytest
 
 Set `PROMPT_MODE=loose` (default `strict`) to let the generator add outside knowledge, so unsupported sentences show up red in the dashboard. Do not mix loose-mode runs with the strict-mode evaluation numbers below.
 
+Faulty mode: tick "Faulty mode" in the Query tab (or send `"inject_faults": true` to `/query`) to deliberately corrupt 1-2 sentences of the real answer and watch the checker catch them. These responses are tagged and excluded from evaluation.
+
 ## Final results
 
 Corpus: 6 renewable-energy documents (12 chunks). Eval set: 22 QA pairs (`data/eval/qa_eval_set.json`). Model: `gemini-3.1-flash-lite`.

@@ -21,6 +21,7 @@ class DocumentOut(BaseModel):
 class QueryIn(BaseModel):
     text: str
     k: int = 6
+    inject_faults: bool = False  # demo: corrupt the answer before verification
 
 
 class SentenceOut(BaseModel):
@@ -55,6 +56,7 @@ class ResponseOut(BaseModel):
     answer: str
     model_name: str
     generator: Optional[str] = None
+    injected_faults: list[dict] = []
     logprobs_source: Optional[str] = None
     retrieved_chunk_ids: list[int]
     pruned_chunk_ids: list[int]

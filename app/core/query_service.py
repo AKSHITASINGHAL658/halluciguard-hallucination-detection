@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app import config
 from app.core.attention_extractor import top_contributing_tokens
-from app.core import rag_pipeline
+from app.core import adversarial_agent, rag_pipeline
 from app.core.rag_pipeline import run_pipeline
 from app.core.sentence_localizer import localize_hallucinations, split_sentences
 from app.core.trust_engine import (aggregate_trust, doc_score, entity_score, sentence_score,
@@ -12,9 +12,17 @@ from app.core.trust_engine import (aggregate_trust, doc_score, entity_score, sen
 from app.models import Chunk, Document, Entity, Query, Response, ResponseSentence, TrustScore
 
 
-def process_query(db: Session, text: str, k: int = config.RETRIEVE_K) -> Response:
-    """Full pipeline: retrieve -> prune -> generate -> NLI -> localize -> attention -> trust; persists everything."""
-    return score_and_store(db, text, run_pipeline(text, k))
+def process_query(db: Session, text: str, k: int = config.RETRIEVE_K, inject_faults: bool = False) -> Response:
+    """Full pipeline: retrieve -> prune -> generate -> NLI -> localize -> attention -> trust; persists everything.
+
+    inject_faults (demo): corrupt the generated answer first. Such responses are tagged via faults_injected and
+    excluded from rescoring/eval. Logprobs describe the original text, so the token-prob component is dropped.
+    """
+    result = run_pipeline(text, k)
+    if inject_faults:
+        result["answer"], result["faults"] = adversarial_agent.inject_faults(result["answer"])
+        result["token_prob"] = None
+    return score_and_store(db, text, result)
 
 
 def rescore_response(db: Session, old: Response) -> Response:
@@ -40,6 +48,7 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
     db.flush()
     resp = Response(query_id=q.id, raw_text=result["answer"], model_name=result.get("model_name", rag_pipeline.active_model()),
                     generator=result.get("generator", config.GENERATOR),
+                    faults_injected=json.dumps(result["faults"]) if result.get("faults") else None,
                     retrieved_chunk_ids=json.dumps([c["chunk_id"] for c in result["retrieved"]]),
                     pruned_chunk_ids=json.dumps([c["chunk_id"] for c in result["pruned"]]),
                     logprobs_source=result["logprobs_source"])

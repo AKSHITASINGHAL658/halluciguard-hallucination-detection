@@ -16,9 +16,10 @@ def init_db():
     from sqlalchemy import inspect, text
 
     cols = {c["name"] for c in inspect(engine).get_columns("responses")}
-    if "generator" not in cols:
-        with engine.begin() as conn:
-            conn.execute(text("ALTER TABLE responses ADD COLUMN generator VARCHAR"))
+    for col, ddl in (("generator", "VARCHAR"), ("faults_injected", "TEXT")):
+        if col not in cols:
+            with engine.begin() as conn:
+                conn.execute(text(f"ALTER TABLE responses ADD COLUMN {col} {ddl}"))
 
 
 def get_db():

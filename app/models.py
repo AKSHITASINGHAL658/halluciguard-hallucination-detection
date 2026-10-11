@@ -42,6 +42,7 @@ class Response(Base):
     raw_text = Column(Text)
     model_name = Column(String)
     generator = Column(String, nullable=True)  # ollama | gemini
+    faults_injected = Column(Text, nullable=True)  # JSON list; set only for demo faulty-mode responses
     retrieved_chunk_ids = Column(Text)  # JSON list
     pruned_chunk_ids = Column(Text)  # JSON list
     trust_score_overall = Column(Float, nullable=True)

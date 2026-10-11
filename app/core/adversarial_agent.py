@@ -164,3 +164,29 @@ def summarize_results(db: Session) -> dict:
     return {"detection_rate": {a: detection_rate(v) for a, v in by_type.items()},
             "counts": {**{a: len(v) for a, v in by_type.items()}, "control": len(control)},
             "false_positive_rate": false_positive_rate(control), "n_tests": len(rows)}
+
+
+def inject_faults(answer: str, rng: random.Random | None = None) -> tuple[str, list[dict]]:
+    """Demo "faulty RAG": corrupt 1 sentence (2 if the answer has 4+) of a real answer.
+
+    Prefers a wrong-number attack on sentences with digits, otherwise negation. Returns the corrupted answer and
+    the list of {index, attack_type, original, corrupted}.
+    """
+    rng = rng or random.Random()
+    sents = split_sentences(answer)
+    if not sents:
+        return answer, []
+    with_digits = [i for i, t in enumerate(sents) if re.search(r"\d", t)]
+    others = [i for i in range(len(sents)) if i not in with_digits]
+    n = 2 if len(sents) >= 4 else 1
+    order = rng.sample(with_digits, len(with_digits)) + rng.sample(others, len(others))
+    faults = []
+    for i in order[:n]:
+        orig = sents[i]
+        attack = "stale_fact" if i in with_digits else "negation"
+        new = inject_stale_fact(orig, rng) if attack == "stale_fact" else inject_negation(orig)
+        if new == orig:
+            attack, new = "negation", inject_negation(orig)
+        sents[i] = new
+        faults.append({"index": i, "attack_type": attack, "original": orig, "corrupted": new})
+    return " ".join(sents), sorted(faults, key=lambda f: f["index"])

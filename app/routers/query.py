@@ -31,12 +31,13 @@ def build_response_out(db: Session, resp: Response) -> ResponseOut:
         response_id=resp.id, query=resp.query.text, answer=resp.raw_text, model_name=resp.model_name, generator=resp.generator,
         logprobs_source=resp.logprobs_source,
         retrieved_chunk_ids=json.loads(resp.retrieved_chunk_ids), pruned_chunk_ids=json.loads(resp.pruned_chunk_ids),
-        trust_score_overall=resp.trust_score_overall)
+        trust_score_overall=resp.trust_score_overall,
+        injected_faults=json.loads(resp.faults_injected) if resp.faults_injected else [])
 
 
 @router.post("/query", response_model=ResponseOut)
 def post_query(body: QueryIn, db: Session = Depends(get_db)):
-    return build_response_out(db, process_query(db, body.text, body.k))
+    return build_response_out(db, process_query(db, body.text, body.k, body.inject_faults))
 
 
 @router.get("/response/{response_id}", response_model=ResponseOut)
