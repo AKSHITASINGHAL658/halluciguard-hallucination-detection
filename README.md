@@ -51,10 +51,10 @@ Generator comparison (`python scripts/compare_generators.py`, saved in `outputs/
 
 | Generator | Hallucination rate | Avg trust | Avg token-prob | Avg generation latency |
 | --- | --- | --- | --- | --- |
-| Ollama `qwen2.5:3b` | 20.0% (6 of 30 sentences) | 0.88 | 0.94 | 4.4 s |
+| Ollama `qwen2.5:3b` | 8.7% (2 of 23 claim sentences) | 0.90 | 0.94 | 2.5 s |
 | Gemini `gemini-3.1-flash-lite` | 13.0% (earlier run, 54 sentences) | 0.79 | n/a (no logprobs) | not measured; re-run with `--gemini` |
 
-Note: the Ollama row above predates filler-sentence exclusion and wrong-span flagging; rescoring the same stored answers with the current checker gives 8.7% (2 of 23 claim sentences) and avg trust 0.90 (after removing stub rows that earlier test runs had left in the database).
+The Ollama row uses the current checker (wrong-span flagging, filler sentences excluded from the counts).
 
 Retrieval (generator independent): precision@6 0.33 (capped: each doc has only 2 chunks, so at most 2 of 6 can be relevant), precision after MI pruning 0.74, average prune ratio 62%.
 

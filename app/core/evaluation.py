@@ -50,6 +50,7 @@ def run_evaluation(db: Session, k: int = config.RETRIEVE_K, retrieval_only: bool
                 resp = process_query(db, item["question"], k)
         except Exception as e:  # noqa: BLE001
             log.warning("query failed during eval: %s", str(e)[:150])
+            db.rollback()  # a failed flush would otherwise poison the session for every later question
             failed += 1
             continue
         trusts.append(resp.trust_score_overall)

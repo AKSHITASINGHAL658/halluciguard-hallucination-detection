@@ -3,11 +3,11 @@
     "model": "qwen2.5:3b",
     "n_questions": 22,
     "n_failed": 0,
-    "n_sentences": 30,
-    "hallucination_rate": 0.2,
-    "avg_trust": 0.879072912002934,
-    "avg_token_prob": 0.9367321910213924,
-    "avg_latency_s": 4.390535972335122,
+    "n_sentences": 23,
+    "hallucination_rate": 0.08695652173913043,
+    "avg_trust": 0.8989990741208831,
+    "avg_token_prob": 0.9368283840811628,
+    "avg_latency_s": 2.5066391121257436,
     "api_calls": 22
   }
 }

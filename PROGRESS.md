@@ -36,6 +36,8 @@
 - FIXED test pollution: tests/conftest.py points DB_URL/CHROMA_DIR (new env overrides in config) at a temp dir and seeds it from data/raw_docs, so tests never touch app.db/chroma. Deleted the 54 stub responses earlier tests had left in app.db. Rescore on clean data: hallucination 8.7% (2/23 claim sentences), avg trust 0.90. Suite 44 passed; real-DB row count unchanged by pytest.
 - Known: filler sentences ("This information is directly stated in the context") are still marked supported by NLI.
 
+- Re-ran compare_generators with the current checker (22/22 questions, 0 failed): Ollama qwen2.5:3b hallucination 8.7% (2/23 claim sentences), avg trust 0.90, token-prob 0.94, 2.5 s/answer generation. First attempt failed 21/22 with "database is locked" (another process held app.db); fixed with a 30s SQLite timeout and db.rollback() after a failed question in run_evaluation. README table updated.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).
