@@ -44,6 +44,8 @@
 
 - Improvements 1+2 DONE (user skipped #4, bigger model): labeled set data/eval/labeled_sentences.json (215 sentences from 92 answers; 121 supported, 55 unsupported, 30 filler, 9 ambiguous) labeled by Claude, NOT a human; scripts/build_labeled_set.py, data/eval/labeling_questions.json, scripts/run_ablation.py (NLI results memoized in cache/nli_ablation.pkl; ~25 min cold), outputs/ablation.json, shared app/core/verification.py (used by /query and the ablation). Findings: production F1 0.71 vs NLI-only 0.74 (CIs overlap): span check and claim splitting give no measurable F1 gain on this set; MI pruning helps (F1 0.71 vs 0.65, recall 0.84 vs 0.67); contradictions are the weakest case (recall 0.44, n=9); answer-level AUROC token-prob 0.98, sentence 0.88, final 0.89, entity 0.65, document 0.46 (confounded by loose vs strict prompt). Defaults left unchanged (USE_CLAIMS stays True); decision pending with user.
 
+- Guide: docs/guide/ builds HalluciGuard_Complete_Guide.pdf (60 pages) from part_*.py via headless Chrome; updated edition matches the final code (Gemini removed, claims, filler, span check, labelled set, ablation). FACTS.md added at the repo root as the exact reference.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).

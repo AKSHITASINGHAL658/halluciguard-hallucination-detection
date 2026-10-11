@@ -71,6 +71,8 @@ Adversarial robustness (NLI premise = original chunk, hypothesis = corrupted sen
 
 The low LLM-contradiction rate is partly a generator weakness: the 3B model often returns near-paraphrases instead of a factual change. Separately, NLI is weak on exact numbers: a corrupted sentence with a wrong figure can still be labelled "entailment" (seen in faulty mode).
 
+The full project guide (concepts, how each step works, results, limitations, likely questions) is in `docs/guide/HalluciGuard_Complete_Guide.pdf`; rebuild it with `python3 docs/guide/build_guide.py` (needs Google Chrome). Exact rules and values are in `FACTS.md`.
+
 ## Detection quality (labeled set + ablation)
 
 `python scripts/run_ablation.py` (outputs `outputs/ablation.json`). Test set: 176 sentences from 92 real answers of `qwen2.5:3b` (strict and loose prompt), 55 unsupported and 121 supported (filler and ambiguous sentences excluded). **The labels were made by an AI assistant reading each sentence against the source documents, not by a human**; spot-check `data/eval/labeled_sentences.json` before citing. "Positive" = unsupported sentence.
