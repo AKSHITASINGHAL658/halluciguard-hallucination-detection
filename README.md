@@ -29,6 +29,10 @@ pytest
   - `limit` / `--limit N`: first N questions.
   The response includes `api_calls` (real Gemini requests made).
 
+## Speed
+
+The API preloads the embedder, NLI model and Ollama model at startup (`WARMUP=0` disables it) and asks Ollama to keep the model loaded (`OLLAMA_KEEP_ALIVE`, default 30m). Expect roughly 8 seconds per `/query` with `qwen2.5:3b` on CPU (about 5s generation, 3s NLI).
+
 ## Demo: provoking hallucinations
 
 Set `PROMPT_MODE=loose` (default `strict`) to let the generator add outside knowledge, so unsupported sentences show up red in the dashboard. Do not mix loose-mode runs with the strict-mode evaluation numbers below.

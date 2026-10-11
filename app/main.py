@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from app import config
+from app.core.warmup import warmup
 from app.db import init_db
 from app.routers import adversarial, eval as eval_router, ingest, query
 
@@ -13,6 +15,8 @@ app.include_router(adversarial.router)
 @app.on_event("startup")
 def _startup():
     init_db()
+    if config.WARMUP:
+        warmup()
 
 
 @app.get("/health")

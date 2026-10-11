@@ -105,7 +105,7 @@ def _generate_ollama(prompt: str) -> dict:
     global _api_calls
     _api_calls += 1
     resp = _get_ollama_client().chat(
-        model=config.OLLAMA_MODEL, logprobs=True, options={"temperature": config.TEMPERATURE},
+        model=config.OLLAMA_MODEL, logprobs=True, keep_alive=config.OLLAMA_KEEP_ALIVE, options={"temperature": config.TEMPERATURE},
         messages=[{"role": "system", "content": config.get_system_prompt()}, {"role": "user", "content": prompt}])
     msg = resp["message"] if isinstance(resp, dict) else resp.message
     answer = (msg["content"] if isinstance(msg, dict) else msg.content) or ""

@@ -26,6 +26,8 @@
 
 - Faulty mode (demo): POST /query {inject_faults: true} and a dashboard checkbox. adversarial_agent.inject_faults corrupts 1 sentence (2 if the answer has 4+) with wrong numbers (else negation) AFTER generation, then the normal NLI/entity/trust checks run. Tagged in responses.faults_injected (auto-migrated), excluded from rescore/eval, token-prob dropped (logprobs describe the original text). Live check on Three Gorges: 22,500 -> 33,750 MW, flagged contradiction, entity "33,750 megawatts" unsupported, attention showed "22,500", trust 0.16. Full suite 31 passed. evaluation.py also carries the (uncommitted-step-4) latency/token-prob fields.
 
+- Latency profiling (Ollama qwen2.5:3b, warm): ~1.8-5s generation, ~3s NLI, attention ~1.5s per flagged sentence, ~8s per /query total. Cold first query was 18-36s (embedder ~8s, NLI load, Ollama model load). Fix: startup warmup (app/core/warmup.py, WARMUP=1) + OLLAMA_KEEP_ALIVE=30m; first query now ~8s. The earlier 189s/answer in the comparison run was NOT reproducible; re-run compare_generators before trusting any latency.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).
