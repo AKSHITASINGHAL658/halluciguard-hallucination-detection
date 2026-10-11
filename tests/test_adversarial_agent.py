@@ -64,3 +64,10 @@ def test_inject_faults_changes_one_or_two_sentences():
     out1, faults1 = adversarial_agent.inject_faults("China is the largest market. India is second.", random.Random(1))
     assert len(faults1) == 1 and faults1[0]["attack_type"] == "negation"
     assert adversarial_agent.inject_faults("", random.Random(0)) == ("", [])
+
+
+def test_stale_fact_year_followed_by_comma_is_shifted_not_scaled():
+    for seed in range(20):
+        out = inject_stale_fact("In 2023, about 345 gigawatts were added.", random.Random(seed))
+        year = int(out.split(",")[0].split()[-1])
+        assert 2013 <= year <= 2033 and year != 2023

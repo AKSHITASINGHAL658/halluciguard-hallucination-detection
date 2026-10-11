@@ -62,7 +62,7 @@ def inject_stale_fact(s: str, rng: random.Random | None = None) -> str:
             return f"{new:.{len(raw.split('.')[1])}f}"
         return f"{round(new):,}" if "," in raw else str(round(new))
 
-    return re.sub(r"\d[\d,]*(?:\.\d+)?", repl, s)
+    return re.sub(r"\d+(?:,\d{3})*(?:\.\d+)?", repl, s)
 
 
 def inject_noise(s: str, entity_pool: list[str] | None = None, rng: random.Random | None = None) -> str:
