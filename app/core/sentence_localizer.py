@@ -16,40 +16,69 @@ def split_sentences(text: str) -> list[str]:
     return [s.strip() for s in sents if s.strip()]
 
 
-def localize_hallucinations(sentences: list[str], chunks: list[dict]) -> list[dict]:
-    """Run every sentence against every chunk; keep the chunk with the highest entailment prob.
+def _evaluate_unit(text: str, row: list[dict], chunks: list[dict]) -> dict:
+    """Verdict for one claim/sentence from its NLI results against every chunk."""
+    n_c = len(chunks)
+    best = max(range(n_c), key=lambda j: row[j]["probs"]["entailment"])
+    max_ent = row[best]["probs"]["entailment"]
+    max_con = max(r["probs"]["contradiction"] for r in row)
+    if max_con > config.CONTRADICTION_THRESHOLD:
+        label = "contradiction"
+        con_idx = max(range(n_c), key=lambda j: row[j]["probs"]["contradiction"])
+        best = best if max_ent >= config.HALLUCINATION_ENTAIL_THRESHOLD else con_idx
+        confidence = max_con
+    else:
+        label = row[best]["label"]
+        confidence = row[best]["probs"][label]
+    return {"claim": text, "label": label, "confidence": confidence, "probs": row[best]["probs"],
+            "max_entailment": max_ent, "is_hallucination": max_ent < config.HALLUCINATION_ENTAIL_THRESHOLD,
+            "best_chunk_id": chunks[best]["chunk_id"], "best_chunk_text": chunks[best]["text"]}
 
-    is_hallucination = max entailment < 0.5. Label = contradiction if contradiction > 0.5 against any chunk,
-    else the best chunk's label.
+
+def localize_hallucinations(sentences: list[str], chunks: list[dict], use_claims: bool | None = None,
+                            threshold: float | None = None) -> list[dict]:
+    """Run every sentence (or each atomic claim of it) against every chunk; keep the chunk with the highest
+    entailment prob.
+
+    is_hallucination = max entailment < threshold (a sentence is flagged if any of its claims is). Label =
+    contradiction if contradiction > 0.5 against any chunk, else the best chunk's label. With claim splitting
+    the sentence takes the verdict of its weakest claim (lowest max entailment).
     """
     if not sentences:
         return []
-    pairs = [(s, c["text"]) for s in sentences for c in chunks]
-    results = batch_verify(pairs) if pairs else []
+    use_claims = config.USE_CLAIMS if use_claims is None else use_claims
+    thr = config.HALLUCINATION_ENTAIL_THRESHOLD if threshold is None else threshold
+    from app.core.claim_extractor import extract_claims
+
+    units = []  # (sentence index, claim text)
+    for i, sent in enumerate(sentences):
+        for claim in (extract_claims(sent) if use_claims and chunks else [sent]):
+            units.append((i, claim))
     n_c = len(chunks)
+    results = batch_verify([(c, ch["text"]) for _, c in units for ch in chunks]) if n_c else []
+
+    per_sentence: dict[int, list[dict]] = {i: [] for i in range(len(sentences))}
+    for u, (i, claim) in enumerate(units):
+        row = results[u * n_c:(u + 1) * n_c]
+        if row:
+            v = _evaluate_unit(claim, row, chunks)
+            v["is_hallucination"] = v["max_entailment"] < thr
+            per_sentence[i].append(v)
     out = []
     for i, sent in enumerate(sentences):
-        row = results[i * n_c:(i + 1) * n_c]
-        if not row:
+        vs = per_sentence[i]
+        if not vs:
             out.append({"index": i, "text": sent, "label": "neutral", "confidence": 0.0, "probs": {},
                         "max_entailment": 0.0, "is_hallucination": True, "best_chunk_id": None,
-                        "best_chunk_text": None})
+                        "best_chunk_text": None, "claims": [sent], "weak_claim": sent})
             continue
-        best = max(range(n_c), key=lambda j: row[j]["probs"]["entailment"])
-        max_ent = row[best]["probs"]["entailment"]
-        max_con = max(r["probs"]["contradiction"] for r in row)
-        if max_con > config.CONTRADICTION_THRESHOLD:
-            label = "contradiction"
-            con_idx = max(range(n_c), key=lambda j: row[j]["probs"]["contradiction"])
-            best = best if max_ent >= config.HALLUCINATION_ENTAIL_THRESHOLD else con_idx
-            confidence = max_con
-        else:
-            label = row[best]["label"]
-            confidence = row[best]["probs"][label]
-        out.append({"index": i, "text": sent, "label": label, "confidence": confidence,
-                    "probs": row[best]["probs"], "max_entailment": max_ent,
-                    "is_hallucination": max_ent < config.HALLUCINATION_ENTAIL_THRESHOLD,
-                    "best_chunk_id": chunks[best]["chunk_id"], "best_chunk_text": chunks[best]["text"]})
+        weakest = min(vs, key=lambda v: v["max_entailment"])
+        label = "contradiction" if any(v["label"] == "contradiction" for v in vs) else weakest["label"]
+        out.append({"index": i, "text": sent, "label": label, "confidence": weakest["confidence"],
+                    "probs": weakest["probs"], "max_entailment": weakest["max_entailment"],
+                    "is_hallucination": any(v["is_hallucination"] for v in vs),
+                    "best_chunk_id": weakest["best_chunk_id"], "best_chunk_text": weakest["best_chunk_text"],
+                    "claims": [v["claim"] for v in vs], "weak_claim": weakest["claim"]})
     return out
 
 

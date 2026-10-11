@@ -40,6 +40,8 @@
 
 - GEMINI REMOVED (user decision): no Gemini code, config (GEMINI_*, GENERATOR, USE_LOGPROBS), tests, --gemini flag, google-genai dependency (uninstalled) or .env.example entries remain. Ollama is the only generator; responses.generator is always "ollama". Earlier Gemini entries in this file are history only. docs/plan.md still describes Gemini and is superseded. Suite: 40 passed.
 
+- Improvement 3 (claim extraction): app/core/claim_extractor.py splits coordinated clauses ("X did A and it did B") into atomic claims using spaCy dependencies (borrows/replaces the subject); localize_hallucinations(use_claims=config.USE_CLAIMS, threshold=...) runs NLI per claim and the sentence takes its weakest claim's verdict. USE_CLAIMS env flag (default True; ablation will confirm). Skipped (per user): bigger local model.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).
