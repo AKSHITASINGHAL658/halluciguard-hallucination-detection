@@ -1,0 +1,2161 @@
+{
+ "labeled_by": "Claude (AI assistant) by reading each sentence against the source documents in data/raw_docs; NOT reviewed by a human. Spot-check before citing.",
+ "label_guide": {
+  "supported": "every checkable claim is stated in the sources",
+  "unsupported": "contains a claim the sources do not state or contradict (kind says which), including unsupported commentary",
+  "filler": "meta sentence or refusal with no factual claim (excluded from metrics)",
+  "ambiguous": "borderline; excluded from metrics"
+ },
+ "items": [
+  {
+   "id": 0,
+   "mode": "strict",
+   "question": "How much new solar capacity was added globally in 2023?",
+   "sentence": "In 2023, about 345 gigawatts of new solar capacity was added globally.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, about 345 gigawatts of new solar capacity was added globally. This information is directly stated in the context provided.",
+   "avg_logprob": -0.11298969323661368
+  },
+  {
+   "id": 1,
+   "mode": "strict",
+   "question": "How much new solar capacity was added globally in 2023?",
+   "sentence": "This information is directly stated in the context provided.",
+   "label": "filler",
+   "kind": null,
+   "answer": "In 2023, about 345 gigawatts of new solar capacity was added globally. This information is directly stated in the context provided.",
+   "avg_logprob": -0.11298969323661368
+  },
+  {
+   "id": 2,
+   "mode": "strict",
+   "question": "What is the Bhadla Solar Park's capacity?",
+   "sentence": "The Bhadla Solar Park in Rajasthan, India, has a capacity of 2,245 megawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Bhadla Solar Park in Rajasthan, India, has a capacity of 2,245 megawatts.",
+   "avg_logprob": -0.003157395461184933
+  },
+  {
+   "id": 3,
+   "mode": "strict",
+   "question": "What efficiency did LONGi report for a perovskite-silicon tandem cell in 2023?",
+   "sentence": "LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell in 2023.",
+   "label": "supported",
+   "kind": null,
+   "answer": "LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell in 2023.",
+   "avg_logprob": -0.030594780517207616
+  },
+  {
+   "id": 4,
+   "mode": "strict",
+   "question": "How much did the levelized cost of utility-scale solar fall between 2010 and 2023?",
+   "sentence": "The levelized cost of utility-scale solar dropped from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, representing an 89% decline.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The levelized cost of utility-scale solar dropped from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, representing an 89% decline.",
+   "avg_logprob": -0.07348235509760437
+  },
+  {
+   "id": 5,
+   "mode": "strict",
+   "question": "What was global installed wind capacity at the end of 2023?",
+   "sentence": "At the end of 2023, global installed wind capacity reached about 1,017 gigawatts, according to the Global Wind Energy Council.",
+   "label": "supported",
+   "kind": null,
+   "answer": "At the end of 2023, global installed wind capacity reached about 1,017 gigawatts, according to the Global Wind Energy Council.",
+   "avg_logprob": -0.048178107636356146
+  },
+  {
+   "id": 6,
+   "mode": "strict",
+   "question": "What is the rotor diameter of the Vestas V236-15.0 MW turbine?",
+   "sentence": "The rotor diameter of the Vestas V236-15.0 MW turbine is 236 meters.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The rotor diameter of the Vestas V236-15.0 MW turbine is 236 meters.",
+   "avg_logprob": -0.02182893721224078
+  },
+  {
+   "id": 7,
+   "mode": "strict",
+   "question": "What share of Denmark's electricity came from wind in 2023?",
+   "sentence": "In 2023, wind provided roughly 58 percent of electricity generation in Denmark, which is the highest share among large markets according to the information provided.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, wind provided roughly 58 percent of electricity generation in Denmark, which is the highest share among large markets according to the information provided.",
+   "avg_logprob": -0.1180387617958378
+  },
+  {
+   "id": 8,
+   "mode": "strict",
+   "question": "What capacity does the Hornsea 2 wind farm have?",
+   "sentence": "The Hornsea 2 wind farm has a capacity of 1.32 gigawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Hornsea 2 wind farm has a capacity of 1.32 gigawatts.",
+   "avg_logprob": -0.025582532535834444
+  },
+  {
+   "id": 9,
+   "mode": "strict",
+   "question": "What is the installed capacity of the Three Gorges Dam?",
+   "sentence": "The installed capacity of the Three Gorges Dam is 22,500 megawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The installed capacity of the Three Gorges Dam is 22,500 megawatts.",
+   "avg_logprob": -0.011343743436228914
+  },
+  {
+   "id": 10,
+   "mode": "strict",
+   "question": "What share of global electricity did hydropower generate in 2023?",
+   "sentence": "In 2023, hydropower generated about 14 percent of global electricity, according to the International Energy Agency.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, hydropower generated about 14 percent of global electricity, according to the International Energy Agency.",
+   "avg_logprob": -0.053679220057217786
+  },
+  {
+   "id": 11,
+   "mode": "strict",
+   "question": "How many people were displaced by the Three Gorges project?",
+   "sentence": "The Three Gorges project displaced about 1.3 million people.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Three Gorges project displaced about 1.3 million people. This information is found in the context provided, which discusses the environmental and social costs of large-scale hydropower projects like the Three Gorges project in China.",
+   "avg_logprob": -0.17918211716165688
+  },
+  {
+   "id": 12,
+   "mode": "strict",
+   "question": "How many people were displaced by the Three Gorges project?",
+   "sentence": "This information is found in the context provided, which discusses the environmental and social costs of large-scale hydropower projects like the Three Gorges project in China.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The Three Gorges project displaced about 1.3 million people. This information is found in the context provided, which discusses the environmental and social costs of large-scale hydropower projects like the Three Gorges project in China.",
+   "avg_logprob": -0.17918211716165688
+  },
+  {
+   "id": 13,
+   "mode": "strict",
+   "question": "What percentage of its electricity does Norway generate from hydropower?",
+   "sentence": "Norway generates around 88 percent of its electricity from hydropower.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Norway generates around 88 percent of its electricity from hydropower. This information is directly provided in the first context passage.",
+   "avg_logprob": -0.10992546242997457
+  },
+  {
+   "id": 14,
+   "mode": "strict",
+   "question": "What percentage of its electricity does Norway generate from hydropower?",
+   "sentence": "This information is directly provided in the first context passage.",
+   "label": "filler",
+   "kind": null,
+   "answer": "Norway generates around 88 percent of its electricity from hydropower. This information is directly provided in the first context passage.",
+   "avg_logprob": -0.10992546242997457
+  },
+  {
+   "id": 15,
+   "mode": "strict",
+   "question": "How much geothermal electricity capacity was installed worldwide at the end of 2023?",
+   "sentence": "At the end of 2023, worldwide installed geothermal electricity capacity was about 16.9 gigawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "At the end of 2023, worldwide installed geothermal electricity capacity was about 16.9 gigawatts.",
+   "avg_logprob": -0.039725460601925146
+  },
+  {
+   "id": 16,
+   "mode": "strict",
+   "question": "What share of Kenya's electricity comes from geothermal energy?",
+   "sentence": "Kenya has around 950 megawatts of geothermal capacity, which supplies close to 45 percent of its electricity.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Kenya has around 950 megawatts of geothermal capacity, which supplies close to 45 percent of its electricity.",
+   "avg_logprob": -0.05343594542118118
+  },
+  {
+   "id": 17,
+   "mode": "strict",
+   "question": "Which earthquake stopped the Basel geothermal project?",
+   "sentence": "The Basel geothermal project was stopped after a magnitude 3.4 earthquake in 2006.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Basel geothermal project was stopped after a magnitude 3.4 earthquake in 2006. This information is provided in the context under point [1], which discusses risks associated with geothermal projects, including induced seismicity.",
+   "avg_logprob": -0.15230001184838737
+  },
+  {
+   "id": 18,
+   "mode": "strict",
+   "question": "Which earthquake stopped the Basel geothermal project?",
+   "sentence": "This information is provided in the context under point [1], which discusses risks associated with geothermal projects, including induced seismicity.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The Basel geothermal project was stopped after a magnitude 3.4 earthquake in 2006. This information is provided in the context under point [1], which discusses risks associated with geothermal projects, including induced seismicity.",
+   "avg_logprob": -0.15230001184838737
+  },
+  {
+   "id": 19,
+   "mode": "strict",
+   "question": "What was the average lithium-ion battery pack price in 2023?",
+   "sentence": "The average price of a lithium-ion battery pack was 139 dollars per kilowatt-hour in 2023, according to the information provided in the context.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The average price of a lithium-ion battery pack was 139 dollars per kilowatt-hour in 2023, according to the information provided in the context.",
+   "avg_logprob": -0.0771591129522346
+  },
+  {
+   "id": 20,
+   "mode": "strict",
+   "question": "What is the capacity of the Moss Landing Energy Storage Facility?",
+   "sentence": "The Moss Landing Energy Storage Facility has a capacity of 750 megawatts and 3,000 megawatt-hours after its 2023 expansion.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Moss Landing Energy Storage Facility has a capacity of 750 megawatts and 3,000 megawatt-hours after its 2023 expansion.",
+   "avg_logprob": -0.03593001800773688
+  },
+  {
+   "id": 21,
+   "mode": "strict",
+   "question": "How much battery storage capacity was added globally in 2023?",
+   "sentence": "Global battery storage capacity additions reached about 42 gigawatts in 2023.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Global battery storage capacity additions reached about 42 gigawatts in 2023.",
+   "avg_logprob": -0.04908948802510053
+  },
+  {
+   "id": 22,
+   "mode": "strict",
+   "question": "What did COP28 agree about renewable capacity?",
+   "sentence": "COP28 agreed that the global goal of tripling renewable energy capacity to at least 11,000 gigawatts by 2030.",
+   "label": "supported",
+   "kind": null,
+   "answer": "COP28 agreed that the global goal of tripling renewable energy capacity to at least 11,000 gigawatts by 2030.",
+   "avg_logprob": -0.07053434646409999
+  },
+  {
+   "id": 23,
+   "mode": "strict",
+   "question": "What is the EU's binding renewables target for 2030?",
+   "sentence": "The EU's binding renewables target for 2030 is 42.5 percent of final energy consumption.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The EU's binding renewables target for 2030 is 42.5 percent of final energy consumption.",
+   "avg_logprob": -0.08777251371970579
+  },
+  {
+   "id": 24,
+   "mode": "strict",
+   "question": "How much did the Inflation Reduction Act authorize for energy and climate programs?",
+   "sentence": "The Inflation Reduction Act authorized roughly 369 billion dollars for energy security and climate programs over ten years.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Inflation Reduction Act authorized roughly 369 billion dollars for energy security and climate programs over ten years.",
+   "avg_logprob": -0.0276368627574458
+  },
+  {
+   "id": 25,
+   "mode": "strict",
+   "question": "How much renewable capacity was added worldwide in 2023?",
+   "sentence": "In 2023, the world added a record 473 gigawatts of renewable capacity, according to the International Renewable Energy Agency.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the world added a record 473 gigawatts of renewable capacity, according to the International Renewable Energy Agency.",
+   "avg_logprob": -0.07557895754702361
+  },
+  {
+   "id": 26,
+   "mode": "strict",
+   "question": "How much new solar capacity did the United States add in 2023?",
+   "sentence": "The United States added about 33 gigawatts of new solar capacity in 2023.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The United States added about 33 gigawatts of new solar capacity in 2023.",
+   "avg_logprob": -0.028505835980139824
+  },
+  {
+   "id": 27,
+   "mode": "strict",
+   "question": "What is the capacity of the Tengger Desert Solar Park?",
+   "sentence": "The Tengger Desert Solar Park in China has a capacity of about 1,547 megawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Tengger Desert Solar Park in China has a capacity of about 1,547 megawatts.",
+   "avg_logprob": -0.005509244516129996
+  },
+  {
+   "id": 28,
+   "mode": "strict",
+   "question": "How long do solar panel performance warranties typically last?",
+   "sentence": "Solar panels typically offer performance warranties of 25 to 30 years.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Solar panels typically offer performance warranties of 25 to 30 years. This information is provided in the first context passage which states, \"Solar panels degrade slowly, typically losing about 0.5 percent of their output per year, and most manufacturers offer performance warranties of 25 to 30 years.\"",
+   "avg_logprob": -0.09462078792965567
+  },
+  {
+   "id": 29,
+   "mode": "strict",
+   "question": "How long do solar panel performance warranties typically last?",
+   "sentence": "This information is provided in the first context passage which states, \"Solar panels degrade slowly, typically losing about 0.5 percent of their output per year, and most manufacturers offer performance warranties of 25 to 30 years.\"",
+   "label": "filler",
+   "kind": null,
+   "answer": "Solar panels typically offer performance warranties of 25 to 30 years. This information is provided in the first context passage which states, \"Solar panels degrade slowly, typically losing about 0.5 percent of their output per year, and most manufacturers offer performance warranties of 25 to 30 years.\"",
+   "avg_logprob": -0.09462078792965567
+  },
+  {
+   "id": 30,
+   "mode": "strict",
+   "question": "What share of global electricity did solar generate in 2023?",
+   "sentence": "The context does not provide specific information about the share of global electricity generated by solar in 2023.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The context does not provide specific information about the share of global electricity generated by solar in 2023.",
+   "avg_logprob": -0.1934588184995406
+  },
+  {
+   "id": 31,
+   "mode": "strict",
+   "question": "What is the rotor diameter of the Siemens Gamesa SG 14-222 DD turbine?",
+   "sentence": "The Siemens Gamesa SG 14-222 DD turbine has a rotor diameter of 222 meters.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Siemens Gamesa SG 14-222 DD turbine has a rotor diameter of 222 meters.",
+   "avg_logprob": -0.009523808289753789
+  },
+  {
+   "id": 32,
+   "mode": "strict",
+   "question": "What capacity factor do modern offshore wind farms often reach?",
+   "sentence": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent. This information is directly stated in the first context passage provided.",
+   "avg_logprob": -0.09238195014428831
+  },
+  {
+   "id": 33,
+   "mode": "strict",
+   "question": "What capacity factor do modern offshore wind farms often reach?",
+   "sentence": "This information is directly stated in the first context passage provided.",
+   "label": "filler",
+   "kind": null,
+   "answer": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent. This information is directly stated in the first context passage provided.",
+   "avg_logprob": -0.09238195014428831
+  },
+  {
+   "id": 34,
+   "mode": "strict",
+   "question": "How big will the Dogger Bank wind farm be?",
+   "sentence": "The Dogger Bank wind farm, planned to be built in stages, is planned to reach 3.6 gigawatts and become the largest offshore wind farm in the world.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Dogger Bank wind farm, planned to be built in stages, is planned to reach 3.6 gigawatts and become the largest offshore wind farm in the world.",
+   "avg_logprob": -0.04809273665700719
+  },
+  {
+   "id": 35,
+   "mode": "strict",
+   "question": "When did the Vineyard Wind 1 project begin delivering power?",
+   "sentence": "The Vineyard Wind 1 project began delivering power in 2024.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Vineyard Wind 1 project began delivering power in 2024.",
+   "avg_logprob": -0.008131283824608919
+  },
+  {
+   "id": 36,
+   "mode": "strict",
+   "question": "Which dam is the second largest hydropower station in the world?",
+   "sentence": "The second largest hydropower station in the world is the Baihetan Dam, located in China, which was completed in 2022 with a capacity of 16,000 megawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The second largest hydropower station in the world is the Baihetan Dam, located in China, which was completed in 2022 with a capacity of 16,000 megawatts.",
+   "avg_logprob": -0.06123776654780247
+  },
+  {
+   "id": 37,
+   "mode": "strict",
+   "question": "What percentage of Paraguay's electricity does the Itaipu Dam supply?",
+   "sentence": "The Itaipu Dam, located on the border of Brazil and Paraguay, supplies about 90 percent of the electricity used in Paraguay.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Itaipu Dam, located on the border of Brazil and Paraguay, supplies about 90 percent of the electricity used in Paraguay.",
+   "avg_logprob": -0.06020630482370848
+  },
+  {
+   "id": 38,
+   "mode": "strict",
+   "question": "How much did global hydropower grow in 2023?",
+   "sentence": "In 2023, the world added a record 473 gigawatts of renewable capacity, which is an increase of about 14 percent over 2022.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the world added a record 473 gigawatts of renewable capacity, which is an increase of about 14 percent over 2022. This growth in renewable capacity, including hydropower, helped bring the total to 3,870 gigawatts.",
+   "avg_logprob": -0.17816746323520483
+  },
+  {
+   "id": 39,
+   "mode": "strict",
+   "question": "How much did global hydropower grow in 2023?",
+   "sentence": "This growth in renewable capacity, including hydropower, helped bring the total to 3,870 gigawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the world added a record 473 gigawatts of renewable capacity, which is an increase of about 14 percent over 2022. This growth in renewable capacity, including hydropower, helped bring the total to 3,870 gigawatts.",
+   "avg_logprob": -0.17816746323520483
+  },
+  {
+   "id": 40,
+   "mode": "strict",
+   "question": "What is the net capacity of The Geysers geothermal complex?",
+   "sentence": "The Geysers geothermal complex has a net capacity of roughly 725 megawatts across 13 plants.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Geysers geothermal complex has a net capacity of roughly 725 megawatts across 13 plants.",
+   "avg_logprob": -0.03812967582167586
+  },
+  {
+   "id": 41,
+   "mode": "strict",
+   "question": "What is the levelized cost of geothermal electricity?",
+   "sentence": "The levelized cost of geothermal electricity was about 0.071 dollars per kilowatt-hour in 2023.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The levelized cost of geothermal electricity was about 0.071 dollars per kilowatt-hour in 2023.",
+   "avg_logprob": -0.007478088200605467
+  },
+  {
+   "id": 42,
+   "mode": "strict",
+   "question": "Which company is building the 400-megawatt Cape Station in Utah?",
+   "sentence": "Fervo Energy is building the 400-megawatt Cape Station in Utah.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Fervo Energy is building the 400-megawatt Cape Station in Utah.",
+   "avg_logprob": -0.014555678332532065
+  },
+  {
+   "id": 43,
+   "mode": "strict",
+   "question": "What share of Iceland's electricity comes from geothermal energy?",
+   "sentence": "Iceland generates about 30 percent of its electricity from geothermal energy.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Iceland generates about 30 percent of its electricity from geothermal energy. This information is directly stated in the given context.",
+   "avg_logprob": -0.10522138078675115
+  },
+  {
+   "id": 44,
+   "mode": "strict",
+   "question": "What share of Iceland's electricity comes from geothermal energy?",
+   "sentence": "This information is directly stated in the given context.",
+   "label": "filler",
+   "kind": null,
+   "answer": "Iceland generates about 30 percent of its electricity from geothermal energy. This information is directly stated in the given context.",
+   "avg_logprob": -0.10522138078675115
+  },
+  {
+   "id": 45,
+   "mode": "strict",
+   "question": "What did Hornsdale Power Reserve do to frequency control prices?",
+   "sentence": "The Hornsdale Power Reserve, built by Tesla in 2017 in South Australia, helped lower frequency control prices by about 90 percent in the region.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Hornsdale Power Reserve, built by Tesla in 2017 in South Australia, helped lower frequency control prices by about 90 percent in the region.",
+   "avg_logprob": -0.07169559858013068
+  },
+  {
+   "id": 46,
+   "mode": "strict",
+   "question": "How many charge cycles can lithium iron phosphate batteries support?",
+   "sentence": "Lithium iron phosphate batteries, also known as LFP, support 6, 000 or more charge cycles.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Lithium iron phosphate batteries, also known as LFP, support 6, 000 or more charge cycles.",
+   "avg_logprob": -0.10300963098959179
+  },
+  {
+   "id": 47,
+   "mode": "strict",
+   "question": "What is the target cost of Form Energy's iron-air batteries?",
+   "sentence": "The target cost of Form Energy's iron-air batteries is 20 dollars per kilowatt-hour.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The target cost of Form Energy's iron-air batteries is 20 dollars per kilowatt-hour.",
+   "avg_logprob": -0.043797901293067924
+  },
+  {
+   "id": 48,
+   "mode": "strict",
+   "question": "What round-trip efficiency does hydrogen storage have?",
+   "sentence": "Green hydrogen, compressed air and thermal storage are being tested for seasonal storage, but their round-trip efficiencies are lower: electrolysis-based hydrogen storage typically returns only 30 to 40 percent of the electricity put in, compared with 85 to 95 percent for lithium-ion batteries.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Green hydrogen, compressed air and thermal storage are being tested for seasonal storage, but their round-trip efficiencies are lower: electrolysis-based hydrogen storage typically returns only 30 to 40 percent of the electricity put in, compared with 85 to 95 percent for lithium-ion batteries.",
+   "avg_logprob": -0.022061771650282284
+  },
+  {
+   "id": 49,
+   "mode": "strict",
+   "question": "What manufacturing credit did the Inflation Reduction Act introduce?",
+   "sentence": "The Inflation Reduction Act introduced a 45X manufacturing credit for domestic production of solar modules and batteries.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Inflation Reduction Act introduced a 45X manufacturing credit for domestic production of solar modules and batteries.",
+   "avg_logprob": -0.0043365749159572815
+  },
+  {
+   "id": 50,
+   "mode": "strict",
+   "question": "What share of global energy transition investment came from China in 2023?",
+   "sentence": "In 2023, China accounted for about 38 percent of global energy transition investment.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, China accounted for about 38 percent of global energy transition investment.",
+   "avg_logprob": -0.015668102818056338
+  },
+  {
+   "id": 51,
+   "mode": "strict",
+   "question": "What is India's target for non-fossil electricity capacity by 2030?",
+   "sentence": "India's target for non-fossil electricity capacity by 2030 is 500 gigawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "India's target for non-fossil electricity capacity by 2030 is 500 gigawatts.",
+   "avg_logprob": -0.009953749090271913
+  },
+  {
+   "id": 52,
+   "mode": "strict",
+   "question": "What is the cost of capital in emerging markets compared with advanced economies?",
+   "sentence": "The cost of capital in many emerging markets is two to three times that in advanced economies.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The cost of capital in many emerging markets is two to three times that in advanced economies.",
+   "avg_logprob": -0.06695852230338062
+  },
+  {
+   "id": 53,
+   "mode": "strict",
+   "question": "Who won the 2022 football World Cup?",
+   "sentence": "The information about the 2022 football World Cup winner is not provided in any of the given context passages.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information about the 2022 football World Cup winner is not provided in any of the given context passages.",
+   "avg_logprob": -0.16890419959467332
+  },
+  {
+   "id": 54,
+   "mode": "strict",
+   "question": "How much does a Tesla Model 3 cost?",
+   "sentence": "The cost of a Tesla Model 3 is not mentioned in the provided context passages.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The cost of a Tesla Model 3 is not mentioned in the provided context passages.",
+   "avg_logprob": -0.1151565345998185
+  },
+  {
+   "id": 55,
+   "mode": "strict",
+   "question": "What is the capital of Australia and how many solar homes does it have?",
+   "sentence": "Australia has Canberra as its capital.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "Australia has Canberra as its capital. In Australia, there are more than 3.7 million homes with rooftop solar systems, which is about one in three detached houses.",
+   "avg_logprob": -0.21705046268620468
+  },
+  {
+   "id": 56,
+   "mode": "strict",
+   "question": "What is the capital of Australia and how many solar homes does it have?",
+   "sentence": "In Australia, there are more than 3.7 million homes with rooftop solar systems, which is about one in three detached houses.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Australia has Canberra as its capital. In Australia, there are more than 3.7 million homes with rooftop solar systems, which is about one in three detached houses.",
+   "avg_logprob": -0.21705046268620468
+  },
+  {
+   "id": 57,
+   "mode": "strict",
+   "question": "How much nuclear power capacity was added worldwide in 2023?",
+   "sentence": "Based on the provided context, there is no information about nuclear power capacity additions in 2023.",
+   "label": "filler",
+   "kind": null,
+   "answer": "Based on the provided context, there is no information about nuclear power capacity additions in 2023. The context focuses on solar photovoltaic power and renewable energy in general, but does not mention nuclear power or its capacity additions.",
+   "avg_logprob": -0.2200948272052905
+  },
+  {
+   "id": 58,
+   "mode": "strict",
+   "question": "How much nuclear power capacity was added worldwide in 2023?",
+   "sentence": "The context focuses on solar photovoltaic power and renewable energy in general, but does not mention nuclear power or its capacity additions.",
+   "label": "filler",
+   "kind": null,
+   "answer": "Based on the provided context, there is no information about nuclear power capacity additions in 2023. The context focuses on solar photovoltaic power and renewable energy in general, but does not mention nuclear power or its capacity additions.",
+   "avg_logprob": -0.2200948272052905
+  },
+  {
+   "id": 59,
+   "mode": "strict",
+   "question": "Which country has the largest coal reserves?",
+   "sentence": "The given context does not provide information about coal reserves or any country's coal reserves.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The given context does not provide information about coal reserves or any country's coal reserves. Therefore, it is not possible to answer the question based on the provided information.",
+   "avg_logprob": -0.15279958438196414
+  },
+  {
+   "id": 60,
+   "mode": "strict",
+   "question": "Which country has the largest coal reserves?",
+   "sentence": "Therefore, it is not possible to answer the question based on the provided information.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The given context does not provide information about coal reserves or any country's coal reserves. Therefore, it is not possible to answer the question based on the provided information.",
+   "avg_logprob": -0.15279958438196414
+  },
+  {
+   "id": 61,
+   "mode": "strict",
+   "question": "What is the lifetime of a wind turbine blade and how many were recycled in 2023?",
+   "sentence": "Wind turbine blades last about 20 to 25 years and will reach end of life in the coming decade, which indicates the lifetime of a wind turbine blade is approximately 20 to 25 years.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Wind turbine blades last about 20 to 25 years and will reach end of life in the coming decade, which indicates the lifetime of a wind turbine blade is approximately 20 to 25 years. However, the context does not provide information on how many blades were recycled in 2023.",
+   "avg_logprob": -0.17850819501585813
+  },
+  {
+   "id": 62,
+   "mode": "strict",
+   "question": "What is the lifetime of a wind turbine blade and how many were recycled in 2023?",
+   "sentence": "However, the context does not provide information on how many blades were recycled in 2023.",
+   "label": "filler",
+   "kind": null,
+   "answer": "Wind turbine blades last about 20 to 25 years and will reach end of life in the coming decade, which indicates the lifetime of a wind turbine blade is approximately 20 to 25 years. However, the context does not provide information on how many blades were recycled in 2023.",
+   "avg_logprob": -0.17850819501585813
+  },
+  {
+   "id": 63,
+   "mode": "strict",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "The context does not provide a direct comparison of the efficiency of perovskite cells with silicon cells.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The context does not provide a direct comparison of the efficiency of perovskite cells with silicon cells. However, it mentions that in 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, and in 2024, the company announced 34.6 percent. In contrast, commercial silicon solar cells typically reach conversion efficiencies of 20 to 23 percent. This information suggests that perovskite cells have higher efficiency than commercial silicon cells.",
+   "avg_logprob": -0.16095747821550213
+  },
+  {
+   "id": 64,
+   "mode": "strict",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "However, it mentions that in 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, and in 2024, the company announced 34.6 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The context does not provide a direct comparison of the efficiency of perovskite cells with silicon cells. However, it mentions that in 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, and in 2024, the company announced 34.6 percent. In contrast, commercial silicon solar cells typically reach conversion efficiencies of 20 to 23 percent. This information suggests that perovskite cells have higher efficiency than commercial silicon cells.",
+   "avg_logprob": -0.16095747821550213
+  },
+  {
+   "id": 65,
+   "mode": "strict",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "In contrast, commercial silicon solar cells typically reach conversion efficiencies of 20 to 23 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The context does not provide a direct comparison of the efficiency of perovskite cells with silicon cells. However, it mentions that in 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, and in 2024, the company announced 34.6 percent. In contrast, commercial silicon solar cells typically reach conversion efficiencies of 20 to 23 percent. This information suggests that perovskite cells have higher efficiency than commercial silicon cells.",
+   "avg_logprob": -0.16095747821550213
+  },
+  {
+   "id": 66,
+   "mode": "strict",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "This information suggests that perovskite cells have higher efficiency than commercial silicon cells.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "The context does not provide a direct comparison of the efficiency of perovskite cells with silicon cells. However, it mentions that in 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, and in 2024, the company announced 34.6 percent. In contrast, commercial silicon solar cells typically reach conversion efficiencies of 20 to 23 percent. This information suggests that perovskite cells have higher efficiency than commercial silicon cells.",
+   "avg_logprob": -0.16095747821550213
+  },
+  {
+   "id": 67,
+   "mode": "loose",
+   "question": "How much new solar capacity did the United States add in 2023?",
+   "sentence": "In 2023, the United States added approximately 33 gigawatts of new solar capacity.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the United States added approximately 33 gigawatts of new solar capacity. This figure represents a significant contribution to the global solar energy landscape, contributing to the overall growth of solar photovoltaic power. The United States, along with China, has been a key player in the expansion of solar energy, with China accounting for more than half of the global solar capacity additions in 2023. This level of investment and deployment underscores the growing importance of solar energy in the global energy mix, as it continues to become more cost-effective and efficient.",
+   "avg_logprob": -0.3754123076057902
+  },
+  {
+   "id": 68,
+   "mode": "loose",
+   "question": "How much new solar capacity did the United States add in 2023?",
+   "sentence": "This figure represents a significant contribution to the global solar energy landscape, contributing to the overall growth of solar photovoltaic power.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, the United States added approximately 33 gigawatts of new solar capacity. This figure represents a significant contribution to the global solar energy landscape, contributing to the overall growth of solar photovoltaic power. The United States, along with China, has been a key player in the expansion of solar energy, with China accounting for more than half of the global solar capacity additions in 2023. This level of investment and deployment underscores the growing importance of solar energy in the global energy mix, as it continues to become more cost-effective and efficient.",
+   "avg_logprob": -0.3754123076057902
+  },
+  {
+   "id": 69,
+   "mode": "loose",
+   "question": "How much new solar capacity did the United States add in 2023?",
+   "sentence": "The United States, along with China, has been a key player in the expansion of solar energy, with China accounting for more than half of the global solar capacity additions in 2023.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the United States added approximately 33 gigawatts of new solar capacity. This figure represents a significant contribution to the global solar energy landscape, contributing to the overall growth of solar photovoltaic power. The United States, along with China, has been a key player in the expansion of solar energy, with China accounting for more than half of the global solar capacity additions in 2023. This level of investment and deployment underscores the growing importance of solar energy in the global energy mix, as it continues to become more cost-effective and efficient.",
+   "avg_logprob": -0.3754123076057902
+  },
+  {
+   "id": 70,
+   "mode": "loose",
+   "question": "How much new solar capacity did the United States add in 2023?",
+   "sentence": "This level of investment and deployment underscores the growing importance of solar energy in the global energy mix, as it continues to become more cost-effective and efficient.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, the United States added approximately 33 gigawatts of new solar capacity. This figure represents a significant contribution to the global solar energy landscape, contributing to the overall growth of solar photovoltaic power. The United States, along with China, has been a key player in the expansion of solar energy, with China accounting for more than half of the global solar capacity additions in 2023. This level of investment and deployment underscores the growing importance of solar energy in the global energy mix, as it continues to become more cost-effective and efficient.",
+   "avg_logprob": -0.3754123076057902
+  },
+  {
+   "id": 71,
+   "mode": "loose",
+   "question": "What is the capacity of the Tengger Desert Solar Park?",
+   "sentence": "The Tengger Desert Solar Park in China has a capacity of approximately 1,547 megawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Tengger Desert Solar Park in China has a capacity of approximately 1,547 megawatts. This solar park is a significant addition to the global solar energy landscape, showcasing the rapid growth and expansion of solar power installations. The Tengger Desert, located in the Gobi Desert, is one of the largest solar power projects in the world, highlighting the potential of desert areas for solar energy generation.",
+   "avg_logprob": -0.4029774788472918
+  },
+  {
+   "id": 72,
+   "mode": "loose",
+   "question": "What is the capacity of the Tengger Desert Solar Park?",
+   "sentence": "This solar park is a significant addition to the global solar energy landscape, showcasing the rapid growth and expansion of solar power installations.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Tengger Desert Solar Park in China has a capacity of approximately 1,547 megawatts. This solar park is a significant addition to the global solar energy landscape, showcasing the rapid growth and expansion of solar power installations. The Tengger Desert, located in the Gobi Desert, is one of the largest solar power projects in the world, highlighting the potential of desert areas for solar energy generation.",
+   "avg_logprob": -0.4029774788472918
+  },
+  {
+   "id": 73,
+   "mode": "loose",
+   "question": "What is the capacity of the Tengger Desert Solar Park?",
+   "sentence": "The Tengger Desert, located in the Gobi Desert, is one of the largest solar power projects in the world, highlighting the potential of desert areas for solar energy generation.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "The Tengger Desert Solar Park in China has a capacity of approximately 1,547 megawatts. This solar park is a significant addition to the global solar energy landscape, showcasing the rapid growth and expansion of solar power installations. The Tengger Desert, located in the Gobi Desert, is one of the largest solar power projects in the world, highlighting the potential of desert areas for solar energy generation.",
+   "avg_logprob": -0.4029774788472918
+  },
+  {
+   "id": 74,
+   "mode": "loose",
+   "question": "How long do solar panel performance warranties typically last?",
+   "sentence": "Solar panel performance warranties typically last for 25 to 30 years.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Solar panel performance warranties typically last for 25 to 30 years. This period is designed to cover the expected lifespan of most solar panels, which is around 25 to 30 years. Manufacturers offer these warranties to ensure that the panels maintain their efficiency and output levels during this timeframe, providing homeowners and businesses with a reliable source of renewable energy. For instance, the Solar Star project in California, which was commissioned in 2015, has a performance warranty of 25 years, aligning with industry standards. These warranties are crucial for ensuring that solar energy systems continue to deliver cost-effective and sustainable power to their users, even as technology and energy demands evolve.",
+   "avg_logprob": -0.49060895570354246
+  },
+  {
+   "id": 75,
+   "mode": "loose",
+   "question": "How long do solar panel performance warranties typically last?",
+   "sentence": "This period is designed to cover the expected lifespan of most solar panels, which is around 25 to 30 years.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "Solar panel performance warranties typically last for 25 to 30 years. This period is designed to cover the expected lifespan of most solar panels, which is around 25 to 30 years. Manufacturers offer these warranties to ensure that the panels maintain their efficiency and output levels during this timeframe, providing homeowners and businesses with a reliable source of renewable energy. For instance, the Solar Star project in California, which was commissioned in 2015, has a performance warranty of 25 years, aligning with industry standards. These warranties are crucial for ensuring that solar energy systems continue to deliver cost-effective and sustainable power to their users, even as technology and energy demands evolve.",
+   "avg_logprob": -0.49060895570354246
+  },
+  {
+   "id": 76,
+   "mode": "loose",
+   "question": "How long do solar panel performance warranties typically last?",
+   "sentence": "Manufacturers offer these warranties to ensure that the panels maintain their efficiency and output levels during this timeframe, providing homeowners and businesses with a reliable source of renewable energy.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "Solar panel performance warranties typically last for 25 to 30 years. This period is designed to cover the expected lifespan of most solar panels, which is around 25 to 30 years. Manufacturers offer these warranties to ensure that the panels maintain their efficiency and output levels during this timeframe, providing homeowners and businesses with a reliable source of renewable energy. For instance, the Solar Star project in California, which was commissioned in 2015, has a performance warranty of 25 years, aligning with industry standards. These warranties are crucial for ensuring that solar energy systems continue to deliver cost-effective and sustainable power to their users, even as technology and energy demands evolve.",
+   "avg_logprob": -0.49060895570354246
+  },
+  {
+   "id": 77,
+   "mode": "loose",
+   "question": "How long do solar panel performance warranties typically last?",
+   "sentence": "For instance, the Solar Star project in California, which was commissioned in 2015, has a performance warranty of 25 years, aligning with industry standards.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "Solar panel performance warranties typically last for 25 to 30 years. This period is designed to cover the expected lifespan of most solar panels, which is around 25 to 30 years. Manufacturers offer these warranties to ensure that the panels maintain their efficiency and output levels during this timeframe, providing homeowners and businesses with a reliable source of renewable energy. For instance, the Solar Star project in California, which was commissioned in 2015, has a performance warranty of 25 years, aligning with industry standards. These warranties are crucial for ensuring that solar energy systems continue to deliver cost-effective and sustainable power to their users, even as technology and energy demands evolve.",
+   "avg_logprob": -0.49060895570354246
+  },
+  {
+   "id": 78,
+   "mode": "loose",
+   "question": "How long do solar panel performance warranties typically last?",
+   "sentence": "These warranties are crucial for ensuring that solar energy systems continue to deliver cost-effective and sustainable power to their users, even as technology and energy demands evolve.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "Solar panel performance warranties typically last for 25 to 30 years. This period is designed to cover the expected lifespan of most solar panels, which is around 25 to 30 years. Manufacturers offer these warranties to ensure that the panels maintain their efficiency and output levels during this timeframe, providing homeowners and businesses with a reliable source of renewable energy. For instance, the Solar Star project in California, which was commissioned in 2015, has a performance warranty of 25 years, aligning with industry standards. These warranties are crucial for ensuring that solar energy systems continue to deliver cost-effective and sustainable power to their users, even as technology and energy demands evolve.",
+   "avg_logprob": -0.49060895570354246
+  },
+  {
+   "id": 79,
+   "mode": "loose",
+   "question": "What share of global electricity did solar generate in 2023?",
+   "sentence": "In 2023, solar power generated a significant portion of global electricity, though the exact percentage is not specified in the provided context.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "In 2023, solar power generated a significant portion of global electricity, though the exact percentage is not specified in the provided context. However, we can infer that solar power's contribution to global electricity generation was substantial given the rapid growth and the substantial amount of new solar capacity installed that year. The context mentions that solar photovoltaic power has grown faster than any other electricity source over the past decade, and by the end of 2023, about 345 gigawatts of new capacity were added in a single year. This rapid growth indicates that solar power was a major contributor to the global electricity mix, but the precise share is not provided in the given information.",
+   "avg_logprob": -0.3609284253018615
+  },
+  {
+   "id": 80,
+   "mode": "loose",
+   "question": "What share of global electricity did solar generate in 2023?",
+   "sentence": "However, we can infer that solar power's contribution to global electricity generation was substantial given the rapid growth and the substantial amount of new solar capacity installed that year.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, solar power generated a significant portion of global electricity, though the exact percentage is not specified in the provided context. However, we can infer that solar power's contribution to global electricity generation was substantial given the rapid growth and the substantial amount of new solar capacity installed that year. The context mentions that solar photovoltaic power has grown faster than any other electricity source over the past decade, and by the end of 2023, about 345 gigawatts of new capacity were added in a single year. This rapid growth indicates that solar power was a major contributor to the global electricity mix, but the precise share is not provided in the given information.",
+   "avg_logprob": -0.3609284253018615
+  },
+  {
+   "id": 81,
+   "mode": "loose",
+   "question": "What share of global electricity did solar generate in 2023?",
+   "sentence": "The context mentions that solar photovoltaic power has grown faster than any other electricity source over the past decade, and by the end of 2023, about 345 gigawatts of new capacity were added in a single year.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, solar power generated a significant portion of global electricity, though the exact percentage is not specified in the provided context. However, we can infer that solar power's contribution to global electricity generation was substantial given the rapid growth and the substantial amount of new solar capacity installed that year. The context mentions that solar photovoltaic power has grown faster than any other electricity source over the past decade, and by the end of 2023, about 345 gigawatts of new capacity were added in a single year. This rapid growth indicates that solar power was a major contributor to the global electricity mix, but the precise share is not provided in the given information.",
+   "avg_logprob": -0.3609284253018615
+  },
+  {
+   "id": 82,
+   "mode": "loose",
+   "question": "What share of global electricity did solar generate in 2023?",
+   "sentence": "This rapid growth indicates that solar power was a major contributor to the global electricity mix, but the precise share is not provided in the given information.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "In 2023, solar power generated a significant portion of global electricity, though the exact percentage is not specified in the provided context. However, we can infer that solar power's contribution to global electricity generation was substantial given the rapid growth and the substantial amount of new solar capacity installed that year. The context mentions that solar photovoltaic power has grown faster than any other electricity source over the past decade, and by the end of 2023, about 345 gigawatts of new capacity were added in a single year. This rapid growth indicates that solar power was a major contributor to the global electricity mix, but the precise share is not provided in the given information.",
+   "avg_logprob": -0.3609284253018615
+  },
+  {
+   "id": 83,
+   "mode": "loose",
+   "question": "What is the rotor diameter of the Siemens Gamesa SG 14-222 DD turbine?",
+   "sentence": "The Siemens Gamesa SG 14-222 DD turbine has a rotor diameter of 222 meters.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Siemens Gamesa SG 14-222 DD turbine has a rotor diameter of 222 meters. This turbine is part of the Siemens Gamesa portfolio, which is known for producing large-scale wind turbines. The company has been at the forefront of developing larger wind turbines to maximize energy production, especially in offshore wind projects where space and wind speeds are more favorable. The SG 14-222 DD is a significant advancement in wind turbine technology, designed to capture more wind energy, particularly in areas with stronger and more consistent winds.",
+   "avg_logprob": -0.42007411941838213
+  },
+  {
+   "id": 84,
+   "mode": "loose",
+   "question": "What is the rotor diameter of the Siemens Gamesa SG 14-222 DD turbine?",
+   "sentence": "This turbine is part of the Siemens Gamesa portfolio, which is known for producing large-scale wind turbines.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The Siemens Gamesa SG 14-222 DD turbine has a rotor diameter of 222 meters. This turbine is part of the Siemens Gamesa portfolio, which is known for producing large-scale wind turbines. The company has been at the forefront of developing larger wind turbines to maximize energy production, especially in offshore wind projects where space and wind speeds are more favorable. The SG 14-222 DD is a significant advancement in wind turbine technology, designed to capture more wind energy, particularly in areas with stronger and more consistent winds.",
+   "avg_logprob": -0.42007411941838213
+  },
+  {
+   "id": 85,
+   "mode": "loose",
+   "question": "What is the rotor diameter of the Siemens Gamesa SG 14-222 DD turbine?",
+   "sentence": "The company has been at the forefront of developing larger wind turbines to maximize energy production, especially in offshore wind projects where space and wind speeds are more favorable.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Siemens Gamesa SG 14-222 DD turbine has a rotor diameter of 222 meters. This turbine is part of the Siemens Gamesa portfolio, which is known for producing large-scale wind turbines. The company has been at the forefront of developing larger wind turbines to maximize energy production, especially in offshore wind projects where space and wind speeds are more favorable. The SG 14-222 DD is a significant advancement in wind turbine technology, designed to capture more wind energy, particularly in areas with stronger and more consistent winds.",
+   "avg_logprob": -0.42007411941838213
+  },
+  {
+   "id": 86,
+   "mode": "loose",
+   "question": "What is the rotor diameter of the Siemens Gamesa SG 14-222 DD turbine?",
+   "sentence": "The SG 14-222 DD is a significant advancement in wind turbine technology, designed to capture more wind energy, particularly in areas with stronger and more consistent winds.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Siemens Gamesa SG 14-222 DD turbine has a rotor diameter of 222 meters. This turbine is part of the Siemens Gamesa portfolio, which is known for producing large-scale wind turbines. The company has been at the forefront of developing larger wind turbines to maximize energy production, especially in offshore wind projects where space and wind speeds are more favorable. The SG 14-222 DD is a significant advancement in wind turbine technology, designed to capture more wind energy, particularly in areas with stronger and more consistent winds.",
+   "avg_logprob": -0.42007411941838213
+  },
+  {
+   "id": 87,
+   "mode": "loose",
+   "question": "What capacity factor do modern offshore wind farms often reach?",
+   "sentence": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent. This is significantly higher than onshore wind farms, which typically achieve capacity factors of 30 to 40 percent. The higher capacity factors for offshore wind farms are attributed to stronger and steadier winds at sea, which are crucial for maximizing energy production. For instance, the Hornsea 2 wind farm, completed in 2022, has a capacity of 1.32 gigawatts and is located off the Yorkshire coast in the United Kingdom. This wind farm, while not yet fully operational, exemplifies the potential of modern offshore wind technology.",
+   "avg_logprob": -0.2699997801750613
+  },
+  {
+   "id": 88,
+   "mode": "loose",
+   "question": "What capacity factor do modern offshore wind farms often reach?",
+   "sentence": "This is significantly higher than onshore wind farms, which typically achieve capacity factors of 30 to 40 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent. This is significantly higher than onshore wind farms, which typically achieve capacity factors of 30 to 40 percent. The higher capacity factors for offshore wind farms are attributed to stronger and steadier winds at sea, which are crucial for maximizing energy production. For instance, the Hornsea 2 wind farm, completed in 2022, has a capacity of 1.32 gigawatts and is located off the Yorkshire coast in the United Kingdom. This wind farm, while not yet fully operational, exemplifies the potential of modern offshore wind technology.",
+   "avg_logprob": -0.2699997801750613
+  },
+  {
+   "id": 89,
+   "mode": "loose",
+   "question": "What capacity factor do modern offshore wind farms often reach?",
+   "sentence": "The higher capacity factors for offshore wind farms are attributed to stronger and steadier winds at sea, which are crucial for maximizing energy production.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent. This is significantly higher than onshore wind farms, which typically achieve capacity factors of 30 to 40 percent. The higher capacity factors for offshore wind farms are attributed to stronger and steadier winds at sea, which are crucial for maximizing energy production. For instance, the Hornsea 2 wind farm, completed in 2022, has a capacity of 1.32 gigawatts and is located off the Yorkshire coast in the United Kingdom. This wind farm, while not yet fully operational, exemplifies the potential of modern offshore wind technology.",
+   "avg_logprob": -0.2699997801750613
+  },
+  {
+   "id": 90,
+   "mode": "loose",
+   "question": "What capacity factor do modern offshore wind farms often reach?",
+   "sentence": "For instance, the Hornsea 2 wind farm, completed in 2022, has a capacity of 1.32 gigawatts and is located off the Yorkshire coast in the United Kingdom.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent. This is significantly higher than onshore wind farms, which typically achieve capacity factors of 30 to 40 percent. The higher capacity factors for offshore wind farms are attributed to stronger and steadier winds at sea, which are crucial for maximizing energy production. For instance, the Hornsea 2 wind farm, completed in 2022, has a capacity of 1.32 gigawatts and is located off the Yorkshire coast in the United Kingdom. This wind farm, while not yet fully operational, exemplifies the potential of modern offshore wind technology.",
+   "avg_logprob": -0.2699997801750613
+  },
+  {
+   "id": 91,
+   "mode": "loose",
+   "question": "What capacity factor do modern offshore wind farms often reach?",
+   "sentence": "This wind farm, while not yet fully operational, exemplifies the potential of modern offshore wind technology.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "Modern offshore wind farms often reach capacity factors of 45 to 55 percent. This is significantly higher than onshore wind farms, which typically achieve capacity factors of 30 to 40 percent. The higher capacity factors for offshore wind farms are attributed to stronger and steadier winds at sea, which are crucial for maximizing energy production. For instance, the Hornsea 2 wind farm, completed in 2022, has a capacity of 1.32 gigawatts and is located off the Yorkshire coast in the United Kingdom. This wind farm, while not yet fully operational, exemplifies the potential of modern offshore wind technology.",
+   "avg_logprob": -0.2699997801750613
+  },
+  {
+   "id": 92,
+   "mode": "loose",
+   "question": "How big will the Dogger Bank wind farm be?",
+   "sentence": "The Dogger Bank wind farm, which is planned to be the largest offshore wind farm in the world, is expected to reach a capacity of 3.6 gigawatts when completed in stages.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Dogger Bank wind farm, which is planned to be the largest offshore wind farm in the world, is expected to reach a capacity of 3.6 gigawatts when completed in stages. This ambitious project, currently under construction, is located in the North Sea off the coast of England. The Dogger Bank project is a significant step towards meeting the growing demand for renewable energy, particularly in Europe, where offshore wind farms have become a cornerstone of the region's efforts to reduce carbon emissions and transition to a more sustainable energy future.",
+   "avg_logprob": -0.45182644875209405
+  },
+  {
+   "id": 93,
+   "mode": "loose",
+   "question": "How big will the Dogger Bank wind farm be?",
+   "sentence": "This ambitious project, currently under construction, is located in the North Sea off the coast of England.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The Dogger Bank wind farm, which is planned to be the largest offshore wind farm in the world, is expected to reach a capacity of 3.6 gigawatts when completed in stages. This ambitious project, currently under construction, is located in the North Sea off the coast of England. The Dogger Bank project is a significant step towards meeting the growing demand for renewable energy, particularly in Europe, where offshore wind farms have become a cornerstone of the region's efforts to reduce carbon emissions and transition to a more sustainable energy future.",
+   "avg_logprob": -0.45182644875209405
+  },
+  {
+   "id": 94,
+   "mode": "loose",
+   "question": "How big will the Dogger Bank wind farm be?",
+   "sentence": "The Dogger Bank project is a significant step towards meeting the growing demand for renewable energy, particularly in Europe, where offshore wind farms have become a cornerstone of the region's efforts to reduce carbon emissions and transition to a more sustainable energy future.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Dogger Bank wind farm, which is planned to be the largest offshore wind farm in the world, is expected to reach a capacity of 3.6 gigawatts when completed in stages. This ambitious project, currently under construction, is located in the North Sea off the coast of England. The Dogger Bank project is a significant step towards meeting the growing demand for renewable energy, particularly in Europe, where offshore wind farms have become a cornerstone of the region's efforts to reduce carbon emissions and transition to a more sustainable energy future.",
+   "avg_logprob": -0.45182644875209405
+  },
+  {
+   "id": 95,
+   "mode": "loose",
+   "question": "When did the Vineyard Wind 1 project begin delivering power?",
+   "sentence": "The Vineyard Wind 1 project began delivering power in 2024.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Vineyard Wind 1 project began delivering power in 2024. This project, the first large-scale offshore wind farm in the United States, was developed off the coast of Massachusetts and was completed in that year. It has a planned capacity of 806 megawatts, making it a significant addition to the U.S. energy landscape. The project's early delivery of power in 2024 underscores the rapid advancements and growing acceptance of offshore wind energy in the United States, as it was the first of its kind to start generating electricity on a substantial scale.",
+   "avg_logprob": -0.4456195006678251
+  },
+  {
+   "id": 96,
+   "mode": "loose",
+   "question": "When did the Vineyard Wind 1 project begin delivering power?",
+   "sentence": "This project, the first large-scale offshore wind farm in the United States, was developed off the coast of Massachusetts and was completed in that year.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The Vineyard Wind 1 project began delivering power in 2024. This project, the first large-scale offshore wind farm in the United States, was developed off the coast of Massachusetts and was completed in that year. It has a planned capacity of 806 megawatts, making it a significant addition to the U.S. energy landscape. The project's early delivery of power in 2024 underscores the rapid advancements and growing acceptance of offshore wind energy in the United States, as it was the first of its kind to start generating electricity on a substantial scale.",
+   "avg_logprob": -0.4456195006678251
+  },
+  {
+   "id": 97,
+   "mode": "loose",
+   "question": "When did the Vineyard Wind 1 project begin delivering power?",
+   "sentence": "It has a planned capacity of 806 megawatts, making it a significant addition to the U.S. energy landscape.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Vineyard Wind 1 project began delivering power in 2024. This project, the first large-scale offshore wind farm in the United States, was developed off the coast of Massachusetts and was completed in that year. It has a planned capacity of 806 megawatts, making it a significant addition to the U.S. energy landscape. The project's early delivery of power in 2024 underscores the rapid advancements and growing acceptance of offshore wind energy in the United States, as it was the first of its kind to start generating electricity on a substantial scale.",
+   "avg_logprob": -0.4456195006678251
+  },
+  {
+   "id": 98,
+   "mode": "loose",
+   "question": "When did the Vineyard Wind 1 project begin delivering power?",
+   "sentence": "The project's early delivery of power in 2024 underscores the rapid advancements and growing acceptance of offshore wind energy in the United States, as it was the first of its kind to start generating electricity on a substantial scale.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Vineyard Wind 1 project began delivering power in 2024. This project, the first large-scale offshore wind farm in the United States, was developed off the coast of Massachusetts and was completed in that year. It has a planned capacity of 806 megawatts, making it a significant addition to the U.S. energy landscape. The project's early delivery of power in 2024 underscores the rapid advancements and growing acceptance of offshore wind energy in the United States, as it was the first of its kind to start generating electricity on a substantial scale.",
+   "avg_logprob": -0.4456195006678251
+  },
+  {
+   "id": 99,
+   "mode": "loose",
+   "question": "Which dam is the second largest hydropower station in the world?",
+   "sentence": "The second largest hydropower station in the world is the Baihetan Dam, located in China.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The second largest hydropower station in the world is the Baihetan Dam, located in China. Construction on this massive project began in 2019 and was completed in 2022. With an installed capacity of 16,000 megawatts, the Baihetan Dam is a significant addition to China's hydropower portfolio, following the Three Gorges Dam, which holds the title of the largest hydropower station globally. Both these dams play crucial roles in China's energy production, with the Three Gorges Dam alone generating between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020.",
+   "avg_logprob": -0.23129117946752786
+  },
+  {
+   "id": 100,
+   "mode": "loose",
+   "question": "Which dam is the second largest hydropower station in the world?",
+   "sentence": "Construction on this massive project began in 2019 and was completed in 2022.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The second largest hydropower station in the world is the Baihetan Dam, located in China. Construction on this massive project began in 2019 and was completed in 2022. With an installed capacity of 16,000 megawatts, the Baihetan Dam is a significant addition to China's hydropower portfolio, following the Three Gorges Dam, which holds the title of the largest hydropower station globally. Both these dams play crucial roles in China's energy production, with the Three Gorges Dam alone generating between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020.",
+   "avg_logprob": -0.23129117946752786
+  },
+  {
+   "id": 101,
+   "mode": "loose",
+   "question": "Which dam is the second largest hydropower station in the world?",
+   "sentence": "With an installed capacity of 16,000 megawatts, the Baihetan Dam is a significant addition to China's hydropower portfolio, following the Three Gorges Dam, which holds the title of the largest hydropower station globally.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The second largest hydropower station in the world is the Baihetan Dam, located in China. Construction on this massive project began in 2019 and was completed in 2022. With an installed capacity of 16,000 megawatts, the Baihetan Dam is a significant addition to China's hydropower portfolio, following the Three Gorges Dam, which holds the title of the largest hydropower station globally. Both these dams play crucial roles in China's energy production, with the Three Gorges Dam alone generating between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020.",
+   "avg_logprob": -0.23129117946752786
+  },
+  {
+   "id": 102,
+   "mode": "loose",
+   "question": "Which dam is the second largest hydropower station in the world?",
+   "sentence": "Both these dams play crucial roles in China's energy production, with the Three Gorges Dam alone generating between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The second largest hydropower station in the world is the Baihetan Dam, located in China. Construction on this massive project began in 2019 and was completed in 2022. With an installed capacity of 16,000 megawatts, the Baihetan Dam is a significant addition to China's hydropower portfolio, following the Three Gorges Dam, which holds the title of the largest hydropower station globally. Both these dams play crucial roles in China's energy production, with the Three Gorges Dam alone generating between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020.",
+   "avg_logprob": -0.23129117946752786
+  },
+  {
+   "id": 103,
+   "mode": "loose",
+   "question": "What percentage of Paraguay's electricity does the Itaipu Dam supply?",
+   "sentence": "The Itaipu Dam, located on the border of Brazil and Paraguay, supplies about 90 percent of the electricity used in Paraguay.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Itaipu Dam, located on the border of Brazil and Paraguay, supplies about 90 percent of the electricity used in Paraguay. This dam, with a capacity of 14,000 megawatts, is one of the largest in the world and plays a crucial role in meeting Paraguay's energy needs. Its significant contribution to the country's electricity supply underscores the importance of hydropower in Paraguayan energy infrastructure.",
+   "avg_logprob": -0.20172274334806561
+  },
+  {
+   "id": 104,
+   "mode": "loose",
+   "question": "What percentage of Paraguay's electricity does the Itaipu Dam supply?",
+   "sentence": "This dam, with a capacity of 14,000 megawatts, is one of the largest in the world and plays a crucial role in meeting Paraguay's energy needs.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Itaipu Dam, located on the border of Brazil and Paraguay, supplies about 90 percent of the electricity used in Paraguay. This dam, with a capacity of 14,000 megawatts, is one of the largest in the world and plays a crucial role in meeting Paraguay's energy needs. Its significant contribution to the country's electricity supply underscores the importance of hydropower in Paraguayan energy infrastructure.",
+   "avg_logprob": -0.20172274334806561
+  },
+  {
+   "id": 105,
+   "mode": "loose",
+   "question": "What percentage of Paraguay's electricity does the Itaipu Dam supply?",
+   "sentence": "Its significant contribution to the country's electricity supply underscores the importance of hydropower in Paraguayan energy infrastructure.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Itaipu Dam, located on the border of Brazil and Paraguay, supplies about 90 percent of the electricity used in Paraguay. This dam, with a capacity of 14,000 megawatts, is one of the largest in the world and plays a crucial role in meeting Paraguay's energy needs. Its significant contribution to the country's electricity supply underscores the importance of hydropower in Paraguayan energy infrastructure.",
+   "avg_logprob": -0.20172274334806561
+  },
+  {
+   "id": 106,
+   "mode": "loose",
+   "question": "How much did global hydropower grow in 2023?",
+   "sentence": "In 2023, the global hydropower capacity grew by about 14 percent compared to the previous year, reaching a total of 1,416 gigawatts.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "In 2023, the global hydropower capacity grew by about 14 percent compared to the previous year, reaching a total of 1,416 gigawatts. This growth is part of the broader trend of renewable energy expansion, which saw a significant increase in investment and deployment of renewable energy sources. The International Energy Agency reported that global clean energy investment, including grids, storage, and electric vehicles, was about 1.8 trillion dollars in 2023, marking a substantial increase from the previous year. This growth in investment and deployment is crucial for meeting the ambitious targets set by the international community, including the goal of tripling renewable energy capacity to at least 11,000 gigawatts by 2030.",
+   "avg_logprob": -0.3442902582667703
+  },
+  {
+   "id": 107,
+   "mode": "loose",
+   "question": "How much did global hydropower grow in 2023?",
+   "sentence": "This growth is part of the broader trend of renewable energy expansion, which saw a significant increase in investment and deployment of renewable energy sources.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the global hydropower capacity grew by about 14 percent compared to the previous year, reaching a total of 1,416 gigawatts. This growth is part of the broader trend of renewable energy expansion, which saw a significant increase in investment and deployment of renewable energy sources. The International Energy Agency reported that global clean energy investment, including grids, storage, and electric vehicles, was about 1.8 trillion dollars in 2023, marking a substantial increase from the previous year. This growth in investment and deployment is crucial for meeting the ambitious targets set by the international community, including the goal of tripling renewable energy capacity to at least 11,000 gigawatts by 2030.",
+   "avg_logprob": -0.3442902582667703
+  },
+  {
+   "id": 108,
+   "mode": "loose",
+   "question": "How much did global hydropower grow in 2023?",
+   "sentence": "The International Energy Agency reported that global clean energy investment, including grids, storage, and electric vehicles, was about 1.8 trillion dollars in 2023, marking a substantial increase from the previous year.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the global hydropower capacity grew by about 14 percent compared to the previous year, reaching a total of 1,416 gigawatts. This growth is part of the broader trend of renewable energy expansion, which saw a significant increase in investment and deployment of renewable energy sources. The International Energy Agency reported that global clean energy investment, including grids, storage, and electric vehicles, was about 1.8 trillion dollars in 2023, marking a substantial increase from the previous year. This growth in investment and deployment is crucial for meeting the ambitious targets set by the international community, including the goal of tripling renewable energy capacity to at least 11,000 gigawatts by 2030.",
+   "avg_logprob": -0.3442902582667703
+  },
+  {
+   "id": 109,
+   "mode": "loose",
+   "question": "How much did global hydropower grow in 2023?",
+   "sentence": "This growth in investment and deployment is crucial for meeting the ambitious targets set by the international community, including the goal of tripling renewable energy capacity to at least 11,000 gigawatts by 2030.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the global hydropower capacity grew by about 14 percent compared to the previous year, reaching a total of 1,416 gigawatts. This growth is part of the broader trend of renewable energy expansion, which saw a significant increase in investment and deployment of renewable energy sources. The International Energy Agency reported that global clean energy investment, including grids, storage, and electric vehicles, was about 1.8 trillion dollars in 2023, marking a substantial increase from the previous year. This growth in investment and deployment is crucial for meeting the ambitious targets set by the international community, including the goal of tripling renewable energy capacity to at least 11,000 gigawatts by 2030.",
+   "avg_logprob": -0.3442902582667703
+  },
+  {
+   "id": 110,
+   "mode": "loose",
+   "question": "What is the net capacity of The Geysers geothermal complex?",
+   "sentence": "The Geysers geothermal complex, located in northern California, has a net capacity of approximately 725 megawatts across 13 plants.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Geysers geothermal complex, located in northern California, has a net capacity of approximately 725 megawatts across 13 plants. This complex, which has been operational since 1960, is a significant contributor to the United States' geothermal energy production, representing about 23% of the country's total installed geothermal capacity. The Geysers' longevity and consistent performance make it a crucial asset in the geothermal energy sector, contributing to the stability and reliability of the grid.",
+   "avg_logprob": -0.33169577026969194
+  },
+  {
+   "id": 111,
+   "mode": "loose",
+   "question": "What is the net capacity of The Geysers geothermal complex?",
+   "sentence": "This complex, which has been operational since 1960, is a significant contributor to the United States' geothermal energy production, representing about 23% of the country's total installed geothermal capacity.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "The Geysers geothermal complex, located in northern California, has a net capacity of approximately 725 megawatts across 13 plants. This complex, which has been operational since 1960, is a significant contributor to the United States' geothermal energy production, representing about 23% of the country's total installed geothermal capacity. The Geysers' longevity and consistent performance make it a crucial asset in the geothermal energy sector, contributing to the stability and reliability of the grid.",
+   "avg_logprob": -0.33169577026969194
+  },
+  {
+   "id": 112,
+   "mode": "loose",
+   "question": "What is the net capacity of The Geysers geothermal complex?",
+   "sentence": "The Geysers' longevity and consistent performance make it a crucial asset in the geothermal energy sector, contributing to the stability and reliability of the grid.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Geysers geothermal complex, located in northern California, has a net capacity of approximately 725 megawatts across 13 plants. This complex, which has been operational since 1960, is a significant contributor to the United States' geothermal energy production, representing about 23% of the country's total installed geothermal capacity. The Geysers' longevity and consistent performance make it a crucial asset in the geothermal energy sector, contributing to the stability and reliability of the grid.",
+   "avg_logprob": -0.33169577026969194
+  },
+  {
+   "id": 113,
+   "mode": "loose",
+   "question": "What is the levelized cost of geothermal electricity?",
+   "sentence": "The levelized cost of geothermal electricity was about 0.071 dollars per kilowatt-hour in 2023, according to the International Renewable Energy Agency.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The levelized cost of geothermal electricity was about 0.071 dollars per kilowatt-hour in 2023, according to the International Renewable Energy Agency. This cost is higher than that of solar and wind energy, primarily due to the significant expense associated with drilling, which can range from 5 to 10 million dollars for a single deep well. Despite this, the cost of geothermal electricity has been declining, with the global weighted average levelized cost dropping from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, a reduction of roughly 89 percent.",
+   "avg_logprob": -0.18864410477441798
+  },
+  {
+   "id": 114,
+   "mode": "loose",
+   "question": "What is the levelized cost of geothermal electricity?",
+   "sentence": "This cost is higher than that of solar and wind energy, primarily due to the significant expense associated with drilling, which can range from 5 to 10 million dollars for a single deep well.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The levelized cost of geothermal electricity was about 0.071 dollars per kilowatt-hour in 2023, according to the International Renewable Energy Agency. This cost is higher than that of solar and wind energy, primarily due to the significant expense associated with drilling, which can range from 5 to 10 million dollars for a single deep well. Despite this, the cost of geothermal electricity has been declining, with the global weighted average levelized cost dropping from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, a reduction of roughly 89 percent.",
+   "avg_logprob": -0.18864410477441798
+  },
+  {
+   "id": 115,
+   "mode": "loose",
+   "question": "What is the levelized cost of geothermal electricity?",
+   "sentence": "Despite this, the cost of geothermal electricity has been declining, with the global weighted average levelized cost dropping from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, a reduction of roughly 89 percent.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "The levelized cost of geothermal electricity was about 0.071 dollars per kilowatt-hour in 2023, according to the International Renewable Energy Agency. This cost is higher than that of solar and wind energy, primarily due to the significant expense associated with drilling, which can range from 5 to 10 million dollars for a single deep well. Despite this, the cost of geothermal electricity has been declining, with the global weighted average levelized cost dropping from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, a reduction of roughly 89 percent.",
+   "avg_logprob": -0.18864410477441798
+  },
+  {
+   "id": 116,
+   "mode": "loose",
+   "question": "Which company is building the 400-megawatt Cape Station in Utah?",
+   "sentence": "The company building the 400-megawatt Cape Station in Utah is Fervo Energy.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The company building the 400-megawatt Cape Station in Utah is Fervo Energy. This project is part of the Enhanced Geothermal Systems (EGS) initiative aimed at tapping into geothermal energy resources. Fervo Energy, a company focused on developing geothermal energy solutions, completed a pilot project in Nevada that produced 3.5 megawatts of power, laying the groundwork for larger-scale projects. The Cape Station is a significant expansion of this technology, with the goal of generating 400 megawatts of power, which is expected to be operational by 2026. This project is part of a broader effort to reduce the costs associated with EGS, with the United States Department of Energy setting a target to bring the cost down to 45 dollars per megawatt-hour by 2035.",
+   "avg_logprob": -0.2848838446009619
+  },
+  {
+   "id": 117,
+   "mode": "loose",
+   "question": "Which company is building the 400-megawatt Cape Station in Utah?",
+   "sentence": "This project is part of the Enhanced Geothermal Systems (EGS) initiative aimed at tapping into geothermal energy resources.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The company building the 400-megawatt Cape Station in Utah is Fervo Energy. This project is part of the Enhanced Geothermal Systems (EGS) initiative aimed at tapping into geothermal energy resources. Fervo Energy, a company focused on developing geothermal energy solutions, completed a pilot project in Nevada that produced 3.5 megawatts of power, laying the groundwork for larger-scale projects. The Cape Station is a significant expansion of this technology, with the goal of generating 400 megawatts of power, which is expected to be operational by 2026. This project is part of a broader effort to reduce the costs associated with EGS, with the United States Department of Energy setting a target to bring the cost down to 45 dollars per megawatt-hour by 2035.",
+   "avg_logprob": -0.2848838446009619
+  },
+  {
+   "id": 118,
+   "mode": "loose",
+   "question": "Which company is building the 400-megawatt Cape Station in Utah?",
+   "sentence": "Fervo Energy, a company focused on developing geothermal energy solutions, completed a pilot project in Nevada that produced 3.5 megawatts of power, laying the groundwork for larger-scale projects.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The company building the 400-megawatt Cape Station in Utah is Fervo Energy. This project is part of the Enhanced Geothermal Systems (EGS) initiative aimed at tapping into geothermal energy resources. Fervo Energy, a company focused on developing geothermal energy solutions, completed a pilot project in Nevada that produced 3.5 megawatts of power, laying the groundwork for larger-scale projects. The Cape Station is a significant expansion of this technology, with the goal of generating 400 megawatts of power, which is expected to be operational by 2026. This project is part of a broader effort to reduce the costs associated with EGS, with the United States Department of Energy setting a target to bring the cost down to 45 dollars per megawatt-hour by 2035.",
+   "avg_logprob": -0.2848838446009619
+  },
+  {
+   "id": 119,
+   "mode": "loose",
+   "question": "Which company is building the 400-megawatt Cape Station in Utah?",
+   "sentence": "The Cape Station is a significant expansion of this technology, with the goal of generating 400 megawatts of power, which is expected to be operational by 2026.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The company building the 400-megawatt Cape Station in Utah is Fervo Energy. This project is part of the Enhanced Geothermal Systems (EGS) initiative aimed at tapping into geothermal energy resources. Fervo Energy, a company focused on developing geothermal energy solutions, completed a pilot project in Nevada that produced 3.5 megawatts of power, laying the groundwork for larger-scale projects. The Cape Station is a significant expansion of this technology, with the goal of generating 400 megawatts of power, which is expected to be operational by 2026. This project is part of a broader effort to reduce the costs associated with EGS, with the United States Department of Energy setting a target to bring the cost down to 45 dollars per megawatt-hour by 2035.",
+   "avg_logprob": -0.2848838446009619
+  },
+  {
+   "id": 120,
+   "mode": "loose",
+   "question": "Which company is building the 400-megawatt Cape Station in Utah?",
+   "sentence": "This project is part of a broader effort to reduce the costs associated with EGS, with the United States Department of Energy setting a target to bring the cost down to 45 dollars per megawatt-hour by 2035.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The company building the 400-megawatt Cape Station in Utah is Fervo Energy. This project is part of the Enhanced Geothermal Systems (EGS) initiative aimed at tapping into geothermal energy resources. Fervo Energy, a company focused on developing geothermal energy solutions, completed a pilot project in Nevada that produced 3.5 megawatts of power, laying the groundwork for larger-scale projects. The Cape Station is a significant expansion of this technology, with the goal of generating 400 megawatts of power, which is expected to be operational by 2026. This project is part of a broader effort to reduce the costs associated with EGS, with the United States Department of Energy setting a target to bring the cost down to 45 dollars per megawatt-hour by 2035.",
+   "avg_logprob": -0.2848838446009619
+  },
+  {
+   "id": 121,
+   "mode": "loose",
+   "question": "What share of Iceland's electricity comes from geothermal energy?",
+   "sentence": "Iceland generates approximately 30 percent of its electricity from geothermal energy.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Iceland generates approximately 30 percent of its electricity from geothermal energy. This significant contribution to Iceland's energy mix underscores the country's strong commitment to renewable energy sources, particularly in a region where geothermal resources are abundant due to its location on the Mid-Atlantic Ridge. Iceland's geothermal energy sector is a prime example of how enhanced geothermal systems (EGS) can be effectively utilized to meet energy demands, even in areas not traditionally associated with geothermal activity.",
+   "avg_logprob": -0.4251254661557553
+  },
+  {
+   "id": 122,
+   "mode": "loose",
+   "question": "What share of Iceland's electricity comes from geothermal energy?",
+   "sentence": "This significant contribution to Iceland's energy mix underscores the country's strong commitment to renewable energy sources, particularly in a region where geothermal resources are abundant due to its location on the Mid-Atlantic Ridge.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "Iceland generates approximately 30 percent of its electricity from geothermal energy. This significant contribution to Iceland's energy mix underscores the country's strong commitment to renewable energy sources, particularly in a region where geothermal resources are abundant due to its location on the Mid-Atlantic Ridge. Iceland's geothermal energy sector is a prime example of how enhanced geothermal systems (EGS) can be effectively utilized to meet energy demands, even in areas not traditionally associated with geothermal activity.",
+   "avg_logprob": -0.4251254661557553
+  },
+  {
+   "id": 123,
+   "mode": "loose",
+   "question": "What share of Iceland's electricity comes from geothermal energy?",
+   "sentence": "Iceland's geothermal energy sector is a prime example of how enhanced geothermal systems (EGS) can be effectively utilized to meet energy demands, even in areas not traditionally associated with geothermal activity.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "Iceland generates approximately 30 percent of its electricity from geothermal energy. This significant contribution to Iceland's energy mix underscores the country's strong commitment to renewable energy sources, particularly in a region where geothermal resources are abundant due to its location on the Mid-Atlantic Ridge. Iceland's geothermal energy sector is a prime example of how enhanced geothermal systems (EGS) can be effectively utilized to meet energy demands, even in areas not traditionally associated with geothermal activity.",
+   "avg_logprob": -0.4251254661557553
+  },
+  {
+   "id": 124,
+   "mode": "loose",
+   "question": "What did Hornsdale Power Reserve do to frequency control prices?",
+   "sentence": "The Hornsdale Power Reserve, a significant energy storage facility built by Tesla in South Australia, played a pivotal role in lowering frequency control prices by approximately 90 percent in the region.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Hornsdale Power Reserve, a significant energy storage facility built by Tesla in South Australia, played a pivotal role in lowering frequency control prices by approximately 90 percent in the region. This remarkable achievement was made possible through the innovative use of battery storage technology, which allowed the reserve to provide rapid and responsive power support to the grid. By storing excess energy during periods of low demand and releasing it during peak demand times, the Hornsdale Power Reserve effectively smoothed out fluctuations in electricity supply and demand, thereby reducing the need for costly and less efficient conventional power plants to intervene. This not only stabilized the grid but also optimized the use of available resources, making the energy system more resilient and efficient.",
+   "avg_logprob": -0.4061665305909234
+  },
+  {
+   "id": 125,
+   "mode": "loose",
+   "question": "What did Hornsdale Power Reserve do to frequency control prices?",
+   "sentence": "This remarkable achievement was made possible through the innovative use of battery storage technology, which allowed the reserve to provide rapid and responsive power support to the grid.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The Hornsdale Power Reserve, a significant energy storage facility built by Tesla in South Australia, played a pivotal role in lowering frequency control prices by approximately 90 percent in the region. This remarkable achievement was made possible through the innovative use of battery storage technology, which allowed the reserve to provide rapid and responsive power support to the grid. By storing excess energy during periods of low demand and releasing it during peak demand times, the Hornsdale Power Reserve effectively smoothed out fluctuations in electricity supply and demand, thereby reducing the need for costly and less efficient conventional power plants to intervene. This not only stabilized the grid but also optimized the use of available resources, making the energy system more resilient and efficient.",
+   "avg_logprob": -0.4061665305909234
+  },
+  {
+   "id": 126,
+   "mode": "loose",
+   "question": "What did Hornsdale Power Reserve do to frequency control prices?",
+   "sentence": "By storing excess energy during periods of low demand and releasing it during peak demand times, the Hornsdale Power Reserve effectively smoothed out fluctuations in electricity supply and demand, thereby reducing the need for costly and less efficient conventional power plants to intervene.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The Hornsdale Power Reserve, a significant energy storage facility built by Tesla in South Australia, played a pivotal role in lowering frequency control prices by approximately 90 percent in the region. This remarkable achievement was made possible through the innovative use of battery storage technology, which allowed the reserve to provide rapid and responsive power support to the grid. By storing excess energy during periods of low demand and releasing it during peak demand times, the Hornsdale Power Reserve effectively smoothed out fluctuations in electricity supply and demand, thereby reducing the need for costly and less efficient conventional power plants to intervene. This not only stabilized the grid but also optimized the use of available resources, making the energy system more resilient and efficient.",
+   "avg_logprob": -0.4061665305909234
+  },
+  {
+   "id": 127,
+   "mode": "loose",
+   "question": "What did Hornsdale Power Reserve do to frequency control prices?",
+   "sentence": "This not only stabilized the grid but also optimized the use of available resources, making the energy system more resilient and efficient.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Hornsdale Power Reserve, a significant energy storage facility built by Tesla in South Australia, played a pivotal role in lowering frequency control prices by approximately 90 percent in the region. This remarkable achievement was made possible through the innovative use of battery storage technology, which allowed the reserve to provide rapid and responsive power support to the grid. By storing excess energy during periods of low demand and releasing it during peak demand times, the Hornsdale Power Reserve effectively smoothed out fluctuations in electricity supply and demand, thereby reducing the need for costly and less efficient conventional power plants to intervene. This not only stabilized the grid but also optimized the use of available resources, making the energy system more resilient and efficient.",
+   "avg_logprob": -0.4061665305909234
+  },
+  {
+   "id": 128,
+   "mode": "loose",
+   "question": "How many charge cycles can lithium iron phosphate batteries support?",
+   "sentence": "Lithium iron phosphate (LFP) batteries, also known as lithium iron phosphate (LFP) chemistry, have taken a significant share of the stationary market due to their cost-effectiveness and safety advantages.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Lithium iron phosphate (LFP) batteries, also known as lithium iron phosphate (LFP) chemistry, have taken a significant share of the stationary market due to their cost-effectiveness and safety advantages. These batteries are particularly well-suited for grid-scale storage applications, and they support an impressive number of charge cycles. Specifically, LFP batteries can support 6,000 or more charge cycles. This high durability is a key factor in their adoption, especially in regions where reliability and longevity are critical, such as in California, where they have been installed to support the grid's stability and resilience.",
+   "avg_logprob": -0.47728910238542743
+  },
+  {
+   "id": 129,
+   "mode": "loose",
+   "question": "How many charge cycles can lithium iron phosphate batteries support?",
+   "sentence": "These batteries are particularly well-suited for grid-scale storage applications, and they support an impressive number of charge cycles.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Lithium iron phosphate (LFP) batteries, also known as lithium iron phosphate (LFP) chemistry, have taken a significant share of the stationary market due to their cost-effectiveness and safety advantages. These batteries are particularly well-suited for grid-scale storage applications, and they support an impressive number of charge cycles. Specifically, LFP batteries can support 6,000 or more charge cycles. This high durability is a key factor in their adoption, especially in regions where reliability and longevity are critical, such as in California, where they have been installed to support the grid's stability and resilience.",
+   "avg_logprob": -0.47728910238542743
+  },
+  {
+   "id": 130,
+   "mode": "loose",
+   "question": "How many charge cycles can lithium iron phosphate batteries support?",
+   "sentence": "Specifically, LFP batteries can support 6,000 or more charge cycles.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Lithium iron phosphate (LFP) batteries, also known as lithium iron phosphate (LFP) chemistry, have taken a significant share of the stationary market due to their cost-effectiveness and safety advantages. These batteries are particularly well-suited for grid-scale storage applications, and they support an impressive number of charge cycles. Specifically, LFP batteries can support 6,000 or more charge cycles. This high durability is a key factor in their adoption, especially in regions where reliability and longevity are critical, such as in California, where they have been installed to support the grid's stability and resilience.",
+   "avg_logprob": -0.47728910238542743
+  },
+  {
+   "id": 131,
+   "mode": "loose",
+   "question": "How many charge cycles can lithium iron phosphate batteries support?",
+   "sentence": "This high durability is a key factor in their adoption, especially in regions where reliability and longevity are critical, such as in California, where they have been installed to support the grid's stability and resilience.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "Lithium iron phosphate (LFP) batteries, also known as lithium iron phosphate (LFP) chemistry, have taken a significant share of the stationary market due to their cost-effectiveness and safety advantages. These batteries are particularly well-suited for grid-scale storage applications, and they support an impressive number of charge cycles. Specifically, LFP batteries can support 6,000 or more charge cycles. This high durability is a key factor in their adoption, especially in regions where reliability and longevity are critical, such as in California, where they have been installed to support the grid's stability and resilience.",
+   "avg_logprob": -0.47728910238542743
+  },
+  {
+   "id": 132,
+   "mode": "loose",
+   "question": "What is the target cost of Form Energy's iron-air batteries?",
+   "sentence": "Form Energy's iron-air batteries are targeted to have a cost of 20 dollars per kilowatt-hour for 100 hours of discharge.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Form Energy's iron-air batteries are targeted to have a cost of 20 dollars per kilowatt-hour for 100 hours of discharge. This technology is expected to be the first to achieve such a cost, with a first commercial deployment planned for Minnesota in 2025.",
+   "avg_logprob": -0.3393378363105313
+  },
+  {
+   "id": 133,
+   "mode": "loose",
+   "question": "What is the target cost of Form Energy's iron-air batteries?",
+   "sentence": "This technology is expected to be the first to achieve such a cost, with a first commercial deployment planned for Minnesota in 2025.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "Form Energy's iron-air batteries are targeted to have a cost of 20 dollars per kilowatt-hour for 100 hours of discharge. This technology is expected to be the first to achieve such a cost, with a first commercial deployment planned for Minnesota in 2025.",
+   "avg_logprob": -0.3393378363105313
+  },
+  {
+   "id": 134,
+   "mode": "loose",
+   "question": "What round-trip efficiency does hydrogen storage have?",
+   "sentence": "Hydrogen storage, when produced through electrolysis and then converted back to electricity, typically has a round-trip efficiency of around 30 to 40 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Hydrogen storage, when produced through electrolysis and then converted back to electricity, typically has a round-trip efficiency of around 30 to 40 percent. This means that for every kilowatt-hour of electricity used to produce hydrogen, only 30 to 40 percent of that energy is recovered when the hydrogen is converted back into electricity. This is significantly lower than the efficiency of lithium-ion batteries, which can achieve round-trip efficiencies of 85 to 95 percent. The lower efficiency of hydrogen storage is due to the energy-intensive process of electrolysis, which requires a significant amount of electricity to split water into hydrogen and oxygen, and the inefficiencies involved in the conversion process back to electricity.",
+   "avg_logprob": -0.29305282757523854
+  },
+  {
+   "id": 135,
+   "mode": "loose",
+   "question": "What round-trip efficiency does hydrogen storage have?",
+   "sentence": "This means that for every kilowatt-hour of electricity used to produce hydrogen, only 30 to 40 percent of that energy is recovered when the hydrogen is converted back into electricity.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Hydrogen storage, when produced through electrolysis and then converted back to electricity, typically has a round-trip efficiency of around 30 to 40 percent. This means that for every kilowatt-hour of electricity used to produce hydrogen, only 30 to 40 percent of that energy is recovered when the hydrogen is converted back into electricity. This is significantly lower than the efficiency of lithium-ion batteries, which can achieve round-trip efficiencies of 85 to 95 percent. The lower efficiency of hydrogen storage is due to the energy-intensive process of electrolysis, which requires a significant amount of electricity to split water into hydrogen and oxygen, and the inefficiencies involved in the conversion process back to electricity.",
+   "avg_logprob": -0.29305282757523854
+  },
+  {
+   "id": 136,
+   "mode": "loose",
+   "question": "What round-trip efficiency does hydrogen storage have?",
+   "sentence": "This is significantly lower than the efficiency of lithium-ion batteries, which can achieve round-trip efficiencies of 85 to 95 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Hydrogen storage, when produced through electrolysis and then converted back to electricity, typically has a round-trip efficiency of around 30 to 40 percent. This means that for every kilowatt-hour of electricity used to produce hydrogen, only 30 to 40 percent of that energy is recovered when the hydrogen is converted back into electricity. This is significantly lower than the efficiency of lithium-ion batteries, which can achieve round-trip efficiencies of 85 to 95 percent. The lower efficiency of hydrogen storage is due to the energy-intensive process of electrolysis, which requires a significant amount of electricity to split water into hydrogen and oxygen, and the inefficiencies involved in the conversion process back to electricity.",
+   "avg_logprob": -0.29305282757523854
+  },
+  {
+   "id": 137,
+   "mode": "loose",
+   "question": "What round-trip efficiency does hydrogen storage have?",
+   "sentence": "The lower efficiency of hydrogen storage is due to the energy-intensive process of electrolysis, which requires a significant amount of electricity to split water into hydrogen and oxygen, and the inefficiencies involved in the conversion process back to electricity.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "Hydrogen storage, when produced through electrolysis and then converted back to electricity, typically has a round-trip efficiency of around 30 to 40 percent. This means that for every kilowatt-hour of electricity used to produce hydrogen, only 30 to 40 percent of that energy is recovered when the hydrogen is converted back into electricity. This is significantly lower than the efficiency of lithium-ion batteries, which can achieve round-trip efficiencies of 85 to 95 percent. The lower efficiency of hydrogen storage is due to the energy-intensive process of electrolysis, which requires a significant amount of electricity to split water into hydrogen and oxygen, and the inefficiencies involved in the conversion process back to electricity.",
+   "avg_logprob": -0.29305282757523854
+  },
+  {
+   "id": 138,
+   "mode": "loose",
+   "question": "What manufacturing credit did the Inflation Reduction Act introduce?",
+   "sentence": "The Inflation Reduction Act introduced a 45X manufacturing credit for the production of solar modules and batteries.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Inflation Reduction Act introduced a 45X manufacturing credit for the production of solar modules and batteries. This credit was designed to encourage domestic production and reduce the cost of these technologies, thereby accelerating the deployment of clean energy solutions in the United States. The act aimed to make these credits available for projects that meet specific requirements, such as creating jobs and investing in apprenticeships. The introduction of this credit was part of a broader strategy to support the clean energy sector and transition to a more sustainable energy future.",
+   "avg_logprob": -0.4198173524397008
+  },
+  {
+   "id": 139,
+   "mode": "loose",
+   "question": "What manufacturing credit did the Inflation Reduction Act introduce?",
+   "sentence": "This credit was designed to encourage domestic production and reduce the cost of these technologies, thereby accelerating the deployment of clean energy solutions in the United States.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "The Inflation Reduction Act introduced a 45X manufacturing credit for the production of solar modules and batteries. This credit was designed to encourage domestic production and reduce the cost of these technologies, thereby accelerating the deployment of clean energy solutions in the United States. The act aimed to make these credits available for projects that meet specific requirements, such as creating jobs and investing in apprenticeships. The introduction of this credit was part of a broader strategy to support the clean energy sector and transition to a more sustainable energy future.",
+   "avg_logprob": -0.4198173524397008
+  },
+  {
+   "id": 140,
+   "mode": "loose",
+   "question": "What manufacturing credit did the Inflation Reduction Act introduce?",
+   "sentence": "The act aimed to make these credits available for projects that meet specific requirements, such as creating jobs and investing in apprenticeships.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Inflation Reduction Act introduced a 45X manufacturing credit for the production of solar modules and batteries. This credit was designed to encourage domestic production and reduce the cost of these technologies, thereby accelerating the deployment of clean energy solutions in the United States. The act aimed to make these credits available for projects that meet specific requirements, such as creating jobs and investing in apprenticeships. The introduction of this credit was part of a broader strategy to support the clean energy sector and transition to a more sustainable energy future.",
+   "avg_logprob": -0.4198173524397008
+  },
+  {
+   "id": 141,
+   "mode": "loose",
+   "question": "What manufacturing credit did the Inflation Reduction Act introduce?",
+   "sentence": "The introduction of this credit was part of a broader strategy to support the clean energy sector and transition to a more sustainable energy future.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Inflation Reduction Act introduced a 45X manufacturing credit for the production of solar modules and batteries. This credit was designed to encourage domestic production and reduce the cost of these technologies, thereby accelerating the deployment of clean energy solutions in the United States. The act aimed to make these credits available for projects that meet specific requirements, such as creating jobs and investing in apprenticeships. The introduction of this credit was part of a broader strategy to support the clean energy sector and transition to a more sustainable energy future.",
+   "avg_logprob": -0.4198173524397008
+  },
+  {
+   "id": 142,
+   "mode": "loose",
+   "question": "What share of global energy transition investment came from China in 2023?",
+   "sentence": "In 2023, China accounted for about 38 percent of global energy transition investment.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, China accounted for about 38 percent of global energy transition investment. This significant share underscores China's pivotal role in the global push towards renewable energy, driven by both government policies and substantial domestic manufacturing capacity for solar modules and polysilicon. China's dominance in renewable energy investments not only reflects its ambitious targets but also its strategic position in the global renewable energy market, where it often serves as a major supplier of solar and wind technologies to other countries.",
+   "avg_logprob": -0.45542350942995824
+  },
+  {
+   "id": 143,
+   "mode": "loose",
+   "question": "What share of global energy transition investment came from China in 2023?",
+   "sentence": "This significant share underscores China's pivotal role in the global push towards renewable energy, driven by both government policies and substantial domestic manufacturing capacity for solar modules and polysilicon.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "In 2023, China accounted for about 38 percent of global energy transition investment. This significant share underscores China's pivotal role in the global push towards renewable energy, driven by both government policies and substantial domestic manufacturing capacity for solar modules and polysilicon. China's dominance in renewable energy investments not only reflects its ambitious targets but also its strategic position in the global renewable energy market, where it often serves as a major supplier of solar and wind technologies to other countries.",
+   "avg_logprob": -0.45542350942995824
+  },
+  {
+   "id": 144,
+   "mode": "loose",
+   "question": "What share of global energy transition investment came from China in 2023?",
+   "sentence": "China's dominance in renewable energy investments not only reflects its ambitious targets but also its strategic position in the global renewable energy market, where it often serves as a major supplier of solar and wind technologies to other countries.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, China accounted for about 38 percent of global energy transition investment. This significant share underscores China's pivotal role in the global push towards renewable energy, driven by both government policies and substantial domestic manufacturing capacity for solar modules and polysilicon. China's dominance in renewable energy investments not only reflects its ambitious targets but also its strategic position in the global renewable energy market, where it often serves as a major supplier of solar and wind technologies to other countries.",
+   "avg_logprob": -0.45542350942995824
+  },
+  {
+   "id": 145,
+   "mode": "loose",
+   "question": "What is India's target for non-fossil electricity capacity by 2030?",
+   "sentence": "India has set a target of 500 gigawatts of non-fossil electricity capacity by 2030.",
+   "label": "supported",
+   "kind": null,
+   "answer": "India has set a target of 500 gigawatts of non-fossil electricity capacity by 2030. This ambitious goal aims to significantly reduce the reliance on fossil fuels and transition towards a more sustainable energy mix. By the end of 2023, India had already installed about 190 gigawatts of non-fossil capacity, indicating that the country is well on its way to achieving this significant milestone. This target underscores India's commitment to combating climate change and aligns with global efforts to transition to cleaner energy sources.",
+   "avg_logprob": -0.24006672458738376
+  },
+  {
+   "id": 146,
+   "mode": "loose",
+   "question": "What is India's target for non-fossil electricity capacity by 2030?",
+   "sentence": "This ambitious goal aims to significantly reduce the reliance on fossil fuels and transition towards a more sustainable energy mix.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "India has set a target of 500 gigawatts of non-fossil electricity capacity by 2030. This ambitious goal aims to significantly reduce the reliance on fossil fuels and transition towards a more sustainable energy mix. By the end of 2023, India had already installed about 190 gigawatts of non-fossil capacity, indicating that the country is well on its way to achieving this significant milestone. This target underscores India's commitment to combating climate change and aligns with global efforts to transition to cleaner energy sources.",
+   "avg_logprob": -0.24006672458738376
+  },
+  {
+   "id": 147,
+   "mode": "loose",
+   "question": "What is India's target for non-fossil electricity capacity by 2030?",
+   "sentence": "By the end of 2023, India had already installed about 190 gigawatts of non-fossil capacity, indicating that the country is well on its way to achieving this significant milestone.",
+   "label": "supported",
+   "kind": null,
+   "answer": "India has set a target of 500 gigawatts of non-fossil electricity capacity by 2030. This ambitious goal aims to significantly reduce the reliance on fossil fuels and transition towards a more sustainable energy mix. By the end of 2023, India had already installed about 190 gigawatts of non-fossil capacity, indicating that the country is well on its way to achieving this significant milestone. This target underscores India's commitment to combating climate change and aligns with global efforts to transition to cleaner energy sources.",
+   "avg_logprob": -0.24006672458738376
+  },
+  {
+   "id": 148,
+   "mode": "loose",
+   "question": "What is India's target for non-fossil electricity capacity by 2030?",
+   "sentence": "This target underscores India's commitment to combating climate change and aligns with global efforts to transition to cleaner energy sources.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "India has set a target of 500 gigawatts of non-fossil electricity capacity by 2030. This ambitious goal aims to significantly reduce the reliance on fossil fuels and transition towards a more sustainable energy mix. By the end of 2023, India had already installed about 190 gigawatts of non-fossil capacity, indicating that the country is well on its way to achieving this significant milestone. This target underscores India's commitment to combating climate change and aligns with global efforts to transition to cleaner energy sources.",
+   "avg_logprob": -0.24006672458738376
+  },
+  {
+   "id": 149,
+   "mode": "loose",
+   "question": "What is the cost of capital in emerging markets compared with advanced economies?",
+   "sentence": "The cost of capital in emerging markets is significantly higher compared to advanced economies.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The cost of capital in emerging markets is significantly higher compared to advanced economies. This disparity is a critical factor that hinders the deployment of renewable energy projects in these developing regions. For instance, in 2023, the cost of capital in many emerging markets was estimated to be two to three times higher than in advanced economies. This higher cost of capital can lead to increased financing costs for renewable energy projects, making them less economically viable. As a result, despite having excellent solar and wind resources, developing economies often struggle to finance and implement large-scale renewable energy projects at the same scale as their more developed counterparts. This financial challenge not only affects the pace of the energy transition but also limits the potential for these countries to meet their ambitious renewable energy targets.",
+   "avg_logprob": -0.39391308342995346
+  },
+  {
+   "id": 150,
+   "mode": "loose",
+   "question": "What is the cost of capital in emerging markets compared with advanced economies?",
+   "sentence": "This disparity is a critical factor that hinders the deployment of renewable energy projects in these developing regions.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The cost of capital in emerging markets is significantly higher compared to advanced economies. This disparity is a critical factor that hinders the deployment of renewable energy projects in these developing regions. For instance, in 2023, the cost of capital in many emerging markets was estimated to be two to three times higher than in advanced economies. This higher cost of capital can lead to increased financing costs for renewable energy projects, making them less economically viable. As a result, despite having excellent solar and wind resources, developing economies often struggle to finance and implement large-scale renewable energy projects at the same scale as their more developed counterparts. This financial challenge not only affects the pace of the energy transition but also limits the potential for these countries to meet their ambitious renewable energy targets.",
+   "avg_logprob": -0.39391308342995346
+  },
+  {
+   "id": 151,
+   "mode": "loose",
+   "question": "What is the cost of capital in emerging markets compared with advanced economies?",
+   "sentence": "For instance, in 2023, the cost of capital in many emerging markets was estimated to be two to three times higher than in advanced economies.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The cost of capital in emerging markets is significantly higher compared to advanced economies. This disparity is a critical factor that hinders the deployment of renewable energy projects in these developing regions. For instance, in 2023, the cost of capital in many emerging markets was estimated to be two to three times higher than in advanced economies. This higher cost of capital can lead to increased financing costs for renewable energy projects, making them less economically viable. As a result, despite having excellent solar and wind resources, developing economies often struggle to finance and implement large-scale renewable energy projects at the same scale as their more developed counterparts. This financial challenge not only affects the pace of the energy transition but also limits the potential for these countries to meet their ambitious renewable energy targets.",
+   "avg_logprob": -0.39391308342995346
+  },
+  {
+   "id": 152,
+   "mode": "loose",
+   "question": "What is the cost of capital in emerging markets compared with advanced economies?",
+   "sentence": "This higher cost of capital can lead to increased financing costs for renewable energy projects, making them less economically viable.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "The cost of capital in emerging markets is significantly higher compared to advanced economies. This disparity is a critical factor that hinders the deployment of renewable energy projects in these developing regions. For instance, in 2023, the cost of capital in many emerging markets was estimated to be two to three times higher than in advanced economies. This higher cost of capital can lead to increased financing costs for renewable energy projects, making them less economically viable. As a result, despite having excellent solar and wind resources, developing economies often struggle to finance and implement large-scale renewable energy projects at the same scale as their more developed counterparts. This financial challenge not only affects the pace of the energy transition but also limits the potential for these countries to meet their ambitious renewable energy targets.",
+   "avg_logprob": -0.39391308342995346
+  },
+  {
+   "id": 153,
+   "mode": "loose",
+   "question": "What is the cost of capital in emerging markets compared with advanced economies?",
+   "sentence": "As a result, despite having excellent solar and wind resources, developing economies often struggle to finance and implement large-scale renewable energy projects at the same scale as their more developed counterparts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The cost of capital in emerging markets is significantly higher compared to advanced economies. This disparity is a critical factor that hinders the deployment of renewable energy projects in these developing regions. For instance, in 2023, the cost of capital in many emerging markets was estimated to be two to three times higher than in advanced economies. This higher cost of capital can lead to increased financing costs for renewable energy projects, making them less economically viable. As a result, despite having excellent solar and wind resources, developing economies often struggle to finance and implement large-scale renewable energy projects at the same scale as their more developed counterparts. This financial challenge not only affects the pace of the energy transition but also limits the potential for these countries to meet their ambitious renewable energy targets.",
+   "avg_logprob": -0.39391308342995346
+  },
+  {
+   "id": 154,
+   "mode": "loose",
+   "question": "What is the cost of capital in emerging markets compared with advanced economies?",
+   "sentence": "This financial challenge not only affects the pace of the energy transition but also limits the potential for these countries to meet their ambitious renewable energy targets.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The cost of capital in emerging markets is significantly higher compared to advanced economies. This disparity is a critical factor that hinders the deployment of renewable energy projects in these developing regions. For instance, in 2023, the cost of capital in many emerging markets was estimated to be two to three times higher than in advanced economies. This higher cost of capital can lead to increased financing costs for renewable energy projects, making them less economically viable. As a result, despite having excellent solar and wind resources, developing economies often struggle to finance and implement large-scale renewable energy projects at the same scale as their more developed counterparts. This financial challenge not only affects the pace of the energy transition but also limits the potential for these countries to meet their ambitious renewable energy targets.",
+   "avg_logprob": -0.39391308342995346
+  },
+  {
+   "id": 155,
+   "mode": "loose",
+   "question": "Who won the 2022 football World Cup?",
+   "sentence": "The information provided in the context passages does not contain any details about the 2022 football World Cup.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the context passages does not contain any details about the 2022 football World Cup. The passages focus on renewable energy sources, their production, and policies related to energy transition. Therefore, it is not possible to answer the question regarding the winner of the 2022 football World Cup based on the given context.",
+   "avg_logprob": -0.28076770556574093
+  },
+  {
+   "id": 156,
+   "mode": "loose",
+   "question": "Who won the 2022 football World Cup?",
+   "sentence": "The passages focus on renewable energy sources, their production, and policies related to energy transition.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the context passages does not contain any details about the 2022 football World Cup. The passages focus on renewable energy sources, their production, and policies related to energy transition. Therefore, it is not possible to answer the question regarding the winner of the 2022 football World Cup based on the given context.",
+   "avg_logprob": -0.28076770556574093
+  },
+  {
+   "id": 157,
+   "mode": "loose",
+   "question": "Who won the 2022 football World Cup?",
+   "sentence": "Therefore, it is not possible to answer the question regarding the winner of the 2022 football World Cup based on the given context.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the context passages does not contain any details about the 2022 football World Cup. The passages focus on renewable energy sources, their production, and policies related to energy transition. Therefore, it is not possible to answer the question regarding the winner of the 2022 football World Cup based on the given context.",
+   "avg_logprob": -0.28076770556574093
+  },
+  {
+   "id": 158,
+   "mode": "loose",
+   "question": "How much does a Tesla Model 3 cost?",
+   "sentence": "The information provided in the context passages does not contain any details about the cost of a Tesla Model 3.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the context passages does not contain any details about the cost of a Tesla Model 3. The context focuses on various renewable energy technologies and their applications, including geothermal energy, battery storage, and other energy storage solutions. It does not provide any information regarding the pricing of electric vehicles like the Tesla Model 3. To answer a question about the cost of a Tesla Model 3, one would need to look at automotive pricing information or Tesla's official product pages, which are not covered in the given context.",
+   "avg_logprob": -0.3117549724664237
+  },
+  {
+   "id": 159,
+   "mode": "loose",
+   "question": "How much does a Tesla Model 3 cost?",
+   "sentence": "The context focuses on various renewable energy technologies and their applications, including geothermal energy, battery storage, and other energy storage solutions.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the context passages does not contain any details about the cost of a Tesla Model 3. The context focuses on various renewable energy technologies and their applications, including geothermal energy, battery storage, and other energy storage solutions. It does not provide any information regarding the pricing of electric vehicles like the Tesla Model 3. To answer a question about the cost of a Tesla Model 3, one would need to look at automotive pricing information or Tesla's official product pages, which are not covered in the given context.",
+   "avg_logprob": -0.3117549724664237
+  },
+  {
+   "id": 160,
+   "mode": "loose",
+   "question": "How much does a Tesla Model 3 cost?",
+   "sentence": "It does not provide any information regarding the pricing of electric vehicles like the Tesla Model 3.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the context passages does not contain any details about the cost of a Tesla Model 3. The context focuses on various renewable energy technologies and their applications, including geothermal energy, battery storage, and other energy storage solutions. It does not provide any information regarding the pricing of electric vehicles like the Tesla Model 3. To answer a question about the cost of a Tesla Model 3, one would need to look at automotive pricing information or Tesla's official product pages, which are not covered in the given context.",
+   "avg_logprob": -0.3117549724664237
+  },
+  {
+   "id": 161,
+   "mode": "loose",
+   "question": "How much does a Tesla Model 3 cost?",
+   "sentence": "To answer a question about the cost of a Tesla Model 3, one would need to look at automotive pricing information or Tesla's official product pages, which are not covered in the given context.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the context passages does not contain any details about the cost of a Tesla Model 3. The context focuses on various renewable energy technologies and their applications, including geothermal energy, battery storage, and other energy storage solutions. It does not provide any information regarding the pricing of electric vehicles like the Tesla Model 3. To answer a question about the cost of a Tesla Model 3, one would need to look at automotive pricing information or Tesla's official product pages, which are not covered in the given context.",
+   "avg_logprob": -0.3117549724664237
+  },
+  {
+   "id": 162,
+   "mode": "loose",
+   "question": "What is the capital of Australia and how many solar homes does it have?",
+   "sentence": "The capital of Australia is Canberra.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The capital of Australia is Canberra. In terms of solar homes, Australia has installed solar panels on more than 3.7 million homes, which is approximately one in every three detached houses. This significant number underscores Australia's commitment to renewable energy and its efforts to reduce reliance on fossil fuels.",
+   "avg_logprob": -0.298818609044401
+  },
+  {
+   "id": 163,
+   "mode": "loose",
+   "question": "What is the capital of Australia and how many solar homes does it have?",
+   "sentence": "In terms of solar homes, Australia has installed solar panels on more than 3.7 million homes, which is approximately one in every three detached houses.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The capital of Australia is Canberra. In terms of solar homes, Australia has installed solar panels on more than 3.7 million homes, which is approximately one in every three detached houses. This significant number underscores Australia's commitment to renewable energy and its efforts to reduce reliance on fossil fuels.",
+   "avg_logprob": -0.298818609044401
+  },
+  {
+   "id": 164,
+   "mode": "loose",
+   "question": "What is the capital of Australia and how many solar homes does it have?",
+   "sentence": "This significant number underscores Australia's commitment to renewable energy and its efforts to reduce reliance on fossil fuels.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The capital of Australia is Canberra. In terms of solar homes, Australia has installed solar panels on more than 3.7 million homes, which is approximately one in every three detached houses. This significant number underscores Australia's commitment to renewable energy and its efforts to reduce reliance on fossil fuels.",
+   "avg_logprob": -0.298818609044401
+  },
+  {
+   "id": 165,
+   "mode": "loose",
+   "question": "How much nuclear power capacity was added worldwide in 2023?",
+   "sentence": "The provided context does not contain any specific information regarding the amount of nuclear power capacity added worldwide in 2023.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The provided context does not contain any specific information regarding the amount of nuclear power capacity added worldwide in 2023. Therefore, I cannot provide a precise figure based on the given information. The context focuses on the rapid growth of solar photovoltaic power, including figures on solar capacity additions, costs, and efficiency improvements. It also touches on the significant growth in renewable energy investment and the ambitious targets set by various countries for renewable energy capacity. However, for the exact amount of nuclear power capacity added in 2023, one would need to consult additional sources that specialize in nuclear energy statistics and trends.",
+   "avg_logprob": -0.40424983964960376
+  },
+  {
+   "id": 166,
+   "mode": "loose",
+   "question": "How much nuclear power capacity was added worldwide in 2023?",
+   "sentence": "Therefore, I cannot provide a precise figure based on the given information.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The provided context does not contain any specific information regarding the amount of nuclear power capacity added worldwide in 2023. Therefore, I cannot provide a precise figure based on the given information. The context focuses on the rapid growth of solar photovoltaic power, including figures on solar capacity additions, costs, and efficiency improvements. It also touches on the significant growth in renewable energy investment and the ambitious targets set by various countries for renewable energy capacity. However, for the exact amount of nuclear power capacity added in 2023, one would need to consult additional sources that specialize in nuclear energy statistics and trends.",
+   "avg_logprob": -0.40424983964960376
+  },
+  {
+   "id": 167,
+   "mode": "loose",
+   "question": "How much nuclear power capacity was added worldwide in 2023?",
+   "sentence": "The context focuses on the rapid growth of solar photovoltaic power, including figures on solar capacity additions, costs, and efficiency improvements.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The provided context does not contain any specific information regarding the amount of nuclear power capacity added worldwide in 2023. Therefore, I cannot provide a precise figure based on the given information. The context focuses on the rapid growth of solar photovoltaic power, including figures on solar capacity additions, costs, and efficiency improvements. It also touches on the significant growth in renewable energy investment and the ambitious targets set by various countries for renewable energy capacity. However, for the exact amount of nuclear power capacity added in 2023, one would need to consult additional sources that specialize in nuclear energy statistics and trends.",
+   "avg_logprob": -0.40424983964960376
+  },
+  {
+   "id": 168,
+   "mode": "loose",
+   "question": "How much nuclear power capacity was added worldwide in 2023?",
+   "sentence": "It also touches on the significant growth in renewable energy investment and the ambitious targets set by various countries for renewable energy capacity.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The provided context does not contain any specific information regarding the amount of nuclear power capacity added worldwide in 2023. Therefore, I cannot provide a precise figure based on the given information. The context focuses on the rapid growth of solar photovoltaic power, including figures on solar capacity additions, costs, and efficiency improvements. It also touches on the significant growth in renewable energy investment and the ambitious targets set by various countries for renewable energy capacity. However, for the exact amount of nuclear power capacity added in 2023, one would need to consult additional sources that specialize in nuclear energy statistics and trends.",
+   "avg_logprob": -0.40424983964960376
+  },
+  {
+   "id": 169,
+   "mode": "loose",
+   "question": "How much nuclear power capacity was added worldwide in 2023?",
+   "sentence": "However, for the exact amount of nuclear power capacity added in 2023, one would need to consult additional sources that specialize in nuclear energy statistics and trends.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The provided context does not contain any specific information regarding the amount of nuclear power capacity added worldwide in 2023. Therefore, I cannot provide a precise figure based on the given information. The context focuses on the rapid growth of solar photovoltaic power, including figures on solar capacity additions, costs, and efficiency improvements. It also touches on the significant growth in renewable energy investment and the ambitious targets set by various countries for renewable energy capacity. However, for the exact amount of nuclear power capacity added in 2023, one would need to consult additional sources that specialize in nuclear energy statistics and trends.",
+   "avg_logprob": -0.40424983964960376
+  },
+  {
+   "id": 170,
+   "mode": "loose",
+   "question": "Which country has the largest coal reserves?",
+   "sentence": "The information provided in the given context does not include details about coal reserves or any country's coal reserves.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the given context does not include details about coal reserves or any country's coal reserves. Therefore, I cannot answer which country has the largest coal reserves based on the given information.",
+   "avg_logprob": -0.2345195815180461
+  },
+  {
+   "id": 171,
+   "mode": "loose",
+   "question": "Which country has the largest coal reserves?",
+   "sentence": "Therefore, I cannot answer which country has the largest coal reserves based on the given information.",
+   "label": "filler",
+   "kind": null,
+   "answer": "The information provided in the given context does not include details about coal reserves or any country's coal reserves. Therefore, I cannot answer which country has the largest coal reserves based on the given information.",
+   "avg_logprob": -0.2345195815180461
+  },
+  {
+   "id": 172,
+   "mode": "loose",
+   "question": "What is the lifetime of a wind turbine blade and how many were recycled in 2023?",
+   "sentence": "The lifetime of a wind turbine blade is approximately 20 to 25 years.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The lifetime of a wind turbine blade is approximately 20 to 25 years. In 2023, it is estimated that thousands of these blades would reach the end of their lifecycle, posing significant challenges for recycling. The fiberglass used in the blades is not easily recyclable, leading to environmental concerns. Efforts are being made to develop recycling technologies to address this issue, but the scale of the problem means that the number of blades recycled in 2023 would be relatively small compared to the total number of blades in operation.",
+   "avg_logprob": -0.4217828101370143
+  },
+  {
+   "id": 173,
+   "mode": "loose",
+   "question": "What is the lifetime of a wind turbine blade and how many were recycled in 2023?",
+   "sentence": "In 2023, it is estimated that thousands of these blades would reach the end of their lifecycle, posing significant challenges for recycling.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "The lifetime of a wind turbine blade is approximately 20 to 25 years. In 2023, it is estimated that thousands of these blades would reach the end of their lifecycle, posing significant challenges for recycling. The fiberglass used in the blades is not easily recyclable, leading to environmental concerns. Efforts are being made to develop recycling technologies to address this issue, but the scale of the problem means that the number of blades recycled in 2023 would be relatively small compared to the total number of blades in operation.",
+   "avg_logprob": -0.4217828101370143
+  },
+  {
+   "id": 174,
+   "mode": "loose",
+   "question": "What is the lifetime of a wind turbine blade and how many were recycled in 2023?",
+   "sentence": "The fiberglass used in the blades is not easily recyclable, leading to environmental concerns.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The lifetime of a wind turbine blade is approximately 20 to 25 years. In 2023, it is estimated that thousands of these blades would reach the end of their lifecycle, posing significant challenges for recycling. The fiberglass used in the blades is not easily recyclable, leading to environmental concerns. Efforts are being made to develop recycling technologies to address this issue, but the scale of the problem means that the number of blades recycled in 2023 would be relatively small compared to the total number of blades in operation.",
+   "avg_logprob": -0.4217828101370143
+  },
+  {
+   "id": 175,
+   "mode": "loose",
+   "question": "What is the lifetime of a wind turbine blade and how many were recycled in 2023?",
+   "sentence": "Efforts are being made to develop recycling technologies to address this issue, but the scale of the problem means that the number of blades recycled in 2023 would be relatively small compared to the total number of blades in operation.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The lifetime of a wind turbine blade is approximately 20 to 25 years. In 2023, it is estimated that thousands of these blades would reach the end of their lifecycle, posing significant challenges for recycling. The fiberglass used in the blades is not easily recyclable, leading to environmental concerns. Efforts are being made to develop recycling technologies to address this issue, but the scale of the problem means that the number of blades recycled in 2023 would be relatively small compared to the total number of blades in operation.",
+   "avg_logprob": -0.4217828101370143
+  },
+  {
+   "id": 176,
+   "mode": "loose",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "Perovskite cells have demonstrated impressive efficiency gains compared to traditional silicon cells.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "Perovskite cells have demonstrated impressive efficiency gains compared to traditional silicon cells. In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, which is a significant leap from the initial efficiency levels. By 2024, this company announced a further enhancement to 34.6 percent. In contrast, commercial silicon solar cells typically achieve conversion efficiencies of 20 to 23 percent. This efficiency gap is particularly notable given that the theoretical Shockley-Queisser limit for a single-junction silicon cell is about 29.4 percent. The rapid progress in perovskite cell technology, especially when combined with silicon, suggests that perovskite cells could potentially surpass the Shockley-Queisser limit, making them a promising area of research and development for achieving higher solar energy conversion rates.",
+   "avg_logprob": -0.3589263829969857
+  },
+  {
+   "id": 177,
+   "mode": "loose",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, which is a significant leap from the initial efficiency levels.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "Perovskite cells have demonstrated impressive efficiency gains compared to traditional silicon cells. In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, which is a significant leap from the initial efficiency levels. By 2024, this company announced a further enhancement to 34.6 percent. In contrast, commercial silicon solar cells typically achieve conversion efficiencies of 20 to 23 percent. This efficiency gap is particularly notable given that the theoretical Shockley-Queisser limit for a single-junction silicon cell is about 29.4 percent. The rapid progress in perovskite cell technology, especially when combined with silicon, suggests that perovskite cells could potentially surpass the Shockley-Queisser limit, making them a promising area of research and development for achieving higher solar energy conversion rates.",
+   "avg_logprob": -0.3589263829969857
+  },
+  {
+   "id": 178,
+   "mode": "loose",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "By 2024, this company announced a further enhancement to 34.6 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Perovskite cells have demonstrated impressive efficiency gains compared to traditional silicon cells. In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, which is a significant leap from the initial efficiency levels. By 2024, this company announced a further enhancement to 34.6 percent. In contrast, commercial silicon solar cells typically achieve conversion efficiencies of 20 to 23 percent. This efficiency gap is particularly notable given that the theoretical Shockley-Queisser limit for a single-junction silicon cell is about 29.4 percent. The rapid progress in perovskite cell technology, especially when combined with silicon, suggests that perovskite cells could potentially surpass the Shockley-Queisser limit, making them a promising area of research and development for achieving higher solar energy conversion rates.",
+   "avg_logprob": -0.3589263829969857
+  },
+  {
+   "id": 179,
+   "mode": "loose",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "In contrast, commercial silicon solar cells typically achieve conversion efficiencies of 20 to 23 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Perovskite cells have demonstrated impressive efficiency gains compared to traditional silicon cells. In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, which is a significant leap from the initial efficiency levels. By 2024, this company announced a further enhancement to 34.6 percent. In contrast, commercial silicon solar cells typically achieve conversion efficiencies of 20 to 23 percent. This efficiency gap is particularly notable given that the theoretical Shockley-Queisser limit for a single-junction silicon cell is about 29.4 percent. The rapid progress in perovskite cell technology, especially when combined with silicon, suggests that perovskite cells could potentially surpass the Shockley-Queisser limit, making them a promising area of research and development for achieving higher solar energy conversion rates.",
+   "avg_logprob": -0.3589263829969857
+  },
+  {
+   "id": 180,
+   "mode": "loose",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "This efficiency gap is particularly notable given that the theoretical Shockley-Queisser limit for a single-junction silicon cell is about 29.4 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "Perovskite cells have demonstrated impressive efficiency gains compared to traditional silicon cells. In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, which is a significant leap from the initial efficiency levels. By 2024, this company announced a further enhancement to 34.6 percent. In contrast, commercial silicon solar cells typically achieve conversion efficiencies of 20 to 23 percent. This efficiency gap is particularly notable given that the theoretical Shockley-Queisser limit for a single-junction silicon cell is about 29.4 percent. The rapid progress in perovskite cell technology, especially when combined with silicon, suggests that perovskite cells could potentially surpass the Shockley-Queisser limit, making them a promising area of research and development for achieving higher solar energy conversion rates.",
+   "avg_logprob": -0.3589263829969857
+  },
+  {
+   "id": 181,
+   "mode": "loose",
+   "question": "How does the efficiency of perovskite cells compare with silicon cells?",
+   "sentence": "The rapid progress in perovskite cell technology, especially when combined with silicon, suggests that perovskite cells could potentially surpass the Shockley-Queisser limit, making them a promising area of research and development for achieving higher solar energy conversion rates.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "Perovskite cells have demonstrated impressive efficiency gains compared to traditional silicon cells. In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, which is a significant leap from the initial efficiency levels. By 2024, this company announced a further enhancement to 34.6 percent. In contrast, commercial silicon solar cells typically achieve conversion efficiencies of 20 to 23 percent. This efficiency gap is particularly notable given that the theoretical Shockley-Queisser limit for a single-junction silicon cell is about 29.4 percent. The rapid progress in perovskite cell technology, especially when combined with silicon, suggests that perovskite cells could potentially surpass the Shockley-Queisser limit, making them a promising area of research and development for achieving higher solar energy conversion rates.",
+   "avg_logprob": -0.3589263829969857
+  },
+  {
+   "id": 182,
+   "mode": "loose",
+   "question": "How much new solar capacity was added globally in 2023?",
+   "sentence": "In 2023, the global solar photovoltaic industry saw a significant expansion with the addition of approximately 345 gigawatts (GW) of new solar capacity.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the global solar photovoltaic industry saw a significant expansion with the addition of approximately 345 gigawatts (GW) of new solar capacity. This marked a substantial increase from the previous year, reflecting the rapid growth and investment in renewable energy sources. The United States and India were notable contributors to this growth, with the U.S. adding about 33 gigawatts and India adding roughly 7.5 gigawatts. This level of capacity addition underscores the global commitment to renewable energy and the industry's ability to meet ambitious targets set by various governments and international organizations.",
+   "avg_logprob": -0.38534507783665456
+  },
+  {
+   "id": 183,
+   "mode": "loose",
+   "question": "How much new solar capacity was added globally in 2023?",
+   "sentence": "This marked a substantial increase from the previous year, reflecting the rapid growth and investment in renewable energy sources.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "In 2023, the global solar photovoltaic industry saw a significant expansion with the addition of approximately 345 gigawatts (GW) of new solar capacity. This marked a substantial increase from the previous year, reflecting the rapid growth and investment in renewable energy sources. The United States and India were notable contributors to this growth, with the U.S. adding about 33 gigawatts and India adding roughly 7.5 gigawatts. This level of capacity addition underscores the global commitment to renewable energy and the industry's ability to meet ambitious targets set by various governments and international organizations.",
+   "avg_logprob": -0.38534507783665456
+  },
+  {
+   "id": 184,
+   "mode": "loose",
+   "question": "How much new solar capacity was added globally in 2023?",
+   "sentence": "The United States and India were notable contributors to this growth, with the U.S. adding about 33 gigawatts and India adding roughly 7.5 gigawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, the global solar photovoltaic industry saw a significant expansion with the addition of approximately 345 gigawatts (GW) of new solar capacity. This marked a substantial increase from the previous year, reflecting the rapid growth and investment in renewable energy sources. The United States and India were notable contributors to this growth, with the U.S. adding about 33 gigawatts and India adding roughly 7.5 gigawatts. This level of capacity addition underscores the global commitment to renewable energy and the industry's ability to meet ambitious targets set by various governments and international organizations.",
+   "avg_logprob": -0.38534507783665456
+  },
+  {
+   "id": 185,
+   "mode": "loose",
+   "question": "How much new solar capacity was added globally in 2023?",
+   "sentence": "This level of capacity addition underscores the global commitment to renewable energy and the industry's ability to meet ambitious targets set by various governments and international organizations.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, the global solar photovoltaic industry saw a significant expansion with the addition of approximately 345 gigawatts (GW) of new solar capacity. This marked a substantial increase from the previous year, reflecting the rapid growth and investment in renewable energy sources. The United States and India were notable contributors to this growth, with the U.S. adding about 33 gigawatts and India adding roughly 7.5 gigawatts. This level of capacity addition underscores the global commitment to renewable energy and the industry's ability to meet ambitious targets set by various governments and international organizations.",
+   "avg_logprob": -0.38534507783665456
+  },
+  {
+   "id": 186,
+   "mode": "loose",
+   "question": "What is the Bhadla Solar Park's capacity?",
+   "sentence": "The Bhadla Solar Park in Rajasthan, India, has a capacity of 2,245 megawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Bhadla Solar Park in Rajasthan, India, has a capacity of 2,245 megawatts. This solar park is a significant addition to India's renewable energy portfolio, showcasing the country's growing commitment to solar power. Established in 2017, the Bhadla Solar Park not only serves as a testament to India's rapid expansion in solar energy but also highlights the country's potential to become a global leader in renewable energy. Its capacity of 2,245 megawatts is substantial, equivalent to powering about 2.2 million homes with solar energy.",
+   "avg_logprob": -0.3799238905465962
+  },
+  {
+   "id": 187,
+   "mode": "loose",
+   "question": "What is the Bhadla Solar Park's capacity?",
+   "sentence": "This solar park is a significant addition to India's renewable energy portfolio, showcasing the country's growing commitment to solar power.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Bhadla Solar Park in Rajasthan, India, has a capacity of 2,245 megawatts. This solar park is a significant addition to India's renewable energy portfolio, showcasing the country's growing commitment to solar power. Established in 2017, the Bhadla Solar Park not only serves as a testament to India's rapid expansion in solar energy but also highlights the country's potential to become a global leader in renewable energy. Its capacity of 2,245 megawatts is substantial, equivalent to powering about 2.2 million homes with solar energy.",
+   "avg_logprob": -0.3799238905465962
+  },
+  {
+   "id": 188,
+   "mode": "loose",
+   "question": "What is the Bhadla Solar Park's capacity?",
+   "sentence": "Established in 2017, the Bhadla Solar Park not only serves as a testament to India's rapid expansion in solar energy but also highlights the country's potential to become a global leader in renewable energy.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The Bhadla Solar Park in Rajasthan, India, has a capacity of 2,245 megawatts. This solar park is a significant addition to India's renewable energy portfolio, showcasing the country's growing commitment to solar power. Established in 2017, the Bhadla Solar Park not only serves as a testament to India's rapid expansion in solar energy but also highlights the country's potential to become a global leader in renewable energy. Its capacity of 2,245 megawatts is substantial, equivalent to powering about 2.2 million homes with solar energy.",
+   "avg_logprob": -0.3799238905465962
+  },
+  {
+   "id": 189,
+   "mode": "loose",
+   "question": "What is the Bhadla Solar Park's capacity?",
+   "sentence": "Its capacity of 2,245 megawatts is substantial, equivalent to powering about 2.2 million homes with solar energy.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The Bhadla Solar Park in Rajasthan, India, has a capacity of 2,245 megawatts. This solar park is a significant addition to India's renewable energy portfolio, showcasing the country's growing commitment to solar power. Established in 2017, the Bhadla Solar Park not only serves as a testament to India's rapid expansion in solar energy but also highlights the country's potential to become a global leader in renewable energy. Its capacity of 2,245 megawatts is substantial, equivalent to powering about 2.2 million homes with solar energy.",
+   "avg_logprob": -0.3799238905465962
+  },
+  {
+   "id": 190,
+   "mode": "loose",
+   "question": "What efficiency did LONGi report for a perovskite-silicon tandem cell in 2023?",
+   "sentence": "In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell. This achievement represents a significant advancement in the field of solar cell technology, pushing the boundaries of what is possible with tandem designs that combine different materials to achieve higher efficiencies. Tandem cells, which stack multiple layers of different materials, have become a focal point of research due to their potential to approach the theoretical Shockley-Queisser limit of about 29.4 percent for a single-junction silicon cell. This efficiency is crucial for improving the overall performance and cost-effectiveness of solar energy systems, as it translates to more efficient conversion of sunlight into electricity.",
+   "avg_logprob": -0.36294706964118606
+  },
+  {
+   "id": 191,
+   "mode": "loose",
+   "question": "What efficiency did LONGi report for a perovskite-silicon tandem cell in 2023?",
+   "sentence": "This achievement represents a significant advancement in the field of solar cell technology, pushing the boundaries of what is possible with tandem designs that combine different materials to achieve higher efficiencies.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell. This achievement represents a significant advancement in the field of solar cell technology, pushing the boundaries of what is possible with tandem designs that combine different materials to achieve higher efficiencies. Tandem cells, which stack multiple layers of different materials, have become a focal point of research due to their potential to approach the theoretical Shockley-Queisser limit of about 29.4 percent for a single-junction silicon cell. This efficiency is crucial for improving the overall performance and cost-effectiveness of solar energy systems, as it translates to more efficient conversion of sunlight into electricity.",
+   "avg_logprob": -0.36294706964118606
+  },
+  {
+   "id": 192,
+   "mode": "loose",
+   "question": "What efficiency did LONGi report for a perovskite-silicon tandem cell in 2023?",
+   "sentence": "Tandem cells, which stack multiple layers of different materials, have become a focal point of research due to their potential to approach the theoretical Shockley-Queisser limit of about 29.4 percent for a single-junction silicon cell.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell. This achievement represents a significant advancement in the field of solar cell technology, pushing the boundaries of what is possible with tandem designs that combine different materials to achieve higher efficiencies. Tandem cells, which stack multiple layers of different materials, have become a focal point of research due to their potential to approach the theoretical Shockley-Queisser limit of about 29.4 percent for a single-junction silicon cell. This efficiency is crucial for improving the overall performance and cost-effectiveness of solar energy systems, as it translates to more efficient conversion of sunlight into electricity.",
+   "avg_logprob": -0.36294706964118606
+  },
+  {
+   "id": 193,
+   "mode": "loose",
+   "question": "What efficiency did LONGi report for a perovskite-silicon tandem cell in 2023?",
+   "sentence": "This efficiency is crucial for improving the overall performance and cost-effectiveness of solar energy systems, as it translates to more efficient conversion of sunlight into electricity.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell. This achievement represents a significant advancement in the field of solar cell technology, pushing the boundaries of what is possible with tandem designs that combine different materials to achieve higher efficiencies. Tandem cells, which stack multiple layers of different materials, have become a focal point of research due to their potential to approach the theoretical Shockley-Queisser limit of about 29.4 percent for a single-junction silicon cell. This efficiency is crucial for improving the overall performance and cost-effectiveness of solar energy systems, as it translates to more efficient conversion of sunlight into electricity.",
+   "avg_logprob": -0.36294706964118606
+  },
+  {
+   "id": 194,
+   "mode": "loose",
+   "question": "How much did the levelized cost of utility-scale solar fall between 2010 and 2023?",
+   "sentence": "The levelized cost of utility-scale solar photovoltaic fell dramatically between 2010 and 2023.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The levelized cost of utility-scale solar photovoltaic fell dramatically between 2010 and 2023. According to the International Renewable Energy Agency, the global weighted average levelized cost of electricity for utility-scale solar photovoltaic dropped from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, marking a decline of roughly 89 percent. This significant reduction in cost is a testament to the rapid advancements and economies of scale in the solar industry, driven by technological improvements and increased manufacturing efficiencies.",
+   "avg_logprob": -0.1597188737768837
+  },
+  {
+   "id": 195,
+   "mode": "loose",
+   "question": "How much did the levelized cost of utility-scale solar fall between 2010 and 2023?",
+   "sentence": "According to the International Renewable Energy Agency, the global weighted average levelized cost of electricity for utility-scale solar photovoltaic dropped from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, marking a decline of roughly 89 percent.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The levelized cost of utility-scale solar photovoltaic fell dramatically between 2010 and 2023. According to the International Renewable Energy Agency, the global weighted average levelized cost of electricity for utility-scale solar photovoltaic dropped from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, marking a decline of roughly 89 percent. This significant reduction in cost is a testament to the rapid advancements and economies of scale in the solar industry, driven by technological improvements and increased manufacturing efficiencies.",
+   "avg_logprob": -0.1597188737768837
+  },
+  {
+   "id": 196,
+   "mode": "loose",
+   "question": "How much did the levelized cost of utility-scale solar fall between 2010 and 2023?",
+   "sentence": "This significant reduction in cost is a testament to the rapid advancements and economies of scale in the solar industry, driven by technological improvements and increased manufacturing efficiencies.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The levelized cost of utility-scale solar photovoltaic fell dramatically between 2010 and 2023. According to the International Renewable Energy Agency, the global weighted average levelized cost of electricity for utility-scale solar photovoltaic dropped from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, marking a decline of roughly 89 percent. This significant reduction in cost is a testament to the rapid advancements and economies of scale in the solar industry, driven by technological improvements and increased manufacturing efficiencies.",
+   "avg_logprob": -0.1597188737768837
+  },
+  {
+   "id": 197,
+   "mode": "loose",
+   "question": "What was global installed wind capacity at the end of 2023?",
+   "sentence": "At the end of 2023, global installed wind capacity reached about 1,017 gigawatts, according to the Global Wind Energy Council.",
+   "label": "supported",
+   "kind": null,
+   "answer": "At the end of 2023, global installed wind capacity reached about 1,017 gigawatts, according to the Global Wind Energy Council. This figure represents a significant milestone in the growth of wind energy as a renewable electricity source, surpassing the previous year's record of 117 gigawatts of new installations.",
+   "avg_logprob": -0.21082078629224174
+  },
+  {
+   "id": 198,
+   "mode": "loose",
+   "question": "What was global installed wind capacity at the end of 2023?",
+   "sentence": "This figure represents a significant milestone in the growth of wind energy as a renewable electricity source, surpassing the previous year's record of 117 gigawatts of new installations.",
+   "label": "unsupported",
+   "kind": "contradicts_or_miscopies_source",
+   "answer": "At the end of 2023, global installed wind capacity reached about 1,017 gigawatts, according to the Global Wind Energy Council. This figure represents a significant milestone in the growth of wind energy as a renewable electricity source, surpassing the previous year's record of 117 gigawatts of new installations.",
+   "avg_logprob": -0.21082078629224174
+  },
+  {
+   "id": 199,
+   "mode": "loose",
+   "question": "What is the rotor diameter of the Vestas V236-15.0 MW turbine?",
+   "sentence": "The Vestas V236-15.0 MW turbine has a rotor diameter of 236 meters.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Vestas V236-15.0 MW turbine has a rotor diameter of 236 meters. This turbine represents a significant advancement in offshore wind technology, showcasing the continued evolution of wind turbine design to harness stronger and more consistent winds at sea. The Vestas V236-15.0 MW turbine is part of a trend towards larger and more efficient offshore wind turbines, which are crucial for meeting the growing demand for renewable energy sources.",
+   "avg_logprob": -0.3285098075977101
+  },
+  {
+   "id": 200,
+   "mode": "loose",
+   "question": "What is the rotor diameter of the Vestas V236-15.0 MW turbine?",
+   "sentence": "This turbine represents a significant advancement in offshore wind technology, showcasing the continued evolution of wind turbine design to harness stronger and more consistent winds at sea.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Vestas V236-15.0 MW turbine has a rotor diameter of 236 meters. This turbine represents a significant advancement in offshore wind technology, showcasing the continued evolution of wind turbine design to harness stronger and more consistent winds at sea. The Vestas V236-15.0 MW turbine is part of a trend towards larger and more efficient offshore wind turbines, which are crucial for meeting the growing demand for renewable energy sources.",
+   "avg_logprob": -0.3285098075977101
+  },
+  {
+   "id": 201,
+   "mode": "loose",
+   "question": "What is the rotor diameter of the Vestas V236-15.0 MW turbine?",
+   "sentence": "The Vestas V236-15.0 MW turbine is part of a trend towards larger and more efficient offshore wind turbines, which are crucial for meeting the growing demand for renewable energy sources.",
+   "label": "ambiguous",
+   "kind": null,
+   "answer": "The Vestas V236-15.0 MW turbine has a rotor diameter of 236 meters. This turbine represents a significant advancement in offshore wind technology, showcasing the continued evolution of wind turbine design to harness stronger and more consistent winds at sea. The Vestas V236-15.0 MW turbine is part of a trend towards larger and more efficient offshore wind turbines, which are crucial for meeting the growing demand for renewable energy sources.",
+   "avg_logprob": -0.3285098075977101
+  },
+  {
+   "id": 202,
+   "mode": "loose",
+   "question": "What share of Denmark's electricity came from wind in 2023?",
+   "sentence": "In 2023, wind provided roughly 58 percent of electricity generation in Denmark, which is the highest share among large markets.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, wind provided roughly 58 percent of electricity generation in Denmark, which is the highest share among large markets. This significant contribution underscores Denmark's commitment to renewable energy and its position as a leader in wind energy production. Denmark's strong reliance on wind power is part of a broader trend in the European Union, where wind and solar together generated more electricity than natural gas for the first time in 2023. This achievement highlights the increasing importance of wind energy in meeting global electricity demands, particularly in regions with favorable wind resources and supportive government policies.",
+   "avg_logprob": -0.38008526822149663
+  },
+  {
+   "id": 203,
+   "mode": "loose",
+   "question": "What share of Denmark's electricity came from wind in 2023?",
+   "sentence": "This significant contribution underscores Denmark's commitment to renewable energy and its position as a leader in wind energy production.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, wind provided roughly 58 percent of electricity generation in Denmark, which is the highest share among large markets. This significant contribution underscores Denmark's commitment to renewable energy and its position as a leader in wind energy production. Denmark's strong reliance on wind power is part of a broader trend in the European Union, where wind and solar together generated more electricity than natural gas for the first time in 2023. This achievement highlights the increasing importance of wind energy in meeting global electricity demands, particularly in regions with favorable wind resources and supportive government policies.",
+   "avg_logprob": -0.38008526822149663
+  },
+  {
+   "id": 204,
+   "mode": "loose",
+   "question": "What share of Denmark's electricity came from wind in 2023?",
+   "sentence": "Denmark's strong reliance on wind power is part of a broader trend in the European Union, where wind and solar together generated more electricity than natural gas for the first time in 2023.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, wind provided roughly 58 percent of electricity generation in Denmark, which is the highest share among large markets. This significant contribution underscores Denmark's commitment to renewable energy and its position as a leader in wind energy production. Denmark's strong reliance on wind power is part of a broader trend in the European Union, where wind and solar together generated more electricity than natural gas for the first time in 2023. This achievement highlights the increasing importance of wind energy in meeting global electricity demands, particularly in regions with favorable wind resources and supportive government policies.",
+   "avg_logprob": -0.38008526822149663
+  },
+  {
+   "id": 205,
+   "mode": "loose",
+   "question": "What share of Denmark's electricity came from wind in 2023?",
+   "sentence": "This achievement highlights the increasing importance of wind energy in meeting global electricity demands, particularly in regions with favorable wind resources and supportive government policies.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "In 2023, wind provided roughly 58 percent of electricity generation in Denmark, which is the highest share among large markets. This significant contribution underscores Denmark's commitment to renewable energy and its position as a leader in wind energy production. Denmark's strong reliance on wind power is part of a broader trend in the European Union, where wind and solar together generated more electricity than natural gas for the first time in 2023. This achievement highlights the increasing importance of wind energy in meeting global electricity demands, particularly in regions with favorable wind resources and supportive government policies.",
+   "avg_logprob": -0.38008526822149663
+  },
+  {
+   "id": 206,
+   "mode": "loose",
+   "question": "What capacity does the Hornsea 2 wind farm have?",
+   "sentence": "The Hornsea 2 wind farm, which is located off the Yorkshire coast in the United Kingdom, has a capacity of 1.32 gigawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Hornsea 2 wind farm, which is located off the Yorkshire coast in the United Kingdom, has a capacity of 1.32 gigawatts. This wind farm was completed in 2022 and is considered a significant milestone in the development of offshore wind energy. Its substantial capacity underscores the growing importance of offshore wind in meeting global energy demands, particularly in regions with strong and consistent winds.",
+   "avg_logprob": -0.3446890238797342
+  },
+  {
+   "id": 207,
+   "mode": "loose",
+   "question": "What capacity does the Hornsea 2 wind farm have?",
+   "sentence": "This wind farm was completed in 2022 and is considered a significant milestone in the development of offshore wind energy.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The Hornsea 2 wind farm, which is located off the Yorkshire coast in the United Kingdom, has a capacity of 1.32 gigawatts. This wind farm was completed in 2022 and is considered a significant milestone in the development of offshore wind energy. Its substantial capacity underscores the growing importance of offshore wind in meeting global energy demands, particularly in regions with strong and consistent winds.",
+   "avg_logprob": -0.3446890238797342
+  },
+  {
+   "id": 208,
+   "mode": "loose",
+   "question": "What capacity does the Hornsea 2 wind farm have?",
+   "sentence": "Its substantial capacity underscores the growing importance of offshore wind in meeting global energy demands, particularly in regions with strong and consistent winds.",
+   "label": "unsupported",
+   "kind": "commentary_or_inference",
+   "answer": "The Hornsea 2 wind farm, which is located off the Yorkshire coast in the United Kingdom, has a capacity of 1.32 gigawatts. This wind farm was completed in 2022 and is considered a significant milestone in the development of offshore wind energy. Its substantial capacity underscores the growing importance of offshore wind in meeting global energy demands, particularly in regions with strong and consistent winds.",
+   "avg_logprob": -0.3446890238797342
+  },
+  {
+   "id": 209,
+   "mode": "loose",
+   "question": "What is the installed capacity of the Three Gorges Dam?",
+   "sentence": "The installed capacity of the Three Gorges Dam is 22,500 megawatts.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The installed capacity of the Three Gorges Dam is 22,500 megawatts. This massive hydroelectric project, located on the Yangtze River in China, is the largest in the world and was fully commissioned in 2012. The dam's capacity is equivalent to powering millions of homes, and it typically generates between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020. Its construction began in 1994 and represents a significant contribution to China's renewable energy portfolio, which is the largest producer of hydropower globally.",
+   "avg_logprob": -0.27630646986941804
+  },
+  {
+   "id": 210,
+   "mode": "loose",
+   "question": "What is the installed capacity of the Three Gorges Dam?",
+   "sentence": "This massive hydroelectric project, located on the Yangtze River in China, is the largest in the world and was fully commissioned in 2012.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The installed capacity of the Three Gorges Dam is 22,500 megawatts. This massive hydroelectric project, located on the Yangtze River in China, is the largest in the world and was fully commissioned in 2012. The dam's capacity is equivalent to powering millions of homes, and it typically generates between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020. Its construction began in 1994 and represents a significant contribution to China's renewable energy portfolio, which is the largest producer of hydropower globally.",
+   "avg_logprob": -0.27630646986941804
+  },
+  {
+   "id": 211,
+   "mode": "loose",
+   "question": "What is the installed capacity of the Three Gorges Dam?",
+   "sentence": "The dam's capacity is equivalent to powering millions of homes, and it typically generates between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020.",
+   "label": "unsupported",
+   "kind": "invented_specific",
+   "answer": "The installed capacity of the Three Gorges Dam is 22,500 megawatts. This massive hydroelectric project, located on the Yangtze River in China, is the largest in the world and was fully commissioned in 2012. The dam's capacity is equivalent to powering millions of homes, and it typically generates between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020. Its construction began in 1994 and represents a significant contribution to China's renewable energy portfolio, which is the largest producer of hydropower globally.",
+   "avg_logprob": -0.27630646986941804
+  },
+  {
+   "id": 212,
+   "mode": "loose",
+   "question": "What is the installed capacity of the Three Gorges Dam?",
+   "sentence": "Its construction began in 1994 and represents a significant contribution to China's renewable energy portfolio, which is the largest producer of hydropower globally.",
+   "label": "supported",
+   "kind": null,
+   "answer": "The installed capacity of the Three Gorges Dam is 22,500 megawatts. This massive hydroelectric project, located on the Yangtze River in China, is the largest in the world and was fully commissioned in 2012. The dam's capacity is equivalent to powering millions of homes, and it typically generates between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020. Its construction began in 1994 and represents a significant contribution to China's renewable energy portfolio, which is the largest producer of hydropower globally.",
+   "avg_logprob": -0.27630646986941804
+  },
+  {
+   "id": 213,
+   "mode": "loose",
+   "question": "What share of global electricity did hydropower generate in 2023?",
+   "sentence": "In 2023, hydropower generated approximately 14 percent of global electricity, according to the International Energy Agency.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, hydropower generated approximately 14 percent of global electricity, according to the International Energy Agency. This figure underscores the significant role that hydropower plays in the global energy mix, particularly as the oldest and largest source of renewable electricity.",
+   "avg_logprob": -0.2001358237877784
+  },
+  {
+   "id": 214,
+   "mode": "loose",
+   "question": "What share of global electricity did hydropower generate in 2023?",
+   "sentence": "This figure underscores the significant role that hydropower plays in the global energy mix, particularly as the oldest and largest source of renewable electricity.",
+   "label": "supported",
+   "kind": null,
+   "answer": "In 2023, hydropower generated approximately 14 percent of global electricity, according to the International Energy Agency. This figure underscores the significant role that hydropower plays in the global energy mix, particularly as the oldest and largest source of renewable electricity.",
+   "avg_logprob": -0.2001358237877784
+  }
+ ]
+}
