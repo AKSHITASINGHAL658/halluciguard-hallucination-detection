@@ -1,0 +1,13 @@
+{
+  "ollama": {
+    "model": "qwen2.5:3b",
+    "n_questions": 22,
+    "n_failed": 0,
+    "n_sentences": 30,
+    "hallucination_rate": 0.2,
+    "avg_trust": 0.879072912002934,
+    "avg_token_prob": 0.9367321910213924,
+    "avg_latency_s": 4.390535972335122,
+    "api_calls": 22
+  }
+}
