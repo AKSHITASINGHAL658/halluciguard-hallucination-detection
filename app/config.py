@@ -25,8 +25,8 @@ USE_LOGPROBS = _env_bool("USE_LOGPROBS", False)  # current Gemini models reject 
 LLM_CACHE = _env_bool("LLM_CACHE", True)
 LLM_CACHE_DIR = BASE_DIR / "cache" / "llm"
 
-DB_URL = f"sqlite:///{BASE_DIR / 'app.db'}"
-CHROMA_DIR = str(BASE_DIR / "chroma")
+DB_URL = os.getenv("DB_URL") or f"sqlite:///{BASE_DIR / 'app.db'}"
+CHROMA_DIR = os.getenv("CHROMA_DIR") or str(BASE_DIR / "chroma")
 CHROMA_COLLECTION = "halluciguard_chunks"
 RAW_DOCS_DIR = BASE_DIR / "data" / "raw_docs"
 EVAL_SET_PATH = BASE_DIR / "data" / "eval" / "qa_eval_set.json"
