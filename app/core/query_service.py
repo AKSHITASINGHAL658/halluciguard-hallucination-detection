@@ -7,8 +7,8 @@ from app import config
 from app.core.attention_extractor import top_contributing_tokens
 from app.core import adversarial_agent, rag_pipeline
 from app.core.rag_pipeline import run_pipeline
-from app.core.sentence_localizer import is_filler, localize_hallucinations, split_sentences
-from app.core.span_checker import find_wrong_spans
+from app.core.sentence_localizer import split_sentences
+from app.core.verification import verify_sentences
 from app.core.trust_engine import (aggregate_trust, doc_score, entity_score, sentence_score,
                                    token_prob_component)
 from app.models import Chunk, Document, Entity, Query, Response, ResponseSentence, TrustScore
@@ -63,18 +63,9 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
     db.add(resp)
     db.flush()
 
-    loc = localize_hallucinations(split_sentences(result["answer"]), result["pruned"])
+    loc = verify_sentences(split_sentences(result["answer"]), result["pruned"])
     for s in loc:
-        s["is_filler"] = is_filler(s["text"])
-        if s["is_filler"]:  # no checkable claim: never a hallucination, excluded from scoring below
-            s["is_hallucination"] = False
-        nli_flagged = s["is_hallucination"]
-        spans, ref = ([], None) if s["is_filler"] else find_wrong_spans(
-            s["text"], result["pruned"], s["best_chunk_id"], s["max_entailment"])
-        s["wrong_spans"] = spans
-        if spans and ref:  # numbers/names the source doesn't back up: flag the sentence, show the passage it is about
-            s["is_hallucination"] = True
-            s["best_chunk_id"], s["best_chunk_text"] = ref["chunk_id"], ref["text"]
+        spans, nli_flagged = s["wrong_spans"], s["nli_flagged"]
         flagged = nli_flagged and s["best_chunk_text"]  # attention explains NLI rejections only
         db.add(ResponseSentence(
             response_id=resp.id, sentence_index=s["index"], text=s["text"], nli_label=s["label"],
