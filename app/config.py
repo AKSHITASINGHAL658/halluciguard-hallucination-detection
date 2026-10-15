@@ -36,18 +36,6 @@ CHUNK_WORDS = 250
 CHUNK_OVERLAP = 40
 RETRIEVE_K = 6
 DEFAULT_AUTHORITY = 0.8
-# Source authority (0-1) per document file, used by the document-level trust score. Assigned by source type:
-# documents built mainly on official statistics and intergovernmental reports rank higher; documents that mix in
-# vendor targets and forward-looking claims rank lower. These are judgement values: edit them, then run
-# scripts/update_authority.py to apply them to an existing database.
-DOC_AUTHORITY = {
-    "renewable_policy_investment.txt": 0.90,  # IEA, IRENA, BloombergNEF, COP28, EU and US legislation
-    "solar_power.txt": 0.85,                  # IRENA statistics plus company lab-efficiency claims
-    "wind_power.txt": 0.85,                   # GWEC statistics plus manufacturer specifications
-    "hydropower.txt": 0.85,                   # IEA statistics and well-documented plants
-    "geothermal_energy.txt": 0.80,            # IRENA statistics plus pilot projects and DOE targets
-    "energy_storage.txt": 0.75,               # market surveys plus vendor targets and forecasts
-}
 
 # MI pruning
 PRUNE_KEEP_RATIO = 0.5
