@@ -16,8 +16,10 @@ def adv_design_fig():
 
 
 def results_fig():
-    items = [("Negation", 1.0, "#16a34a"), ("Stale\nfact", 1.0, "#16a34a"), ("Noise", 1.0, "#16a34a"), ("LLM\ncontradiction", 0.208, "#d97706"), ("False positives\n(control)", 0.167, "#dc2626")]
-    return svg_bars(items, "Adversarial results (NLI alone, 120 tests): detection rate (higher = better), false-positive rate (lower = better)", 540, 220, unit_pct=True)
+    n, f = "#2563eb", "#7c3aed"
+    items = [("Negation\nNLI", 1.0, n), ("Negation\nfull", 1.0, f), ("Stale\nNLI", 1.0, n), ("Stale\nfull", 1.0, f), ("Noise\nNLI", 1.0, n), ("Noise\nfull", 1.0, f),
+             ("LLM\nNLI", 0.208, n), ("LLM\nfull", 0.292, f), ("False pos.\nNLI", 0.167, "#dc2626"), ("False pos.\nfull", 0.208, "#f87171")]
+    return svg_bars(items, "Adversarial results, 120 tests: NLI alone (blue) vs full pipeline (purple); detection higher = better, false positives lower = better", 560, 220, unit_pct=True, label_size=7.5)
 
 
 def prec_fig():
@@ -64,8 +66,8 @@ def build():
     s.append(h2("15.5 Why not corrupt the documents and ask normal questions?"))
     s.append(p("That measures nothing: the generator would faithfully repeat the corrupted text, and NLI would correctly say the (corrupted) source supports it. Comparing corrupted sentences against the <b>clean</b> source is what makes the test meaningful."))
     s.append(h2("15.6 Interpreting the results"))
-    s.append(p("<b>Important:</b> this test runs <b>NLI alone</b>. It does not use claim splitting or the number and name check, so it measures the base checker, not the whole pipeline (the labelled-set evaluation in section 18.3 measures the full pipeline)."))
-    s.append(p("LLM-written contradictions were detected only <b>21%</b> of the time. Two explanations, and both may be true:"))
+    s.append(p("Every corrupted sentence is scored <b>twice</b>: with <b>NLI alone</b> (the base checker) and with the <b>full pipeline</b> (claim splitting, the number and name check and filler logic, using the clean chunk as the only evidence). Both give 100% on negation, changed numbers and noise. On LLM-written contradictions NLI alone detects <b>21%</b> and the full pipeline <b>29%</b>; the false-positive rate on unchanged sentences is 16.7% for NLI alone and 20.8% for the full pipeline: the extra checks catch a little more and flag a little more."))
+    s.append(p("LLM-written contradictions are detected only 21-29% of the time. Two explanations, and both may be true:"))
     s.append(ul(["<b>The attacks are weak:</b> the small 3B model often wrote near-paraphrases (&#8220;approximately&#8221;, a small year change) instead of real contradictions; a &#8220;contradiction&#8221; that does not contradict is correctly passed by the checker.",
                  "<b>The checker is weak on subtle changes:</b> fluent rewrites with a small shift in meaning are genuinely harder for NLI than obvious negations."]))
     s.append(box("care", "Be careful", "Until someone reads the attack sentences and marks which are real contradictions, you cannot say how much of the 21% is due to each cause. Say: &#8220;Detection on LLM-written attacks was 21%; many rewrites were near-paraphrases, so this test is weak.&#8221;"))
@@ -108,9 +110,10 @@ def build():
         ["Average trust", "0.90", "Most answers well supported"],
         ["Average token probability", "0.94", "The generator is confident"],
         ["Time per answer", "about 2.5 s (generation); about 8 s end to end", "Fast enough for live use"],
-        ["Negation / stale fact / noise detected (NLI alone)", "100% / 100% / 100%", "Clear errors are caught"],
-        ["LLM-written contradictions detected", "21%", "Weak test: many near-paraphrases"],
-        ["False-positive rate (control, NLI alone)", "16.7%", "About 1 in 6 true sentences wrongly flagged"],
+        ["Negation / stale fact / noise detected (NLI alone and full pipeline)", "100% / 100% / 100% (both)", "Clear errors are caught"],
+        ["LLM-written contradictions detected", "21% (NLI alone), 29% (full pipeline)", "Weak test: many near-paraphrases"],
+        ["False-positive rate (control)", "16.7% (NLI alone), 20.8% (full pipeline)", "About 1 in 5 true sentences wrongly flagged"],
+        ["Attention words beat random words", "35% of 69 flagged sentences (shift 0.24 vs 0.11)", "A hint on average, not reliable per sentence (12.3)"],
         ["Automated tests", "43 passing", "pytest, run on a temporary database"]], [34, 30, 36]))
     s.append(fig(prec_fig(), "Figure 9. Retrieval precision before and after pruning."))
     s.append(fig(results_fig(), "Figure 10. Adversarial results."))
@@ -118,7 +121,7 @@ def build():
     s.append(ul(["<b>Pruning works:</b> it removes most chunks while sharply raising the share of relevant ones, and it improves the checker (18.3).",
                  "<b>The checker catches clear errors reliably:</b> negations, changed numbers and noise were all detected.",
                  "<b>Subtle errors are harder:</b> LLM-written rewrites (weak test) and contradictions in the labelled set (recall 0.44).",
-                 "<b>The checker is somewhat over-cautious:</b> it flags about 1 in 6 unchanged true sentences (adversarial control) and about 1 in 5 supported sentences in the labelled set (false-positive rate 0.23).",
+                 "<b>The checker is somewhat over-cautious:</b> it flags about 1 in 6 to 1 in 5 unchanged true sentences (adversarial control: 16.7% NLI alone, 20.8% full pipeline) and about 1 in 5 supported sentences in the labelled set (false-positive rate 0.23).",
                  "<b>The local generator is mostly faithful in strict mode</b> (2 of 23 sentences flagged), which is why the test modes are needed for demonstrations."]))
     s.append(h2("18.3 Labelled-set evaluation and ablation"))
     s.append(p("To measure the full pipeline on <i>natural</i> answers, 92 real answers from the generator (strict and loose prompt) were split into 215 sentences, and each sentence was labelled <b>supported</b> (121), <b>unsupported</b> (55), <b>filler</b> (30, excluded) or <b>ambiguous</b> (9, excluded). The 176 usable sentences were run through variants of the pipeline."))

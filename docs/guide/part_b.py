@@ -256,7 +256,11 @@ def build():
                  "Remove special tokens, punctuation and common words (&#8220;the&#8221;, &#8220;of&#8221;).",
                  "Return the top 5 words, with weights scaled to add up to 1 over those five."], ordered=True))
     s.append(h2("12.2 The correct way to describe it"))
-    s.append(box("care", "Be careful", "Attention shows <b>where the checker focused</b>. It does <b>not</b> prove what <b>caused</b> its decision; research shows attention weights and the true reasons don't always match. Say &#8220;the source words the checker attended to most&#8221;. DeBERTa uses <b>self-attention</b> over the joined pair, not cross-attention. The optional check from the plan (hide the top 5 words and re-run NLI to see whether the verdict changes) was <b>not built</b>."))
+    s.append(box("care", "Be careful", "Attention shows <b>where the checker focused</b>. It does <b>not</b> prove what <b>caused</b> its decision; research shows attention weights and the true reasons don't always match. Say &#8220;the source words the checker attended to most&#8221;. DeBERTa uses <b>self-attention</b> over the joined pair, not cross-attention."))
+    s.append(h2("12.3 The masking check: do those words really matter?"))
+    s.append(p("To test the attention words instead of just trusting them, the system runs a <b>mask-and-rerun check</b> on every NLI-rejected sentence: it <b>deletes the top 5 words</b> from the source chunk, runs NLI again, and measures how far the three label probabilities move (total variation distance, 0 = no change, 1 = completely different). As a control, it does the same after deleting <b>5 random content words</b> (averaged over 5 draws). The attention words are <b>supported</b> when their shift beats the random shift by at least 0.05. The dashboard shows this line in the sentence's expander."))
+    s.append(box("ex", "Example", "Sentence: &#8220;The dam has an installed capacity of 5,000 megawatts.&#8221; Top attention words include <b>22,500</b>, the true figure in the source. Deleting them moves the probabilities by <b>0.85</b>; deleting random words moves them by <b>0.01</b>: the attention words clearly mattered."))
+    s.append(box("care", "Result on the labelled set", "For the 69 sentences NLI flagged, deleting the top words moved the probabilities by <b>0.24</b> on average versus <b>0.11</b> for random words, but the top words beat the random control in only <b>35%</b> of sentences (24 of 69). So attention words are a useful hint on average, <b>not a reliable per-sentence explanation</b>. Say this plainly."))
 
     s.append(h1("13. Step 7: The hierarchical trust score"))
     s.append(p("The trust score summarises how reliable an answer is as one number from 0 to 1. It combines four signals:"))
@@ -294,8 +298,8 @@ def build():
     s.append(p("Everything is saved in SQLite: the question, the answer, retrieved and kept chunks, each sentence's label, confidence, best chunk, attention words and wrong parts, the entities, and all trust components. <code>GET /response/{id}</code> fetches it again."))
     s.append(h2("14.1 The dashboard"))
     s.append(table(["Tab", "What it shows"], [
-        ["Query", "Input box and a <b>Faulty mode</b> checkbox. After a question: model used, chunks retrieved and used, the coloured answer, in faulty mode a &#8220;Caught / Missed&#8221; line per injected error, an expander per flagged sentence (NLI label, wrong parts, source chunk, attention words), the entity list with &#10003;/&#10007;, the trust score and a bar chart of its components"],
-        ["Robustness", "Adversarial results: detection rate per attack type and the false-positive rate; a button to run the suite"],
+        ["Query", "Input box and a <b>Faulty mode</b> checkbox. After a question: model used, chunks retrieved and used, the coloured answer, in faulty mode a &#8220;Caught / Missed&#8221; line per injected error, an expander per flagged sentence (NLI label, wrong parts, source chunk, attention words and the masking-check line), the entity list with &#10003;/&#10007;, the trust score and a bar chart of its components"],
+        ["Robustness", "Adversarial results for NLI alone and for the full pipeline: detection rate per attack type and the false-positive rate; a button to run the suite"],
         ["Evaluation", "Evaluation results: precision, hallucination rate, average prune ratio, average trust"]], [18, 82]))
     s.append(table(["What you see", "Meaning"], [
         ["<span class='g'>green sentence</span>", "Supported: best entailment at least 0.5, label entailment"],

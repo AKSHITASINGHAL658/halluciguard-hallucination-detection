@@ -46,6 +46,8 @@
 
 - Guide: docs/guide/ builds HalluciGuard_Complete_Guide.pdf (60 pages) from part_*.py via headless Chrome; updated edition matches the final code (Gemini removed, claims, filler, span check, labelled set, ablation). FACTS.md added at the repo root as the exact reference.
 
+- Gap fixes (2026-10-16): (1) per-document authority values were tried and REVERTED at the user's request (all documents stay 0.8). (2) Attention mask-and-rerun check (check_attribution, response_sentences.attention_check, scripts/run_attention_check.py): top words shift NLI probabilities 0.24 vs 0.11 for random words but beat the random control in only 35% of 69 flagged sentences. (3) Adversarial suite scored twice (adversarial_tests.detected_full): NLI alone vs full pipeline: 100/100/100, LLM 20.8% vs 29.2%, control FP 16.7% vs 20.8%. README, FACTS.md and the guide (62 pages) updated.
+
 ## Assumptions
 - CLAUDE.md says OpenAI gpt-4o-mini; plan.md (declared the spec) says Gemini via google-genai. Followed plan.md/user prompt (Gemini).
 - Added `logprobs_source` column to responses (plan §6 says to store it).

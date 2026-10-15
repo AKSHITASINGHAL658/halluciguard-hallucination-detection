@@ -60,7 +60,9 @@ def main():
                    ["Speed", "About 2.5 s per answer", "2.5 s generation; about 8 s for a whole query; models preloaded at startup"],
                    ["Code map", "rag_pipeline.py runs the whole flow", "rag_pipeline.py only retrieves, prunes and generates; query_service.py and verification.py do the rest (25)"],
                    ["Trust example", "Used a Gemini answer (0.75)", "Uses a faulty-mode answer (0.69); known edge cases include 0.00 for one flagged claim (13.9)"],
-                   ["Not built", "Pronoun retry and the attention masking check were listed as ideas", "Still not built; stated as such (10.6, 12.2, 18.4)"]], [16, 36, 48]))
+                   ["Attention check", "The masking check was listed as not built", "Built: top words vs random words; supported in only 35% of flagged sentences (12.3)"],
+                   ["Adversarial test", "NLI alone", "Scored twice: NLI alone and the full pipeline (15.6, 18.1)"],
+                   ["Not built", "Pronoun retry was listed as an idea", "Still not built; stated as such (10.6, 18.4)"]], [16, 36, 48]))
     toc = '<h1>Contents</h1>' + L.build_toc()
     html = L.page([cover, how, changed, toc] + body, "")
     html = html.replace("<body>" + cover + how + changed + toc, "<body>" + cover + how + changed + toc)

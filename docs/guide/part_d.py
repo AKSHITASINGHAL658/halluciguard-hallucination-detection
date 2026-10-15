@@ -22,9 +22,9 @@ def build():
         ["Single-claim answers", "One flagged claim drives trust to about 0", "A smoother formula"],
         ["Small, self-written corpus", "6 documents, 12 chunks, 22 questions; results indicative only", "A larger public dataset"],
         ["Weak attack generator", "The 3B model writes near-paraphrases instead of contradictions", "Manual review of attacks; a larger model for attacks"],
-        ["Adversarial test uses NLI alone", "It does not exercise claim splitting or the number/name check", "Run the attack set through the full pipeline"],
+        ["Attack set is small and simple", "24 sentences, 12 chunks; three attack types are rule-based and easy; LLM rewrites are weak", "A larger attack set; manual review of LLM attacks"],
         ["Number/name matching is simple", "Substring matching, no units or rounding; a number can match in the wrong context within the reference chunk", "Structured claim extraction (who, what, how much)"],
-        ["Attention is explanatory, not causal", "Attention is not the reason for a decision; the masking check was not built", "Masking check; other attribution methods"],
+        ["Attention is a weak per-sentence explanation", "Masking the top words beat the random control in only 35% of 69 flagged sentences (average shift 0.24 vs 0.11)", "Other attribution methods; show the masking result to users"],
         ["Loose mode is an environment variable", "Not selectable in the dashboard and not stored with the answer", "Add a toggle and record the mode"]], [24, 40, 36]))
 
     s.append(h1("20. Design decisions and the alternatives considered"))
@@ -51,10 +51,10 @@ def build():
                  "<b>A second verifier</b> or numeric reasoning (units, magnitude, rounding) to raise recall on contradictions (0.44).",
                  "<b>Pronoun retry:</b> re-check flagged pronoun sentences with the previous sentence attached.",
                  "<b>Citations:</b> make the generator cite which chunk supports each sentence, then verify the citation.",
-                 "<b>Manual review of LLM attacks</b>, and running the attacks through the full pipeline.",
+                 "<b>Manual review of LLM attacks</b> and a larger attack set.",
                  "<b>Retrieval metrics</b> that suit 2-chunk documents (recall@k, hit rate); a chunk-size experiment; a larger corpus and more questions.",
-                 "<b>Attention check:</b> the mask-and-rerun test; a larger NLI model (more accurate, slower).",
-                 "<b>Done already (no longer future work):</b> threshold sweep, labelled-set precision/recall/F1 (AI-labelled), ablation of each component."]))
+                 "<b>Better attribution:</b> the masking check shows attention words are not reliable per sentence; try other attribution methods; a larger NLI model (more accurate, slower).",
+                 "<b>Done already (no longer future work):</b> threshold sweep, labelled-set precision/recall/F1 (AI-labelled), ablation of each component, the attention masking check, and scoring the attacks through the full pipeline."]))
 
     s.append(h1("22. Question bank: likely questions and answers"))
     s.append(p("Every answer follows the same pattern: <b>what we did, why, and its limit</b>."))
@@ -80,6 +80,7 @@ def build():
     s.append(qa("Why not fine-tune DeBERTa?", "It needs a large labelled dataset and a GPU, and a strict split between training and test data; the proposal specified a pretrained model."))
     s.append(h2("22.4 Attention and trust"))
     s.append(qa("What does the attention view show?", "The source words the checker focused on most for a sentence NLI rejected. It is an explanation aid, not proof of what caused the decision."))
+    s.append(qa("How do you know the attention words are meaningful?", "We test them: delete the top 5 words from the source, re-run NLI, and compare the change with deleting 5 random words. On average the top words move the probabilities more (0.24 vs 0.11), but they beat the random control in only 35% of flagged sentences, so we present them as a hint, not as proof."))
     s.append(qa("Is this cross-attention?", "No: DeBERTa uses self-attention over the joined chunk and sentence. We read the part from sentence tokens to chunk tokens."))
     s.append(qa("Why these trust weights?", "Sentence support is the most direct evidence, so it has the largest weight. They are designed, not learned. Our analysis suggests token probability is stronger than its 0.20 weight implies and the document component is uninformative while all authorities are equal; learning the weights is future work."))
     s.append(qa("Why combine four signals?", "Each has blind spots. NLI missed a wrong number that the entity check caught; the number check cannot judge meaning; model confidence alone does not show which sentence is wrong."))
@@ -89,7 +90,7 @@ def build():
     s.append(qa("Who labelled the data?", "An AI assistant, reading each sentence against the source documents; it was not human-verified. We state that openly; a human re-label of a sample is the next step."))
     s.append(qa("Why compare against the clean chunk?", "If we corrupted the documents, the generator would repeat the corruption and NLI would correctly call it supported, so nothing would be measured."))
     s.append(qa("Why a control set?", "Without it, a checker that flags everything would look perfect."))
-    s.append(qa("Why only 21% on LLM attacks?", "The 3B model often wrote near-paraphrases rather than real contradictions, so the test is weak; subtle rewrites are also genuinely harder for NLI. This test also uses NLI alone."))
+    s.append(qa("Why only 21% on LLM attacks?", "The 3B model often wrote near-paraphrases rather than real contradictions, so the test is weak; subtle rewrites are also genuinely harder for NLI. The full pipeline improves it only a little, to 29%."))
     s.append(qa("Isn't faulty or loose mode cheating?", "No: a detector can only be shown on answers with errors. The modes are labelled, and normal mode stays strict."))
     s.append(qa("Why Ollama instead of Gemini?", "The Gemini models we could use refused logprobs and had a small daily limit. Ollama has no limits, returns logprobs, and is private and reproducible. Gemini was removed from the project."))
     s.append(qa("How big is your evaluation?", "22 questions, 6 documents and 176 labelled sentences: indicative, not a benchmark."))
@@ -98,6 +99,7 @@ def build():
     s.append(table(["Say", "Don't say", "Why"], [
         ["&#8220;Detects claims not supported by the sources&#8221;", "&#8220;Detects false information&#8221;", "The system checks support, not truth"],
         ["&#8220;Source words the checker attended to most&#8221;", "&#8220;The words that caused the hallucination&#8221;", "Attention isn't causal"],
+        ["&#8220;Attention words matter on average but not reliably for every sentence&#8221;", "&#8220;The attention words explain the decision&#8221;", "The masking check supported them in only 35% of flagged sentences"],
         ["&#8220;Self-attention over the joined pair&#8221;", "&#8220;Cross-attention&#8221;", "DeBERTa is a single encoder"],
         ["&#8220;A probability for each label&#8221;", "&#8220;Calibrated probabilities&#8221;", "Calibration was never tested"],
         ["&#8220;2 of 23 claim sentences&#8221;", "Stressing &#8220;8.7%&#8221; alone", "The sample is small"],

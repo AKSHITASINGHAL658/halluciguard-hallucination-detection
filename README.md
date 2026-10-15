@@ -59,15 +59,17 @@ The Ollama row uses the current checker (wrong-span flagging, filler sentences e
 
 Retrieval: precision@6 0.33 (capped: each doc has only 2 chunks, so at most 2 of 6 can be relevant), precision after MI pruning 0.74, average prune ratio 62%.
 
-Adversarial robustness (NLI premise = original chunk, hypothesis = corrupted sentence, 120 tests):
+Adversarial robustness (corrupted sentence vs the original clean chunk, 120 tests), measured twice: with NLI alone and with the full pipeline (claim splitting + number/name check + filler):
 
-| Attack | Detection rate |
-| --- | --- |
-| Negation | 100% |
-| Stale fact | 100% |
-| Noise | 100% |
-| LLM contradiction (`qwen2.5:3b` rewrites) | 20.8% |
-| Control false-positive rate | 16.7% |
+| Attack | NLI alone | Full pipeline |
+| --- | --- | --- |
+| Negation | 100% | 100% |
+| Stale fact | 100% | 100% |
+| Noise | 100% | 100% |
+| LLM contradiction (`qwen2.5:3b` rewrites) | 20.8% | 29.2% |
+| Control false-positive rate | 16.7% | 20.8% |
+
+Attention check (`python scripts/run_attention_check.py`): for the 69 sentences NLI flagged in the labelled set, deleting the top-5 attended source words and re-running NLI shifted the label probabilities by 0.24 on average, against 0.11 for deleting 5 random words, but the top words beat the random control (by a 0.05 margin) in only 35% of sentences. Attention words are a useful hint on average, not a reliable per-sentence explanation.
 
 The low LLM-contradiction rate is partly a generator weakness: the 3B model often returns near-paraphrases instead of a factual change. Separately, NLI is weak on exact numbers: a corrupted sentence with a wrong figure can still be labelled "entailment" (seen in faulty mode).
 

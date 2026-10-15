@@ -34,6 +34,8 @@ Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry 
 | USE_CLAIMS | True | USE_CLAIMS |
 | SPAN_STRONG_ENTAILMENT | 0.9 | no |
 | ATTENTION_LAST_LAYERS / TOP_N | 4 / 5 | no |
+| ATTENTION_VALIDATE | True (mask-and-rerun check) | ATTENTION_VALIDATE |
+| ATTENTION_CHECK_RANDOM / MARGIN | 5 / 0.05 | no |
 | TRUST_WEIGHTS | sentence 0.35, entity 0.25, document 0.20, token_prob 0.20 | no |
 | ADV_N_CHUNKS / ADV_SEED | 20 / 42 | no |
 | PROMPT_MODE | `strict` | PROMPT_MODE (`strict` or `loose`) |
@@ -93,7 +95,9 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 - Only for sentences with `nli_flagged` and a best chunk (not for sentences flagged only by the span check). Forward pass on (chunk, sentence) with `output_attentions=True`, truncation 512.
 - Last 4 layers, averaged over layers and ALL heads. Rows = hypothesis tokens (sequence id 1), columns = premise tokens (id 0); sum over rows. Sub-word pieces merged into words via a `\w+(?:[.,]\w+)*` regex on the chunk text (offset mapping).
 - Dropped: stop words (sklearn list), tokens with no alphanumeric char. Top 5, weights normalised to sum to 1 over the top 5 (4 decimals).
-- Note: if the span check had replaced the best chunk, attention runs against that reference chunk. The optional mask-and-rerun check from the plan is not built.
+- Note: if the span check had replaced the best chunk, attention runs against that reference chunk.
+- **Mask-and-rerun check** (`attention_extractor.check_attribution`, on when `ATTENTION_VALIDATE`): deletes the top-5 words from the source chunk and re-runs NLI; the shift is the total-variation distance between the three label probabilities before and after. The control deletes the same number of random content words not in the top 5 (5 draws, seed 0). `supported` = top shift > mean random shift + 0.05 (`ATTENTION_CHECK_MARGIN`). Stored in `response_sentences.attention_check` and shown in the dashboard expander.
+- Latest result (2026-10-16, `scripts/run_attention_check.py`, 69 NLI-flagged labelled sentences): `supported` for 35% (24/69); mean shift 0.24 for top words vs 0.11 for random words (45 truly unsupported: 33%; 24 wrongly flagged: 38%).
 
 ## 8. Trust (`trust_engine.py`, `aggregate_trust`)
 
@@ -117,7 +121,7 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
   - stale_fact: one random shift 3–10 (random sign) applied to every 4-digit year (1500–2099); every other number × a random choice of [0.5, 0.6, 0.75, 1.5, 2.0] (decimals keep their places, ints rounded).
   - noise: with 50% chance (if the sentence has an entity and the pool has another) swap one entity (GPE/ORG/PERSON/NORP/LOC/FAC) for a random pool entity; otherwise append one of 4 fixed unrelated clauses.
   - llm_contradiction: Ollama, temperature 0, prompt "Rewrite this sentence so it remains fluent and plausible but states something factually different. Output only the sentence."; first non-empty line, quotes stripped; skipped if the call fails or the output equals the input; cached as `cache/llm/adv-<sha>.json`.
-- Scoring: plain `batch_verify` with premise = ORIGINAL chunk, hypothesis = corrupted text. **No claim splitting, span check or filler logic.** `detected` = argmax label ≠ entailment (the 0.5 threshold is not used). Control false-positive rate = share of unchanged sentences with label ≠ entailment.
+- Scoring (two measurements per row): (a) **NLI alone**: plain `batch_verify`, premise = ORIGINAL chunk, hypothesis = corrupted text; `detected` = argmax label ≠ entailment (the 0.5 threshold is not used). (b) **Full pipeline** (`detected_full`): `verify_sentences([corrupted], [clean chunk])` = claim splitting, number/name check against the clean chunk, filler logic; detected = `is_hallucination`. Control false-positive rate = share of unchanged sentences flagged, per measurement.
 
 ## 11. Evaluation
 
@@ -127,20 +131,20 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 - **Latest numbers and dates**
   - 22-question eval, 2026-10-11 20:00 (`outputs/generator_comparison.json`): hallucination rate 8.7% (2/23 claim sentences), avg trust 0.899, avg token-prob 0.937, 2.5 s/answer, 0 failed. **This run predates claim splitting; the 22-question eval has not been re-run with USE_CLAIMS on.**
   - Retrieval (deterministic; last measured 2026-10-11 via `--rescore`): precision@6 0.333 (capped: 2 chunks per doc), after pruning 0.741, prune ratio 0.621.
-  - Adversarial, 2026-10-11 (after the year-regex fix): negation 100%, stale_fact 100%, noise 100%, llm_contradiction 20.8%, control FP 16.7% (120 tests).
+  - Adversarial (120 tests): 2026-10-11 NLI alone: negation 100%, stale_fact 100%, noise 100%, llm_contradiction 20.8%, control FP 16.7%. 2026-10-16 full pipeline: negation 100%, stale_fact 100%, noise 100%, llm_contradiction 29.2%, control FP 20.8%.
   - Ablation, 2026-10-11 21:32 (current code): NLI only P 0.68 / R 0.82 / F1 0.74; full pipeline P 0.62 / R 0.84 / F1 0.71; without MI pruning F1 0.65; answer-level AUROC token-prob 0.98, sentence 0.88, final 0.89, entity 0.65, document 0.46.
 
 ## 12. API and database
 
 - Endpoints: `POST /documents`, `GET /documents`, `POST /query` (body: text, k=6, inject_faults=false), `GET /response/{id}`, `POST /evaluate` (query params k, retrieval_only, rescore, limit), `POST /adversarial/run`, `GET /adversarial/results`, `GET /health`. Startup: `init_db()` (create tables + add missing columns) and, if WARMUP, `warmup()` (embedder, NLI, Ollama).
-- Tables: `documents`, `chunks`, `queries`, `responses`, `response_sentences`, `entities`, `trust_scores`, `adversarial_tests`, as in the plan plus added columns: `responses.generator`, `responses.faults_injected`, `responses.logprobs_source`; `response_sentences.wrong_spans`, `response_sentences.is_filler`. Columns added after the first release are added by an `ALTER TABLE` migration in `init_db`.
+- Tables: `documents`, `chunks`, `queries`, `responses`, `response_sentences`, `entities`, `trust_scores`, `adversarial_tests`, as in the plan plus added columns: `responses.generator`, `responses.faults_injected`, `responses.logprobs_source`; `response_sentences.wrong_spans`, `response_sentences.is_filler`, `response_sentences.attention_check`; `adversarial_tests.detected_full`. Columns added after the first release are added by an `ALTER TABLE` migration in `init_db`.
 - Response payload extras beyond the plan: `generator`, `injected_faults`, per-sentence `wrong_spans`, `is_filler`, `supporting_chunk_text`.
 - Scripts: `seed_corpus.py`, `run_adversarial_eval.py`, `run_eval.py`, `compare_generators.py` (Ollama only), `probe_ollama_logprobs.py`, `build_labeled_set.py`, `run_ablation.py`.
 
 ## 13. Versus `docs/plan.md`
 
-**Built that was not in the plan:** Ollama generator (replaces Gemini); LLM response cache; startup warmup and keep-alive; `PROMPT_MODE` loose mode; faulty mode; span/number checker (`span_checker.py`); filler detection; claim splitting (`claim_extractor.py`); shared `verification.py`; `query_service.py`, `evaluation.py`, `ingestion.py`, `warmup.py`; `llm_contradiction` attack; `retrieval_only` / `rescore` / `limit` eval options and `run_eval.py`; `compare_generators.py`; labeled set and `run_ablation.py`; `fix_split_decimals`; temp-DB test fixtures (`tests/conftest.py`) and `DB_URL` / `CHROMA_DIR` overrides; extra test files (adversarial, attention, claims, filler, spans, warmup); `precision_after_pruning` metric.
+**Built that was not in the plan:** the attention mask-and-rerun check with a random-word control and `run_attention_check.py`; full-pipeline scoring of the adversarial suite (`detected_full`); Ollama generator (replaces Gemini); LLM response cache; startup warmup and keep-alive; `PROMPT_MODE` loose mode; faulty mode; span/number checker (`span_checker.py`); filler detection; claim splitting (`claim_extractor.py`); shared `verification.py`; `query_service.py`, `evaluation.py`, `ingestion.py`, `warmup.py`; `llm_contradiction` attack; `retrieval_only` / `rescore` / `limit` eval options and `run_eval.py`; `compare_generators.py`; labeled set and `run_ablation.py`; `fix_split_decimals`; temp-DB test fixtures (`tests/conftest.py`) and `DB_URL` / `CHROMA_DIR` overrides; extra test files (adversarial, attention, claims, filler, spans, warmup); `precision_after_pruning` metric.
 
-**In the plan but NOT built:** Gemini/`google-genai` generation and the Gemini logprob fallback chain (tokens → avg → none; only tokens → none remains); the optional mask-the-top-5-words-and-rerun attention check; `data/eval/adversarial_seed.json` (marked optional); `.env.example` GEMINI keys (replaced by OLLAMA keys).
+**In the plan but NOT built:** Gemini/`google-genai` generation and the Gemini logprob fallback chain (tokens → avg → none; only tokens → none remains); `data/eval/adversarial_seed.json` (marked optional); `.env.example` GEMINI keys (replaced by OLLAMA keys).
 
 **Differences in behaviour:** `is_hallucination` is no longer only "max entailment < 0.5" (also claim-splitting, span override, filler exclusion); `docs/plan.md` and `CLAUDE.md` (partially updated) still describe the original design; the plan's 5–10 documents / 20–30 QA pairs are 6 documents / 22 pairs.
