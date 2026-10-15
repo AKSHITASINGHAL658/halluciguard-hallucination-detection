@@ -66,6 +66,7 @@ class ResponseSentence(Base):
     supporting_chunk_id = Column(Integer, ForeignKey("chunks.id"), nullable=True)
     top_attention_tokens = Column(Text, nullable=True)  # JSON list
     wrong_spans = Column(Text, nullable=True)  # JSON list of {text,start,end,kind,reason}
+    attention_check = Column(Text, nullable=True)  # JSON: mask-and-rerun check of the top attention words
     is_filler = Column(Boolean, nullable=True)  # meta sentence with no checkable claim; excluded from scoring
     response = relationship("Response", back_populates="sentences")
 
@@ -101,6 +102,7 @@ class AdversarialTest(Base):
     original_sentence = Column(Text)
     corrupted_text = Column(Text)
     nli_label = Column(String)
-    detected = Column(Boolean)
+    detected = Column(Boolean)  # NLI alone: label != entailment
+    detected_full = Column(Boolean, nullable=True)  # full pipeline (claims + number/name check + filler): flagged
     run_at = Column(DateTime, default=datetime.utcnow)
     chunk = relationship("Chunk", back_populates="adversarial_tests")

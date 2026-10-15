@@ -12,6 +12,7 @@ from app.core import rag_pipeline
 from app.core.metrics import detection_rate, false_positive_rate
 from app.core.nli_verifier import batch_verify
 from app.core.sentence_localizer import split_sentences
+from app.core.verification import verify_sentences
 from app.models import AdversarialTest, Chunk
 
 log = logging.getLogger("halluciguard.adversarial")
@@ -148,22 +149,43 @@ def run_attack_suite(db: Session, n_chunks: int = config.ADV_N_CHUNKS, seed: int
                 items.append((c, "llm_contradiction", s, llm))
     items = [it for it in items if it[1] == "control" or it[3] != it[2]]
 
-    results = batch_verify([(corrupt, c.text) for c, _, _, corrupt in items])
+    results = batch_verify([(corrupt, c.text) for c, _, _, corrupt in items])  # NLI alone
+    full = _full_pipeline_flags(items)  # claims + number/name check + filler, evidence = the clean chunk
     db.query(AdversarialTest).delete()
-    for (c, attack, orig, corrupt), r in zip(items, results):
+    for k, ((c, attack, orig, corrupt), r) in enumerate(zip(items, results)):
         db.add(AdversarialTest(original_chunk_id=c.id, attack_type=attack, original_sentence=orig,
-                               corrupted_text=corrupt, nli_label=r["label"], detected=r["label"] != "entailment"))
+                               corrupted_text=corrupt, nli_label=r["label"], detected=r["label"] != "entailment",
+                               detected_full=full[k]))
     db.commit()
     return summarize_results(db)
+
+
+def _full_pipeline_flags(items) -> list[bool]:
+    """Run each corrupted sentence through the app's full sentence check against its clean chunk."""
+    flags: list[bool | None] = [None] * len(items)
+    by_chunk: dict[int, list[int]] = {}
+    for k, (c, _, _, _) in enumerate(items):
+        by_chunk.setdefault(c.id, []).append(k)
+    for ks in by_chunk.values():
+        c = items[ks[0]][0]
+        chunk = {"chunk_id": c.id, "document_id": c.document_id, "text": c.text}
+        for k, r in zip(ks, verify_sentences([items[k][3] for k in ks], [chunk])):
+            flags[k] = bool(r["is_hallucination"])
+    return flags
 
 
 def summarize_results(db: Session) -> dict:
     rows = db.query(AdversarialTest).all()
     by_type = {a: [r.detected for r in rows if r.attack_type == a] for a in ATTACKS}
     control = [r.detected for r in rows if r.attack_type == "control"]
+    full_rows = [r for r in rows if r.detected_full is not None]
+    full_by_type = {a: [r.detected_full for r in full_rows if r.attack_type == a] for a in ATTACKS}
+    full_control = [r.detected_full for r in full_rows if r.attack_type == "control"]
     return {"detection_rate": {a: detection_rate(v) for a, v in by_type.items()},
             "counts": {**{a: len(v) for a, v in by_type.items()}, "control": len(control)},
-            "false_positive_rate": false_positive_rate(control), "n_tests": len(rows)}
+            "false_positive_rate": false_positive_rate(control), "n_tests": len(rows),
+            "full_pipeline": {"detection_rate": {a: detection_rate(v) for a, v in full_by_type.items()},
+                              "false_positive_rate": false_positive_rate(full_control), "n_tests": len(full_rows)}}
 
 
 def inject_faults(answer: str, rng: random.Random | None = None) -> tuple[str, list[dict]]:

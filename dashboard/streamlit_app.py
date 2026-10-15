@@ -85,6 +85,11 @@ with tab_query:
                         st.write(f"🔴 **{sp['text']}**: {sp['reason']}")
                     st.write("Best source chunk:")
                     st.info(s["supporting_chunk_text"] or "n/a")
+                    chk = s.get("attention_check")
+                    if chk:
+                        verdict = "✅ the words matter" if chk["supported"] else "⚠️ not clearly more important than random words"
+                        st.caption(f"Masking check: hiding the top words moved the NLI probabilities by {chk['top_shift']:.2f} "
+                                   f"(hiding {chk['n_random']}x random words: {chk['random_shift']:.2f}) → {verdict}")
                     if s["top_attention_tokens"]:
                         st.write("Source words the verifier attended to most:")
                         st.dataframe(pd.DataFrame(s["top_attention_tokens"]), hide_index=True)
@@ -114,9 +119,14 @@ with tab_robust:
             api("POST", "/adversarial/run")
     r = api("GET", "/adversarial/results")
     if r and r["n_tests"]:
-        rows = [{"metric": f"{k} detection rate", "value": v} for k, v in r["detection_rate"].items()]
-        rows.append({"metric": "control false-positive rate", "value": r["false_positive_rate"]})
-        st.plotly_chart(px.bar(pd.DataFrame(rows), x="metric", y="value", range_y=[0, 1]), width="stretch")
+        full = r.get("full_pipeline") or {}
+        rows = [{"metric": f"{k} detection", "pipeline": "NLI alone", "value": v} for k, v in r["detection_rate"].items()]
+        rows.append({"metric": "false positives (control)", "pipeline": "NLI alone", "value": r["false_positive_rate"]})
+        if full.get("n_tests"):
+            rows += [{"metric": f"{k} detection", "pipeline": "Full pipeline", "value": v} for k, v in full["detection_rate"].items()]
+            rows.append({"metric": "false positives (control)", "pipeline": "Full pipeline", "value": full["false_positive_rate"]})
+        st.plotly_chart(px.bar(pd.DataFrame(rows), x="metric", y="value", color="pipeline", barmode="group", range_y=[0, 1]),
+                        width="stretch")
         st.json(r["counts"])
     elif r:
         st.info("No adversarial results yet. Click the button above.")

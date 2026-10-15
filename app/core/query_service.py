@@ -4,7 +4,7 @@ import re
 from sqlalchemy.orm import Session
 
 from app import config
-from app.core.attention_extractor import top_contributing_tokens
+from app.core.attention_extractor import check_attribution, top_contributing_tokens
 from app.core import adversarial_agent, rag_pipeline
 from app.core.rag_pipeline import run_pipeline
 from app.core.sentence_localizer import split_sentences
@@ -67,12 +67,14 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
     for s in loc:
         spans, nli_flagged = s["wrong_spans"], s["nli_flagged"]
         flagged = nli_flagged and s["best_chunk_text"]  # attention explains NLI rejections only
+        tokens = top_contributing_tokens(s["text"], s["best_chunk_text"]) if flagged else None
+        check = check_attribution(s["text"], s["best_chunk_text"], tokens) if tokens and config.ATTENTION_VALIDATE else None
         db.add(ResponseSentence(
             response_id=resp.id, sentence_index=s["index"], text=s["text"], nli_label=s["label"],
             nli_confidence=s["confidence"], is_hallucination=s["is_hallucination"],
             supporting_chunk_id=s["best_chunk_id"],
-            top_attention_tokens=json.dumps(top_contributing_tokens(s["text"], s["best_chunk_text"]))
-            if flagged else None,
+            top_attention_tokens=json.dumps(tokens) if tokens else None,
+            attention_check=json.dumps(check) if check else None,
             wrong_spans=json.dumps(spans) if spans else None, is_filler=s["is_filler"]))
 
     ent_s, entities = entity_score(result["answer"], result["pruned"])

@@ -51,6 +51,9 @@ USE_CLAIMS = _env_bool("USE_CLAIMS", True)  # split sentences into atomic claims
 CONTRADICTION_THRESHOLD = 0.5
 ATTENTION_LAST_LAYERS = 4
 ATTENTION_TOP_N = 5
+ATTENTION_VALIDATE = _env_bool("ATTENTION_VALIDATE", True)  # mask-and-rerun check on the top attention words
+ATTENTION_CHECK_RANDOM = 5       # random-word masks used as the control
+ATTENTION_CHECK_MARGIN = 0.05    # top-word shift must beat the random-word shift by at least this much
 
 # Span checking: a number found only in the NLI-preferred chunk still counts as supported if NLI is this sure
 SPAN_STRONG_ENTAILMENT = 0.9

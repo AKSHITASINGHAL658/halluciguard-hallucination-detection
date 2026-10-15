@@ -35,6 +35,7 @@ class SentenceOut(BaseModel):
     top_attention_tokens: list = []
     wrong_spans: list = []
     is_filler: bool = False
+    attention_check: Optional[dict] = None
 
 
 class EntityOut(BaseModel):

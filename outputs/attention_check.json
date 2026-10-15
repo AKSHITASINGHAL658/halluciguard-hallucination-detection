@@ -1,0 +1,988 @@
+{
+  "all_flagged": {
+    "n": 69,
+    "supported_rate": 0.34782608695652173,
+    "mean_top_shift": 0.24263813875723575,
+    "mean_random_shift": 0.11321791462276296
+  },
+  "truly_unsupported": {
+    "n": 45,
+    "supported_rate": 0.3333333333333333,
+    "mean_top_shift": 0.25788345336914065,
+    "mean_random_shift": 0.10956289874182809
+  },
+  "wrongly_flagged_supported": {
+    "n": 24,
+    "supported_rate": 0.375,
+    "mean_top_shift": 0.21405317385991415,
+    "mean_random_shift": 0.12007106939951577
+  },
+  "rows": [
+    {
+      "label": "unsupported",
+      "sentence": "This solar park is a significant addition to India's renewable energy portfolio, showcasing the country's growing commitment to solar power.",
+      "masked_words": [
+        "percent",
+        "gigawatts",
+        "2023",
+        "kilowatt",
+        "1,547"
+      ],
+      "top_shift": 0.9026508331298828,
+      "random_shift": 0.2984222412109375,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "Established in 2017, the Bhadla Solar Park not only serves as a testament to India's rapid expansion in solar energy but also highlights the country's potential to become a global leader in renewable energy.",
+      "masked_words": [
+        "capacity",
+        "Bhadla",
+        "largest",
+        "batteries",
+        "megawatts"
+      ],
+      "top_shift": 0.8750762939453125,
+      "random_shift": 0.20018997192382812,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This achievement represents a significant advancement in the field of solar cell technology, pushing the boundaries of what is possible with tandem designs that combine different materials to achieve higher efficiencies.",
+      "masked_words": [
+        "percent",
+        "gigawatts",
+        "2023",
+        "1,547",
+        "kilowatt"
+      ],
+      "top_shift": 0.8023738861083984,
+      "random_shift": 0.3135032653808594,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This efficiency is crucial for improving the overall performance and cost-effectiveness of solar energy systems, as it translates to more efficient conversion of sunlight into electricity.",
+      "masked_words": [
+        "percent",
+        "gigawatts",
+        "2023",
+        "silicon",
+        "typically"
+      ],
+      "top_shift": 0.9646015167236328,
+      "random_shift": 0.20900278091430663,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This significant reduction in cost is a testament to the rapid advancements and economies of scale in the solar industry, driven by technological improvements and increased manufacturing efficiencies.",
+      "masked_words": [
+        "percent",
+        "conversion",
+        "efficiencies",
+        "2023",
+        "23"
+      ],
+      "top_shift": 0.7270965576171875,
+      "random_shift": 0.18163681030273438,
+      "supported": true
+    },
+    {
+      "label": "supported",
+      "sentence": "This turbine represents a significant advancement in offshore wind technology, showcasing the continued evolution of wind turbine design to harness stronger and more consistent winds at sea.",
+      "masked_words": [
+        "Hornsea",
+        "United",
+        "Kingdom",
+        "capacity",
+        "Wind"
+      ],
+      "top_shift": 0.0015912055969238281,
+      "random_shift": 0.017189979553222656,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This significant contribution underscores Denmark's commitment to renewable energy and its position as a leader in wind energy production.",
+      "masked_words": [
+        "Netherlands",
+        "bottlenecks",
+        "world",
+        "2024",
+        "percent"
+      ],
+      "top_shift": 0.03660917282104492,
+      "random_shift": 0.08090715408325196,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "Denmark's strong reliance on wind power is part of a broader trend in the European Union, where wind and solar together generated more electricity than natural gas for the first time in 2023.",
+      "masked_words": [
+        "Netherlands",
+        "bottlenecks",
+        "2024",
+        "Recycling",
+        "percent"
+      ],
+      "top_shift": 0.026424407958984375,
+      "random_shift": 0.015823173522949218,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This achievement highlights the increasing importance of wind energy in meeting global electricity demands, particularly in regions with favorable wind resources and supportive government policies.",
+      "masked_words": [
+        "reached",
+        "energy",
+        "generated",
+        "Developing",
+        "August"
+      ],
+      "top_shift": 0.0014209747314453125,
+      "random_shift": 0.0015479087829589843,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "The Hornsea 2 wind farm, which is located off the Yorkshire coast in the United Kingdom, has a capacity of 1.32 gigawatts.",
+      "masked_words": [
+        "1.32",
+        "Hornsea",
+        "gigawatts",
+        "United",
+        "total"
+      ],
+      "top_shift": 0.8395462036132812,
+      "random_shift": 0.31215667724609375,
+      "supported": true
+    },
+    {
+      "label": "supported",
+      "sentence": "This wind farm was completed in 2022 and is considered a significant milestone in the development of offshore wind energy.",
+      "masked_words": [
+        "Netherlands",
+        "bottlenecks",
+        "world",
+        "offshore",
+        "modern"
+      ],
+      "top_shift": 0.05943870544433594,
+      "random_shift": 0.23399620056152343,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "Its substantial capacity underscores the growing importance of offshore wind in meeting global energy demands, particularly in regions with strong and consistent winds.",
+      "masked_words": [
+        "bottlenecks",
+        "Netherlands",
+        "delays",
+        "offshore",
+        "percent"
+      ],
+      "top_shift": 0.035559654235839844,
+      "random_shift": 0.02942485809326172,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "This massive hydroelectric project, located on the Yangtze River in China, is the largest in the world and was fully commissioned in 2012.",
+      "masked_words": [
+        "Paraguay",
+        "megawatts",
+        "420",
+        "Dam",
+        "electricity"
+      ],
+      "top_shift": 0.4507904052734375,
+      "random_shift": 0.232879638671875,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The dam's capacity is equivalent to powering millions of homes, and it typically generates between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020.",
+      "masked_words": [
+        "storage",
+        "States",
+        "5,150",
+        "gigawatts",
+        "Pumped"
+      ],
+      "top_shift": 0.183746337890625,
+      "random_shift": 0.1658447265625,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "Its construction began in 1994 and represents a significant contribution to China's renewable energy portfolio, which is the largest producer of hydropower globally.",
+      "masked_words": [
+        "electricity",
+        "420",
+        "followed",
+        "Dam",
+        "commissioned"
+      ],
+      "top_shift": 0.07764053344726562,
+      "random_shift": 0.01715545654296875,
+      "supported": true
+    },
+    {
+      "label": "supported",
+      "sentence": "This figure underscores the significant role that hydropower plays in the global energy mix, particularly as the oldest and largest source of renewable electricity.",
+      "masked_words": [
+        "Hydropower",
+        "generated",
+        "electricity",
+        "largest",
+        "source"
+      ],
+      "top_shift": 0.08708667755126953,
+      "random_shift": 0.04517431259155273,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "The Basel geothermal project was stopped after a magnitude 3.4 earthquake in 2006.",
+      "masked_words": [
+        "3.4",
+        "Energy",
+        "EGS",
+        "barrier",
+        "States"
+      ],
+      "top_shift": 0.2738311290740967,
+      "random_shift": 0.12921791076660155,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This figure represents a significant contribution to the global solar energy landscape, contributing to the overall growth of solar photovoltaic power.",
+      "masked_words": [
+        "percent",
+        "gigawatts",
+        "electricity",
+        "power",
+        "2023"
+      ],
+      "top_shift": 0.9379138946533203,
+      "random_shift": 0.19280357360839845,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This level of investment and deployment underscores the growing importance of solar energy in the global energy mix, as it continues to become more cost-effective and efficient.",
+      "masked_words": [
+        "percent",
+        "electricity",
+        "gigawatts",
+        "efficiencies",
+        "conversion"
+      ],
+      "top_shift": 0.8799724578857422,
+      "random_shift": 0.1795736312866211,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This solar park is a significant addition to the global solar energy landscape, showcasing the rapid growth and expansion of solar power installations.",
+      "masked_words": [
+        "percent",
+        "electricity",
+        "gigawatts",
+        "conversion",
+        "2023"
+      ],
+      "top_shift": 0.7738981246948242,
+      "random_shift": 0.16805381774902345,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The Tengger Desert, located in the Gobi Desert, is one of the largest solar power projects in the world, highlighting the potential of desert areas for solar energy generation.",
+      "masked_words": [
+        "losing",
+        "Tengger",
+        "commissioned",
+        "batteries",
+        "largest"
+      ],
+      "top_shift": 0.5534677505493164,
+      "random_shift": 0.38460235595703124,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This period is designed to cover the expected lifespan of most solar panels, which is around 25 to 30 years.",
+      "masked_words": [
+        "operators",
+        "Intermittency",
+        "California",
+        "address",
+        "remains"
+      ],
+      "top_shift": 0.05953025817871094,
+      "random_shift": 0.03459014892578125,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "Manufacturers offer these warranties to ensure that the panels maintain their efficiency and output levels during this timeframe, providing homeowners and businesses with a reliable source of renewable energy.",
+      "masked_words": [
+        "Intermittency",
+        "curve",
+        "batteries",
+        "California",
+        "largest"
+      ],
+      "top_shift": 0.151702880859375,
+      "random_shift": 0.19962654113769532,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "These warranties are crucial for ensuring that solar energy systems continue to deliver cost-effective and sustainable power to their users, even as technology and energy demands evolve.",
+      "masked_words": [
+        "largest",
+        "Intermittency",
+        "batteries",
+        "curve",
+        "California"
+      ],
+      "top_shift": 0.017474651336669922,
+      "random_shift": 0.053467845916748045,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This turbine is part of the Siemens Gamesa portfolio, which is known for producing large-scale wind turbines.",
+      "masked_words": [
+        "United",
+        "Hornsea",
+        "Gamesa",
+        "Wind",
+        "Kingdom"
+      ],
+      "top_shift": 0.01552724838256836,
+      "random_shift": 0.02102937698364258,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The company has been at the forefront of developing larger wind turbines to maximize energy production, especially in offshore wind projects where space and wind speeds are more favorable.",
+      "masked_words": [
+        "electricity",
+        "Dam",
+        "commissioned",
+        "420",
+        "totals"
+      ],
+      "top_shift": 0.11705875396728516,
+      "random_shift": 0.009148788452148438,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The SG 14-222 DD is a significant advancement in wind turbine technology, designed to capture more wind energy, particularly in areas with stronger and more consistent winds.",
+      "masked_words": [
+        "United",
+        "Hornsea",
+        "222",
+        "Wind",
+        "Kingdom"
+      ],
+      "top_shift": 0.013086318969726562,
+      "random_shift": 0.018403053283691406,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "For instance, the Hornsea 2 wind farm, completed in 2022, has a capacity of 1.32 gigawatts and is located off the Yorkshire coast in the United Kingdom.",
+      "masked_words": [
+        "1.32",
+        "Hornsea",
+        "gigawatts",
+        "United",
+        "total"
+      ],
+      "top_shift": 0.597381591796875,
+      "random_shift": 0.2946685791015625,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This ambitious project, currently under construction, is located in the North Sea off the coast of England.",
+      "masked_words": [
+        "Netherlands",
+        "Massachusetts",
+        "bottlenecks",
+        "steadier",
+        "40"
+      ],
+      "top_shift": 0.08071517944335938,
+      "random_shift": 0.07335205078125,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The Dogger Bank project is a significant step towards meeting the growing demand for renewable energy, particularly in Europe, where offshore wind farms have become a cornerstone of the region's efforts to reduce carbon emissions and transition to a more sustainable energy future.",
+      "masked_words": [
+        "Netherlands",
+        "bottlenecks",
+        "2024",
+        "world",
+        "substantial"
+      ],
+      "top_shift": 0.011226654052734375,
+      "random_shift": 0.19957618713378905,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This project, the first large-scale offshore wind farm in the United States, was developed off the coast of Massachusetts and was completed in that year.",
+      "masked_words": [
+        "40",
+        "differ",
+        "Capacity",
+        "capacity",
+        "megawatts"
+      ],
+      "top_shift": 0.019134521484375,
+      "random_shift": 0.059185791015625,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "It has a planned capacity of 806 megawatts, making it a significant addition to the U.S. energy landscape.",
+      "masked_words": [
+        "United",
+        "Hornsea",
+        "typical",
+        "total",
+        "Wind"
+      ],
+      "top_shift": 0.004215240478515625,
+      "random_shift": 0.009223556518554688,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The project's early delivery of power in 2024 underscores the rapid advancements and growing acceptance of offshore wind energy in the United States, as it was the first of its kind to start generating electricity on a substantial scale.",
+      "masked_words": [
+        "United",
+        "Hornsea",
+        "typical",
+        "total",
+        "turbines"
+      ],
+      "top_shift": 0.005535125732421875,
+      "random_shift": 0.11888809204101562,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "Construction on this massive project began in 2019 and was completed in 2022.",
+      "masked_words": [
+        "electricity",
+        "420",
+        "followed",
+        "commissioned",
+        "Dam"
+      ],
+      "top_shift": 0.09813308715820312,
+      "random_shift": 0.02200927734375,
+      "supported": true
+    },
+    {
+      "label": "supported",
+      "sentence": "With an installed capacity of 16,000 megawatts, the Baihetan Dam is a significant addition to China's hydropower portfolio, following the Three Gorges Dam, which holds the title of the largest hydropower station globally.",
+      "masked_words": [
+        "Baihetan",
+        "16,000",
+        "Dam",
+        "electricity",
+        "Paraguay"
+      ],
+      "top_shift": 0.18510055541992188,
+      "random_shift": 0.20343704223632814,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "Both these dams play crucial roles in China's energy production, with the Three Gorges Dam alone generating between 85 and 100 terawatt-hours per year, setting a record of 111.8 terawatt-hours in 2020.",
+      "masked_words": [
+        "storage",
+        "States",
+        "reservoirs",
+        "displaced",
+        "gigawatts"
+      ],
+      "top_shift": 0.07025146484375,
+      "random_shift": 0.1359375,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "This dam, with a capacity of 14,000 megawatts, is one of the largest in the world and plays a crucial role in meeting Paraguay's energy needs.",
+      "masked_words": [
+        "14,000",
+        "electricity",
+        "Dam",
+        "commissioned",
+        "5,150"
+      ],
+      "top_shift": 0.7081756591796875,
+      "random_shift": 0.12263946533203125,
+      "supported": true
+    },
+    {
+      "label": "supported",
+      "sentence": "This growth in renewable capacity, including hydropower, helped bring the total to 3,870 gigawatts.",
+      "masked_words": [
+        "gigawatts",
+        "storage",
+        "States",
+        "reservoirs",
+        "displaced"
+      ],
+      "top_shift": 0.10742950439453125,
+      "random_shift": 0.092596435546875,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "In 2023, the global hydropower capacity grew by about 14 percent compared to the previous year, reaching a total of 1,416 gigawatts.",
+      "masked_words": [
+        "0.2",
+        "gigawatts",
+        "storage",
+        "5,150",
+        "States"
+      ],
+      "top_shift": 0.6003875732421875,
+      "random_shift": 0.09370956420898438,
+      "supported": true
+    },
+    {
+      "label": "supported",
+      "sentence": "The International Energy Agency reported that global clean energy investment, including grids, storage, and electric vehicles, was about 1.8 trillion dollars in 2023, marking a substantial increase from the previous year.",
+      "masked_words": [
+        "1.77",
+        "1.8",
+        "Union",
+        "reached",
+        "3,870"
+      ],
+      "top_shift": 0.3100738525390625,
+      "random_shift": 0.2814914703369141,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This complex, which has been operational since 1960, is a significant contributor to the United States' geothermal energy production, representing about 23% of the country's total installed geothermal capacity.",
+      "masked_words": [
+        "according",
+        "2023",
+        "gigawatts",
+        "electricity",
+        "electricity"
+      ],
+      "top_shift": 0.01629638671875,
+      "random_shift": 0.20029296875,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The Geysers' longevity and consistent performance make it a crucial asset in the geothermal energy sector, contributing to the stability and reliability of the grid.",
+      "masked_words": [
+        "2023",
+        "gigawatts",
+        "electricity",
+        "geothermal",
+        "direct"
+      ],
+      "top_shift": 0.011877059936523438,
+      "random_shift": 0.19611740112304688,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "The levelized cost of geothermal electricity was about 0.071 dollars per kilowatt-hour in 2023, according to the International Renewable Energy Agency.",
+      "masked_words": [
+        "gigawatts",
+        "2023",
+        "energy",
+        "electricity",
+        "carbon"
+      ],
+      "top_shift": 0.02063274383544922,
+      "random_shift": 0.19095802307128906,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "Despite this, the cost of geothermal electricity has been declining, with the global weighted average levelized cost dropping from about 0.38 US dollars per kilowatt-hour in 2010 to about 0.044 dollars per kilowatt-hour in 2023, a reduction of roughly 89 percent.",
+      "masked_words": [
+        "gigawatts",
+        "2023",
+        "electricity",
+        "direct",
+        "geothermal"
+      ],
+      "top_shift": 0.026195526123046875,
+      "random_shift": 0.19665908813476562,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "This project is part of the Enhanced Geothermal Systems (EGS) initiative aimed at tapping into geothermal energy resources.",
+      "masked_words": [
+        "drilling",
+        "geothermal",
+        "limitation",
+        "aim",
+        "EGS"
+      ],
+      "top_shift": 0.014692306518554688,
+      "random_shift": 0.037301826477050784,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "This project is part of a broader effort to reduce the costs associated with EGS, with the United States Department of Energy setting a target to bring the cost down to 45 dollars per megawatt-hour by 2035.",
+      "masked_words": [
+        "EGS",
+        "Energy",
+        "States",
+        "drilling",
+        "company"
+      ],
+      "top_shift": 0.012278318405151367,
+      "random_shift": 0.15976619720458984,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This significant contribution to Iceland's energy mix underscores the country's strong commitment to renewable energy sources, particularly in a region where geothermal resources are abundant due to its location on the Mid-Atlantic Ridge.",
+      "masked_words": [
+        "2023",
+        "gigawatts",
+        "electricity",
+        "direct",
+        "geothermal"
+      ],
+      "top_shift": 0.0061855316162109375,
+      "random_shift": 0.19213409423828126,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This remarkable achievement was made possible through the innovative use of battery storage technology, which allowed the reserve to provide rapid and responsive power support to the grid.",
+      "masked_words": [
+        "storage",
+        "storage",
+        "frequency",
+        "trip",
+        "2025"
+      ],
+      "top_shift": 0.012935638427734375,
+      "random_shift": 0.018979454040527345,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This not only stabilized the grid but also optimized the use of available resources, making the energy system more resilient and efficient.",
+      "masked_words": [
+        "States",
+        "storage",
+        "reservoirs",
+        "displaced",
+        "Droughts"
+      ],
+      "top_shift": 0.000522613525390625,
+      "random_shift": 0.0014780044555664062,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "These batteries are particularly well-suited for grid-scale storage applications, and they support an impressive number of charge cycles.",
+      "masked_words": [
+        "6,000",
+        "nickel",
+        "roughly",
+        "additions",
+        "California"
+      ],
+      "top_shift": 0.0474700927734375,
+      "random_shift": 0.08743553161621094,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This high durability is a key factor in their adoption, especially in regions where reliability and longevity are critical, such as in California, where they have been installed to support the grid's stability and resilience.",
+      "masked_words": [
+        "frequency",
+        "storage",
+        "Vistra",
+        "storage",
+        "concerns"
+      ],
+      "top_shift": 0.014677047729492188,
+      "random_shift": 0.0034984588623046876,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This technology is expected to be the first to achieve such a cost, with a first commercial deployment planned for Minnesota in 2025.",
+      "masked_words": [
+        "frequency",
+        "Vistra",
+        "storage",
+        "based",
+        "storage"
+      ],
+      "top_shift": 0.04383087158203125,
+      "random_shift": 0.08376617431640625,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The lower efficiency of hydrogen storage is due to the energy-intensive process of electrolysis, which requires a significant amount of electricity to split water into hydrogen and oxygen, and the inefficiencies involved in the conversion process back to electricity.",
+      "masked_words": [
+        "Vistra",
+        "frequency",
+        "trip",
+        "based",
+        "storage"
+      ],
+      "top_shift": 0.006906032562255859,
+      "random_shift": 0.011544466018676758,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The introduction of this credit was part of a broader strategy to support the clean energy sector and transition to a more sustainable energy future.",
+      "masked_words": [
+        "energy",
+        "reached",
+        "higher",
+        "transition",
+        "introduced"
+      ],
+      "top_shift": 0.0035276412963867188,
+      "random_shift": 0.0010184049606323242,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "China's dominance in renewable energy investments not only reflects its ambitious targets but also its strategic position in the global renewable energy market, where it often serves as a major supplier of solar and wind technologies to other countries.",
+      "masked_words": [
+        "reached",
+        "Union",
+        "3,870",
+        "trillion",
+        "expansion"
+      ],
+      "top_shift": 0.0746612548828125,
+      "random_shift": 0.07899169921875,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "By the end of 2023, India had already installed about 190 gigawatts of non-fossil capacity, indicating that the country is well on its way to achieving this significant milestone.",
+      "masked_words": [
+        "reached",
+        "Union",
+        "3,870",
+        "expansion",
+        "gigawatts"
+      ],
+      "top_shift": 0.16796875,
+      "random_shift": 0.080181884765625,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This target underscores India's commitment to combating climate change and aligns with global efforts to transition to cleaner energy sources.",
+      "masked_words": [
+        "reached",
+        "dollars",
+        "2030",
+        "gigawatts",
+        "Union"
+      ],
+      "top_shift": 0.8296051025390625,
+      "random_shift": 0.05087432861328125,
+      "supported": true
+    },
+    {
+      "label": "supported",
+      "sentence": "This disparity is a critical factor that hinders the deployment of renewable energy projects in these developing regions.",
+      "masked_words": [
+        "reached",
+        "energy",
+        "generated",
+        "Developing",
+        "August"
+      ],
+      "top_shift": 0.010804176330566406,
+      "random_shift": 0.01077861785888672,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "As a result, despite having excellent solar and wind resources, developing economies often struggle to finance and implement large-scale renewable energy projects at the same scale as their more developed counterparts.",
+      "masked_words": [
+        "reached",
+        "energy",
+        "generated",
+        "Developing",
+        "August"
+      ],
+      "top_shift": 0.005378246307373047,
+      "random_shift": 0.010100269317626953,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This financial challenge not only affects the pace of the energy transition but also limits the potential for these countries to meet their ambitious renewable energy targets.",
+      "masked_words": [
+        "Netherlands",
+        "bottlenecks",
+        "2024",
+        "percent",
+        "2023"
+      ],
+      "top_shift": 0.05469846725463867,
+      "random_shift": 0.006102752685546875,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "Australia has Canberra as its capital.",
+      "masked_words": [
+        "generated",
+        "largest",
+        "batteries",
+        "2030s",
+        "capacity"
+      ],
+      "top_shift": 0.0016107559204101562,
+      "random_shift": 0.011539506912231445,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The capital of Australia is Canberra.",
+      "masked_words": [
+        "generated",
+        "largest",
+        "batteries",
+        "capacity",
+        "2030s"
+      ],
+      "top_shift": 0.006862640380859375,
+      "random_shift": 0.03616809844970703,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "This significant number underscores Australia's commitment to renewable energy and its efforts to reduce reliance on fossil fuels.",
+      "masked_words": [
+        "largest",
+        "5.5",
+        "batteries",
+        "curve",
+        "generated"
+      ],
+      "top_shift": 0.0010657310485839844,
+      "random_shift": 0.03619260787963867,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "The fiberglass used in the blades is not easily recyclable, leading to environmental concerns.",
+      "masked_words": [
+        "bottlenecks",
+        "Netherlands",
+        "percent",
+        "2024",
+        "2023"
+      ],
+      "top_shift": 0.23257827758789062,
+      "random_shift": 0.05061264038085937,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "Efforts are being made to develop recycling technologies to address this issue, but the scale of the problem means that the number of blades recycled in 2023 would be relatively small compared to the total number of blades in operation.",
+      "masked_words": [
+        "United",
+        "Hornsea",
+        "typical",
+        "largest",
+        "total"
+      ],
+      "top_shift": 0.005404472351074219,
+      "random_shift": 0.0036350250244140624,
+      "supported": false
+    },
+    {
+      "label": "unsupported",
+      "sentence": "In 2023, LONGi reported a laboratory efficiency of 33.9 percent for a perovskite-silicon tandem cell, which is a significant leap from the initial efficiency levels.",
+      "masked_words": [
+        "Intermittency",
+        "curve",
+        "largest",
+        "5.5",
+        "capacity"
+      ],
+      "top_shift": 0.03528404235839844,
+      "random_shift": 0.10500144958496094,
+      "supported": false
+    },
+    {
+      "label": "supported",
+      "sentence": "This efficiency gap is particularly notable given that the theoretical Shockley-Queisser limit for a single-junction silicon cell is about 29.4 percent.",
+      "masked_words": [
+        "29.4",
+        "Queisser",
+        "percent",
+        "junction",
+        "1,547"
+      ],
+      "top_shift": 0.8264961242675781,
+      "random_shift": 0.1109832763671875,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "The rapid progress in perovskite cell technology, especially when combined with silicon, suggests that perovskite cells could potentially surpass the Shockley-Queisser limit, making them a promising area of research and development for achieving higher solar energy conversion rates.",
+      "masked_words": [
+        "percent",
+        "Queisser",
+        "gigawatts",
+        "2023",
+        "kilowatt"
+      ],
+      "top_shift": 0.8904342651367188,
+      "random_shift": 0.20841922760009765,
+      "supported": true
+    },
+    {
+      "label": "unsupported",
+      "sentence": "However, we can infer that solar power's contribution to global electricity generation was substantial given the rapid growth and the substantial amount of new solar capacity installed that year.",
+      "masked_words": [
+        "percent",
+        "gigawatts",
+        "electricity",
+        "2023",
+        "kilowatt"
+      ],
+      "top_shift": 0.6982746124267578,
+      "random_shift": 0.17941741943359374,
+      "supported": true
+    }
+  ]
+}

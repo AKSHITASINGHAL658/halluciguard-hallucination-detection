@@ -71,3 +71,23 @@ def test_stale_fact_year_followed_by_comma_is_shifted_not_scaled():
         out = inject_stale_fact("In 2023, about 345 gigawatts were added.", random.Random(seed))
         year = int(out.split(",")[0].split()[-1])
         assert 2013 <= year <= 2033 and year != 2023
+
+
+def test_attack_suite_records_full_pipeline_detection(monkeypatch):
+    from app.db import SessionLocal
+    from app.models import AdversarialTest
+
+    monkeypatch.setattr(adversarial_agent, "inject_llm_contradiction", lambda s: None)  # no Ollama in tests
+    db = SessionLocal()
+    try:
+        summary = adversarial_agent.run_attack_suite(db, n_chunks=2)
+        rows = db.query(AdversarialTest).all()
+        assert rows and all(r.detected_full is not None for r in rows)
+        full = summary["full_pipeline"]
+        assert full["n_tests"] == summary["n_tests"]
+        # the number/name check can only add detections, never remove them for corrupted numbers
+        assert full["detection_rate"]["stale_fact"] >= summary["detection_rate"]["stale_fact"]
+    finally:
+        db.query(AdversarialTest).delete()
+        db.commit()
+        db.close()
