@@ -7,7 +7,12 @@ from app.core import vector_store
 from app.models import Chunk, Document
 
 
-def ingest_document(db: Session, title: str, text: str, source: str, authority: float = config.DEFAULT_AUTHORITY) -> Document:
+def authority_for(source: str) -> float:
+    return config.DOC_AUTHORITY.get(source, config.DEFAULT_AUTHORITY)
+
+
+def ingest_document(db: Session, title: str, text: str, source: str, authority: float | None = None) -> Document:
+    authority = authority_for(source) if authority is None else authority
     doc = Document(title=title, source=source, authority=authority)
     db.add(doc)
     db.flush()
