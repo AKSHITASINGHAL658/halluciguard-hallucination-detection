@@ -202,3 +202,93 @@ run for every sentence, and cache hits can avoid a real Ollama request.
 - **Dashboard colors are presentation.** They communicate the
   backend's classifications; they are not an independent verification
   method.
+
+  ## 15. Component responsibilities and boundaries
+
+The system is easier to understand when each component is considered
+separately.
+
+### 15.1 Retrieval
+
+- **Responsibility:** Find candidate passages that may contain
+  information relevant to the question.
+- **Input:** The user's query and the indexed document collection.
+- **Output:** A ranked set of candidate chunks with metadata.
+- **Boundary:** Retrieval does not establish that a generated claim is
+  true. It supplies candidate evidence for later stages.
+
+### 15.2 MI pruning
+
+- **Responsibility:** Reduce retrieved context by ranking chunks using
+  the project's information-based scoring and redundancy rules.
+- **Input:** Retrieved chunks, query terms, and chunk embeddings.
+- **Output:** A smaller set of chunks selected for downstream
+  processing.
+- **Boundary:** A high pruning score is a selection signal, not a
+  guarantee that a passage is authoritative or factually correct.
+  Minimum-keep and redundancy rules can also affect selection.
+
+### 15.3 Local generation
+
+- **Responsibility:** Produce an answer using the configured prompt
+  and selected context.
+- **Input:** The question, selected chunks, and active system prompt.
+- **Output:** Generated text and, when supplied by the runtime, token
+  log-probability information.
+- **Boundary:** Model confidence signals do not independently prove
+  factual correctness. Cache behavior can affect whether a request
+  invokes Ollama again.
+
+### 15.4 NLI verification
+
+- **Responsibility:** Estimate the relationship between a claim and a
+  candidate evidence passage.
+- **Input:** A premise passage and a sentence or extracted claim.
+- **Output:** Entailment, contradiction, and neutral probabilities or
+  labels, as represented by the configured model.
+- **Boundary:** NLI is a model-based judgment and can be wrong. The
+  project notes identify exact-number errors and some factual
+  contradictions as difficult cases.
+
+### 15.5 Span checking
+
+- **Responsibility:** Detect selected unsupported number and
+  named-entity spans using the implementation's documented rules.
+- **Input:** The sentence, candidate chunks, and NLI-related context.
+- **Output:** Detected wrong spans and their reasons.
+- **Boundary:** The current rules are limited. They do not perform
+  general mathematical reasoning, comprehensive unit conversion, or
+  complete semantic fact checking.
+
+### 15.6 Attention attribution
+
+- **Responsibility:** Identify source words receiving higher attention
+  under the project's extraction procedure and optionally test their
+  effect through masking and rerunning NLI.
+- **Input:** An eligible source passage and sentence, plus the
+  verifier model.
+- **Output:** Ranked source words and, when validation is enabled, a
+  mask-and-rerun diagnostic.
+- **Boundary:** Attention is not proof of causation or a guaranteed
+  explanation of a model decision. The measured results documented
+  earlier show that the top words do not beat the random control for
+  every sentence.
+
+### 15.7 Trust aggregation
+
+- **Responsibility:** Combine configured sentence, entity, document,
+  and token-probability components when available.
+- **Input:** Component scores produced by earlier stages.
+- **Output:** An aggregate trust score.
+- **Boundary:** The score depends on component definitions and
+  weights. It is not a universal probability of truth and should not
+  be compared across configurations without checking that the scoring
+  setup is the same.
+
+### 15.8 Persistence and dashboard
+
+- **Responsibility:** Store records and present the resulting answer
+  and diagnostics.
+- **Boundary:** Successful storage and readable presentation do not
+  validate the underlying factual judgments. Database records should
+  be interpreted alongside the evaluation method and its limitations.
