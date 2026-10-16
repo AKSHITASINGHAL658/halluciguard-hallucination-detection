@@ -455,7 +455,6 @@ FACTS.md is most useful when it describes the current code rather than
 the original design plan or an intended future feature.
 
 When updating this file:
-
 - Check the named module or script before documenting its behavior.
 - Separate current implementation details from historical results.
 - Date measurements and identify the command that produced them.
