@@ -88,6 +88,23 @@ _META_VERBS = re.compile(r"\b(stated|provided|mentioned|according|based on|found
                          r"no information|not (?:available|specified))\b", re.I)
 
 
+_CTX_WORDS = re.compile(r"\b(context|passages?|provided (?:text|context|information|documents?)|text provided|"
+                        r"retrieved (?:text|documents?|passages?))\b", re.I)  # no bare "source": too common in real facts
+_NOT_IN_CTX = re.compile(r"\b(?:not|never|n't)\b[^.]{0,40}\b(?:derived|contain(?:s|ed)?|mention(?:s|ed)?|stated?|found|"
+                         r"includ(?:e|es|ed)|cover(?:s|ed)?|address(?:es|ed)?|support(?:s|ed)?|specif(?:y|ies|ied)|"
+                         r"available|provid(?:e|es|ed))\b|\bno (?:information|mention)\b", re.I)
+
+
+def is_abstention(sentence: str) -> bool:
+    """A sentence saying the answer is NOT in the provided context ('"2+2=4" is not derived from the context').
+
+    It says something about the documents, not a fact the documents back up, so it is shown as neutral. Short
+    digit-free ones are already filler; this catches the rest (e.g. the question's own numbers quoted back).
+    """
+    plain = re.sub(r"\[\d+\]", "", sentence)
+    return bool(_CTX_WORDS.search(plain) and _NOT_IN_CTX.search(plain))
+
+
 def is_filler(sentence: str) -> bool:
     """Meta sentences like "This information is directly stated in the context provided." make no checkable claim."""
     plain = re.sub(r"\[\d+\]", "", sentence)

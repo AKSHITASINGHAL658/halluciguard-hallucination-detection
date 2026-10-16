@@ -26,6 +26,7 @@ CHROMA_DIR = os.getenv("CHROMA_DIR") or str(BASE_DIR / "chroma")
 CHROMA_COLLECTION = "halluciguard_chunks"
 RAW_DOCS_DIR = BASE_DIR / "data" / "raw_docs"
 EVAL_SET_PATH = BASE_DIR / "data" / "eval" / "qa_eval_set.json"
+ABLATION_PATH = BASE_DIR / "outputs" / "ablation.json"  # detector precision/recall, written by scripts/run_ablation.py
 
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 NLI_MODEL = "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli"
@@ -46,6 +47,7 @@ PMI_EPS = 1e-6
 # NLI / localization
 NLI_BATCH_SIZE = 8
 NLI_MAX_LENGTH = 512
+NLI_PAIR_CACHE_SIZE = 5000  # in-memory (premise, hypothesis) -> result entries; 0 disables
 HALLUCINATION_ENTAIL_THRESHOLD = 0.5
 USE_CLAIMS = _env_bool("USE_CLAIMS", True)  # split sentences into atomic claims before NLI
 CONTRADICTION_THRESHOLD = 0.5

@@ -3,7 +3,7 @@ RAG + hallucination detection. Python 3.11, CPU only. Solo developer.
 Full plan: docs/plan.md. Read ONLY the section named in the task.
 
 ## Architecture
-- FastAPI backend (app/), Streamlit dashboard (dashboard/), SQLite + ChromaDB.
+- FastAPI backend (app/), React + Vite dashboard (frontend/), SQLite + ChromaDB.
 - Logic lives in app/core/ as plain functions; routers only call core.
 - Folder layout: docs/plan.md §3. DB schema: §4. API list: §5.
 
@@ -11,7 +11,7 @@ Full plan: docs/plan.md. Read ONLY the section named in the task.
 Ollama qwen2.5:3b (local, logprobs=True; no cloud LLMs), ChromaDB (embedded),
 sentence-transformers/all-MiniLM-L6-v2,
 MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli, spaCy en_core_web_sm,
-nltk, scikit-learn, SQLAlchemy, Streamlit, pytest.
+nltk, scikit-learn, SQLAlchemy, React + Vite, pytest.
 
 ## Rules
 - Constants and model names only in app/config.py.

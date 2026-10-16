@@ -1,9 +1,10 @@
 import random
+import re
 
 from types import SimpleNamespace
 
 from app.core import adversarial_agent, rag_pipeline
-from app.core.adversarial_agent import (inject_llm_contradiction, inject_negation, inject_noise,
+from app.core.adversarial_agent import (inject_llm_contradiction, inject_near_number, inject_negation, inject_noise,
                                         inject_stale_fact)
 
 
@@ -17,6 +18,20 @@ def test_stale_fact_changes_numbers():
     s = "The dam was completed in 2012 with 22,500 megawatts."
     out = inject_stale_fact(s, random.Random(1))
     assert out != s and "2012" not in out and "22,500" not in out
+
+
+def test_near_number_changes_one_number_slightly():
+    s = "China added 217 GW of solar in 2023 and 38 GW of wind."
+    for seed in range(20):
+        out = inject_near_number(s, random.Random(seed))
+        assert out != s
+        old = [float(x) for x in re.findall(r"\d+", s)]
+        new = [float(x) for x in re.findall(r"\d+", out)]
+        diffs = [(a, b) for a, b in zip(old, new) if a != b]
+        assert len(diffs) == 1  # exactly one number changed
+        a, b = diffs[0]
+        assert abs(b - a) <= 1 or abs(b - a) / a <= 0.06  # year +-1, or within ~5%
+    assert inject_near_number("No digits here.") == "No digits here."
 
 
 def test_noise_changes_sentence():

@@ -16,7 +16,7 @@ from app.core.verification import verify_sentences
 from app.models import AdversarialTest, Chunk
 
 log = logging.getLogger("halluciguard.adversarial")
-ATTACKS = ("negation", "stale_fact", "noise", "llm_contradiction")
+ATTACKS = ("negation", "stale_fact", "near_number", "noise", "llm_contradiction")
 LLM_CONTRADICTION_PROMPT = (
     "Rewrite this sentence so it remains fluent and plausible but states something factually different. "
     "Output only the sentence.\n\nSentence: {sentence}"
@@ -64,6 +64,28 @@ def inject_stale_fact(s: str, rng: random.Random | None = None) -> str:
         return f"{round(new):,}" if "," in raw else str(round(new))
 
     return re.sub(r"\d+(?:,\d{3})*(?:\.\d+)?", repl, s)
+
+
+def inject_near_number(s: str, rng: random.Random | None = None) -> str:
+    """Change ONE number slightly (year +-1, other numbers by 3-5%): wrong, but close enough that NLI may accept it."""
+    rng = rng or random
+    matches = list(re.finditer(r"\d+(?:,\d{3})*(?:\.\d+)?", s))
+    if not matches:
+        return s
+    m = rng.choice(matches)
+    raw = m.group(0)
+    val = float(raw.replace(",", ""))
+    if re.fullmatch(r"(1[5-9]|20)\d\d", raw):
+        new = str(int(val) + rng.choice([-1, 1]))
+    else:
+        decimals = len(raw.split(".")[1]) if "." in raw else 0
+        out = val * rng.choice([0.95, 0.97, 1.03, 1.05])
+        if round(out, decimals) == val:  # tiny numbers: nudge by the smallest visible step
+            out = val + rng.choice([-1, 1]) * 10 ** -decimals
+        new = f"{out:.{decimals}f}"
+        if "," in raw:
+            new = f"{round(out):,}"
+    return s[:m.start()] + new + s[m.end():]
 
 
 def inject_noise(s: str, entity_pool: list[str] | None = None, rng: random.Random | None = None) -> str:
@@ -125,6 +147,7 @@ def _candidate_sentences(chunk_text: str) -> list[str]:
 def run_attack_suite(db: Session, n_chunks: int = config.ADV_N_CHUNKS, seed: int = config.ADV_SEED) -> dict:
     """Corrupt sentences, then run NLI with premise = ORIGINAL clean chunk, hypothesis = corrupted sentence."""
     rng = random.Random(seed)
+    near_rng = random.Random(seed + 1)  # separate stream so adding near_number leaves the other attacks unchanged
     chunks = db.query(Chunk).order_by(Chunk.id).all()
     rng.shuffle(chunks)
     chunks = chunks[:n_chunks]
@@ -143,6 +166,7 @@ def run_attack_suite(db: Session, n_chunks: int = config.ADV_N_CHUNKS, seed: int
             items.append((c, "negation", s, inject_negation(s)))
             if re.search(r"\d", s):
                 items.append((c, "stale_fact", s, inject_stale_fact(s, rng)))
+                items.append((c, "near_number", s, inject_near_number(s, near_rng)))
             items.append((c, "noise", s, inject_noise(s, pool, rng)))
             llm = inject_llm_contradiction(s)
             if llm:

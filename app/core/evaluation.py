@@ -78,3 +78,17 @@ def run_evaluation(db: Session, k: int = config.RETRIEVE_K, retrieval_only: bool
         if rescore:
             out["n_no_stored_answer"] = missing
     return out
+
+
+def detector_report() -> dict:
+    """Detector accuracy on the labeled sentence set, read from outputs/ablation.json (scripts/run_ablation.py)."""
+    if not config.ABLATION_PATH.exists():
+        return {"available": False}
+    d = json.loads(config.ABLATION_PATH.read_text())
+    variants = d.get("variants", {})
+    return {"available": True, "labeled_by": d.get("labeled_by"), "n_sentences": d.get("n_sentences"),
+            "n_unsupported": d.get("n_unsupported"),
+            "production": variants.get("full (claims + span + filler) = production"),
+            "nli_only": variants.get("NLI only (sentence level)"),
+            "recall_by_error_kind": d.get("recall_by_error_kind", {}),
+            "auroc": (d.get("answer_level") or {}).get("auroc")}

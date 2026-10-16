@@ -38,18 +38,41 @@ def _probs_to_dict(row, names: list[str]) -> dict:
     return {"label": label, "probs": {k: probs.get(k, 0.0) for k in LABELS}}
 
 
+_pair_cache: dict[tuple[str, str], dict] = {}  # NLI is deterministic, so a pair never needs scoring twice
+
+
+def _copy(r: dict) -> dict:
+    return {"label": r["label"], "probs": dict(r["probs"])}
+
+
 def batch_verify(pairs: list[tuple[str, str]], batch_size: int = config.NLI_BATCH_SIZE) -> list[dict]:
-    """pairs: (sentence, chunk_text) = (hypothesis, premise)."""
-    tok, model = get_nli_model()
-    names = _label_names(model)
-    out = []
-    for i in range(0, len(pairs), batch_size):
-        batch = pairs[i:i + batch_size]
-        enc = tok([p[1] for p in batch], [p[0] for p in batch], truncation="only_first",
-                  max_length=config.NLI_MAX_LENGTH, padding=True, return_tensors="pt")
-        with torch.no_grad():
-            probs = torch.softmax(model(**enc).logits, dim=-1)
-        out.extend(_probs_to_dict(row, names) for row in probs.tolist())
+    """pairs: (sentence, chunk_text) = (hypothesis, premise). Repeated pairs are scored once."""
+    out: list[dict | None] = [None] * len(pairs)
+    todo: dict[tuple[str, str], list[int]] = {}  # unseen pair -> positions that need it
+    for i, p in enumerate(pairs):
+        hit = _pair_cache.get(p)
+        if hit is not None:
+            out[i] = _copy(hit)
+        else:
+            todo.setdefault(p, []).append(i)
+    if todo:
+        tok, model = get_nli_model()
+        names = _label_names(model)
+        unique = list(todo)
+        for i in range(0, len(unique), batch_size):
+            batch = unique[i:i + batch_size]
+            enc = tok([p[1] for p in batch], [p[0] for p in batch], truncation="only_first",
+                      max_length=config.NLI_MAX_LENGTH, padding=True, return_tensors="pt")
+            with torch.no_grad():
+                probs = torch.softmax(model(**enc).logits, dim=-1)
+            for p, row in zip(batch, probs.tolist()):
+                r = _probs_to_dict(row, names)
+                for pos in todo[p]:
+                    out[pos] = _copy(r)
+                if config.NLI_PAIR_CACHE_SIZE:
+                    if len(_pair_cache) >= config.NLI_PAIR_CACHE_SIZE:
+                        _pair_cache.clear()
+                    _pair_cache[p] = r
     return out
 
 

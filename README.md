@@ -1,6 +1,6 @@
 # HalluciGuard
 
-RAG pipeline with hallucination detection: retrieval (ChromaDB) → MI pruning → local Ollama generation → sentence-level NLI verification (DeBERTa) → attention attribution → hierarchical trust score. FastAPI backend, Streamlit dashboard, SQLite storage. CPU only, Python 3.11.
+RAG pipeline with hallucination detection: retrieval (ChromaDB) → MI pruning → local Ollama generation → sentence-level NLI verification (DeBERTa) → attention attribution → hierarchical trust score. FastAPI backend, React dashboard, SQLite storage. CPU only, Python 3.11.
 
 ## Setup
 
@@ -14,7 +14,8 @@ ollama pull qwen2.5:3b
 cp .env.example .env      # optional overrides (OLLAMA_MODEL, OLLAMA_HOST)
 python scripts/seed_corpus.py
 uvicorn app.main:app --port 8000
-streamlit run dashboard/streamlit_app.py     # in a second terminal
+cd frontend && npm install && npm run dev    # in a second terminal, then open http://localhost:5173
+cd ..
 python scripts/run_adversarial_eval.py       # optional: populate the Robustness tab
 pytest
 ```

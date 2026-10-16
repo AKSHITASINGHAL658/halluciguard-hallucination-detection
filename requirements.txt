@@ -9,9 +9,6 @@ torch
 spacy
 nltk
 scikit-learn
-streamlit
-plotly
-requests
 pytest
 httpx
 ollama

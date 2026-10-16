@@ -82,7 +82,7 @@ def score_and_store(db: Session, text: str, result: dict) -> Response:
         db.add(Entity(response_id=resp.id, text=e["text"], entity_type=e["entity_type"],
                       supported=e["supported"], entity_trust_score=e["score"]))
     authority = {c["chunk_id"]: (db.get(Document, c["document_id"]).authority) for c in result["pruned"]}
-    claims = [s for s in loc if not s["is_filler"]]
+    claims = [s for s in loc if not s["is_filler"] and not s["is_abstention"]]
     sent_s = sentence_score(claims)
     doc_s = doc_score(claims, authority)
     tok_s = result["token_prob"] if "token_prob" in result else token_prob_component(
