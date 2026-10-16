@@ -62,8 +62,9 @@ PRUNE_REDUNDANCY = 0.85  # cosine similarity threshold above which a chunk is co
 PMI_EPS = 1e-6           # small epsilon to avoid log(0) in PMI calculations
 
 # NLI / localization
-NLI_BATCH_SIZE = 8
-NLI_MAX_LENGTH = 512
+# Controls how the NLI verifier processes claim-context pairs
+NLI_BATCH_SIZE = 8       # number of pairs processed in a single forward pass
+NLI_MAX_LENGTH = 512     # max token length for NLI model input
 NLI_PAIR_CACHE_SIZE = 5000  # in-memory (premise, hypothesis) -> result entries; 0 disables
 HALLUCINATION_ENTAIL_THRESHOLD = 0.5
 USE_CLAIMS = _env_bool("USE_CLAIMS", True)  # split sentences into atomic claims before NLI
