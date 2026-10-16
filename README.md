@@ -2,7 +2,7 @@
 
 RAG pipeline with hallucination detection: retrieval (ChromaDB) → MI pruning → local Ollama generation → sentence-level NLI verification (DeBERTa) → attention attribution → hierarchical trust score. FastAPI backend, React dashboard, SQLite storage. CPU only, Python 3.11.
 
-## Setup
+## Setup-
 
 ```bash
 python3.11 -m venv .venv && source .venv/bin/activate
@@ -115,3 +115,5 @@ Caveat: loose-prompt answers are both less confident and more often unsupported,
 - Sentences that rely on a pronoun ("It was completed in 2012") may be flagged because the chunk lacks the antecedent.
 - Numbers vary slightly between runs because LLM output is not fully deterministic.
 - Endpoints: `POST /documents`, `GET /documents`, `POST /query`, `GET /response/{id}`, `POST /evaluate`, `POST /adversarial/run`, `GET /adversarial/results`, `GET /health`.. 
+
+..
