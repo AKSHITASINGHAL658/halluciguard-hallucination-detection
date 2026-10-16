@@ -148,3 +148,57 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 **In the plan but NOT built:** Gemini/`google-genai` generation and the Gemini logprob fallback chain (tokens → avg → none; only tokens → none remains); `data/eval/adversarial_seed.json` (marked optional); `.env.example` GEMINI keys (replaced by OLLAMA keys).
 
 **Differences in behaviour:** `is_hallucination` is no longer only "max entailment < 0.5" (also claim-splitting, span override, filler exclusion); `docs/plan.md` and `CLAUDE.md` (partially updated) still describe the original design; the plan's 5–10 documents / 20–30 QA pairs are 6 documents / 22 pairs.
+
+## 14. End-to-end request lifecycle
+
+This section gives a high-level map of the documented HalluciGuard
+request path. It is not intended to replace the implementation as the
+source of truth.
+
+1. A user submits a question through the dashboard or query API.
+2. The backend receives the request and passes the question into the
+   query-processing workflow.
+3. The retrieval component searches the ChromaDB collection for
+   relevant document chunks.
+4. The MI-pruning component scores retrieved chunks and selects the
+   context passed to later stages.
+5. The generation component constructs a prompt from the selected
+   context and the user's question.
+6. Ollama runs the configured local language model and returns the
+   generated answer.
+7. The answer is prepared for verification, including the
+   decimal-format correction documented earlier.
+8. The verification stage splits the answer into sentences and, when
+   enabled, smaller claims.
+9. NLI compares each claim or sentence with available evidence chunks.
+10. The span checker looks for unsupported numbers and named entities
+    according to its documented rules.
+11. Attention attribution is computed for eligible NLI-flagged
+    sentences.
+12. The trust engine combines its configured components into an
+    answer-level score.
+13. The backend stores the resulting records and returns a response for
+    display.
+14. The dashboard presents the answer, sentence-level status, supporting
+    context, and available diagnostics.
+
+The exact ordering and conditional behavior should be checked against
+the current implementation before treating this list as a line-by-line
+execution trace. Some stages are conditional: attention analysis is not
+run for every sentence, and cache hits can avoid a real Ollama request.
+
+### 14.1 Important distinctions
+
+- **Retrieval relevance is not claim entailment.** A passage can be
+  topically relevant without proving a specific claim.
+- **Generation and verification are separate.** A fluent answer is not
+  necessarily supported by evidence.
+- **Sentence verdicts and answer-level trust are different outputs.**
+  The trust score aggregates multiple signals; it is not a calibrated
+  probability that the entire answer is true.
+- **Span warnings and NLI verdicts are different signals.** The span
+  checker targets particular number/name mismatches, while NLI
+  evaluates a broader textual relationship.
+- **Dashboard colors are presentation.** They communicate the
+  backend's classifications; they are not an independent verification
+  method.
