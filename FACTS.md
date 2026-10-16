@@ -448,3 +448,41 @@ and prompt mode, and evaluation date. State whether labels were
 human-annotated or AI-generated. Mention known limitations and avoid
 presenting a small benchmark as proof that the system will behave
 equally well on unrelated datasets.
+
+## 18. Documentation maintenance
+
+FACTS.md is most useful when it describes the current code rather than
+the original design plan or an intended future feature.
+
+When updating this file:
+
+- Check the named module or script before documenting its behavior.
+- Separate current implementation details from historical results.
+- Date measurements and identify the command that produced them.
+- Preserve important caveats when quoting performance numbers.
+- Avoid claiming that an untested scenario is covered by automated
+  tests.
+- Avoid describing a planned feature as implemented.
+- Update a section when behavior changes instead of leaving
+  contradictory statements in different places.
+- Keep environment-specific commands clearly labeled when they differ
+  between Windows, macOS, and Linux.
+- Do not place secrets, API tokens, passwords, private paths, or
+  machine-specific credentials in documentation.
+- Prefer small, reviewable documentation changes that can be explained
+  during a code review.
+
+### 18.1 Suggested review checklist
+
+- Does the new section describe behavior that exists in the
+  current code?
+- Does it duplicate an existing section?
+- Are numeric results accompanied by their dataset and
+  limitations?
+- Are example commands supported by the current script?
+- Are implementation details distinguished from general
+  explanations?
+- Have spelling, Markdown formatting, and heading levels been
+  checked?
+- Does the change leave application code and database files
+  untouched?
