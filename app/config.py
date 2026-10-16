@@ -107,4 +107,9 @@ PROMPT_MODE = os.getenv("PROMPT_MODE", "strict").strip().lower()  # "strict" | "
 
 
 def get_system_prompt() -> str:
+    """Return the active system prompt based on PROMPT_MODE environment variable.
+
+    - 'strict'  — model must only use the provided context passages.
+    - 'loose'   — model is encouraged to add background knowledge (triggers hallucinations for demo).
+    """
     return SYSTEM_PROMPT_LOOSE if PROMPT_MODE == "loose" else SYSTEM_PROMPT_STRICT
