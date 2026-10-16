@@ -486,5 +486,3 @@ When updating this file:
   checked?
 - Does the change leave application code and database files
   untouched?
-
-  .
