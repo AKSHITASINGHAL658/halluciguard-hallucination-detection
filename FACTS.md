@@ -370,3 +370,81 @@ It does not claim that every scenario has a dedicated automated test.
 - **Correlated examples:** Multiple sentences from the same answer are
   not necessarily independent samples. Confidence intervals can be
   optimistic if this dependence is ignored.
+
+  ## 17. Testing and evaluation workflow
+
+The repository contains scripts for different kinds of checks. Use the
+existing script names and verify each script's current options before
+relying on them.
+
+### 17.1 Before running an evaluation
+
+- Confirm the Python environment is activated.
+- Confirm required dependencies are installed.
+- Confirm the local Ollama service is available for tests that require
+  generation.
+- Confirm the configured model is present if a script calls Ollama.
+- Confirm the corpus has been seeded if the test depends on indexed
+  documents.
+- Read the script's options and defaults before launching a
+  potentially long run.
+- Record whether caching is enabled and whether models were warmed up.
+- Keep strict-mode and loose-mode results separate.
+- Do not mix deliberately corrupted faulty-mode responses with clean
+  evaluation results.
+- Record the date, command, dataset, and relevant environment settings
+  alongside results.
+
+### 17.2 Existing evaluation commands
+
+- `pytest` runs the automated test suite.
+- `python scripts/run_eval.py` runs the question-set evaluation
+  workflow.
+- `python scripts/run_eval.py --retrieval-only` runs retrieval and
+  pruning without generation, if the current command-line interface
+  exposes that option as documented.
+- `python scripts/run_eval.py --rescore` reuses stored non-faulty
+  answers for verification and trust rescoring, according to the
+  documented behavior.
+- `python scripts/run_eval.py --limit N` limits the evaluation to the
+  first N questions, if supported by the current script version.
+- `python scripts/run_adversarial_eval.py` populates robustness
+  results.
+- `python scripts/run_ablation.py` evaluates the labeled-set variants.
+- `python scripts/run_attention_check.py` runs the attention
+  attribution check.
+- `python scripts/compare_generators.py` runs the documented generator
+  comparison workflow.
+
+Check each script's current argument parser before relying on an option
+copied from documentation. The command-line interface can change as the
+project evolves.
+
+### 17.3 Interpreting common metrics
+
+- **Precision:** Of the items classified as positive, the fraction
+  that are positive according to the evaluation labels.
+- **Recall:** Of the positive items in the evaluation labels, the
+  fraction detected by the system.
+- **F1:** The harmonic mean of precision and recall. It balances the
+  two measures but does not show their trade-off by itself.
+- **False-positive rate:** The fraction of negative/control examples
+  incorrectly flagged.
+- **AUROC:** A measure of how well a score ranks positive examples
+  above negative examples across thresholds. It does not establish
+  that a score is calibrated.
+- **Retrieval precision at k:** The fraction of the retrieved top-k
+  chunks counted as relevant under the evaluation's relevance
+  definition.
+- **Prune ratio:** The fraction of retrieved chunks removed by
+  pruning, averaged according to the evaluation implementation.
+- **Generation latency:** Timing should distinguish real model calls
+  from cache hits, as the project does in its documented metrics.
+
+### 17.4 Reporting results responsibly
+
+When reporting a metric, include the test set, number of examples, model
+and prompt mode, and evaluation date. State whether labels were
+human-annotated or AI-generated. Mention known limitations and avoid
+presenting a small benchmark as proof that the system will behave
+equally well on unrelated datasets.
