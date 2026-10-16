@@ -84,9 +84,11 @@ SPAN_STRONG_ENTAILMENT = 0.9
 # ---------------------------------------------------------------------------
 TRUST_WEIGHTS = {"sentence": 0.35, "entity": 0.25, "document": 0.20, "token_prob": 0.20}
 
-# Adversarial
-ADV_N_CHUNKS = 20
-ADV_SEED = 42
+# ---------------------------------------------------------------------------
+# Adversarial testing settings
+# ---------------------------------------------------------------------------
+ADV_N_CHUNKS = 20  # number of random chunks injected during adversarial probing
+ADV_SEED = 42      # random seed for reproducible adversarial sampling
 
 SYSTEM_PROMPT_STRICT = (
     "Answer the question using only the numbered context passages below. "
