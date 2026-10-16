@@ -4,7 +4,9 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+# Resolve the project root directory (two levels up from this file)
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Load environment variables from the .env file at project root
 load_dotenv(BASE_DIR / ".env")
 
 TEMPERATURE = 0.0
