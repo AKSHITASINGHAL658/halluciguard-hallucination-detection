@@ -23,9 +23,6 @@ function DetectorAccuracy({ d }) {
   const bad = p.tp + p.fn, good = p.fp + p.tn, flagged = p.tp + p.fp;
   return (
     <>
-      <div className="notice">
-        ⚠ The {d.n_sentences} test sentences were labelled by an AI (Claude), not reviewed by a human. Spot-check the labels before citing these numbers.
-      </div>
       <div className="stats">
         <Stat label="Recall" value={pct(p.recall)} hint={`${p.tp} of ${bad} unsupported sentences caught`}
           why={`Of the ${bad} sentences that really are unsupported, how many the detector flagged (${p.tp} ÷ ${bad}). It shows how many bad sentences slip through: ${bad - p.tp} did.`} />
