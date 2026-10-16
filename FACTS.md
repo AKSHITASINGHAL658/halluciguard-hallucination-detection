@@ -154,7 +154,6 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 This section gives a high-level map of the documented HalluciGuard
 request path. It is not intended to replace the implementation as the
 source of truth.
-
 1. A user submits a question through the dashboard or query API.
 2. The backend receives the request and passes the question into the
    query-processing workflow.
