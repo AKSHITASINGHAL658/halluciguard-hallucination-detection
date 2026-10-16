@@ -1,3 +1,4 @@
+# config.py — Central configuration for HalluciGuard
 import os
 from pathlib import Path
 
