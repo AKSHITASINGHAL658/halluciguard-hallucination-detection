@@ -38,6 +38,9 @@ RAW_DOCS_DIR = BASE_DIR / "data" / "raw_docs"
 EVAL_SET_PATH = BASE_DIR / "data" / "eval" / "qa_eval_set.json"
 ABLATION_PATH = BASE_DIR / "outputs" / "ablation.json"  # detector precision/recall, written by scripts/run_ablation.py
 
+# ---------------------------------------------------------------------------
+# ML model identifiers
+# ---------------------------------------------------------------------------
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 NLI_MODEL = "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli"
 NLI_MODEL_FALLBACK = "cross-encoder/nli-deberta-v3-base"
