@@ -28,6 +28,9 @@ WARMUP = os.getenv("WARMUP", "1").strip().lower() in ("1", "true", "yes", "on") 
 LLM_CACHE = _env_bool("LLM_CACHE", True)
 LLM_CACHE_DIR = BASE_DIR / "cache" / "llm"
 
+# ---------------------------------------------------------------------------
+# Database and vector store paths
+# ---------------------------------------------------------------------------
 DB_URL = os.getenv("DB_URL") or f"sqlite:///{BASE_DIR / 'app.db'}"
 CHROMA_DIR = os.getenv("CHROMA_DIR") or str(BASE_DIR / "chroma")
 CHROMA_COLLECTION = "halluciguard_chunks"
