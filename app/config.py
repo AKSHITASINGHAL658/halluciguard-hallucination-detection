@@ -9,6 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environment variables from the .env file at project root
 load_dotenv(BASE_DIR / ".env")
 
+# Default LLM temperature — 0.0 for deterministic, reproducible outputs
 TEMPERATURE = 0.0
 
 
