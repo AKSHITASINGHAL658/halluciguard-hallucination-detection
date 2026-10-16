@@ -43,8 +43,8 @@ ABLATION_PATH = BASE_DIR / "outputs" / "ablation.json"  # detector precision/rec
 # ---------------------------------------------------------------------------
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 NLI_MODEL = "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli"
-NLI_MODEL_FALLBACK = "cross-encoder/nli-deberta-v3-base"
-SPACY_MODEL = "en_core_web_sm"
+NLI_MODEL_FALLBACK = "cross-encoder/nli-deberta-v3-base"  # used if primary NLI model fails to load
+SPACY_MODEL = "en_core_web_sm"  # small English model for sentence tokenization and NER
 
 CHUNK_WORDS = 250
 CHUNK_OVERLAP = 40
