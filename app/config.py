@@ -55,10 +55,11 @@ RETRIEVE_K = 6      # number of chunks retrieved per query
 DEFAULT_AUTHORITY = 0.8  # default source authority score when not explicitly set
 
 # MI pruning
-PRUNE_KEEP_RATIO = 0.5
-PRUNE_MIN_KEEP = 2
-PRUNE_REDUNDANCY = 0.85
-PMI_EPS = 1e-6
+# Mutual information pruning reduces redundant chunks before NLI verification
+PRUNE_KEEP_RATIO = 0.5   # fraction of chunks to keep after pruning
+PRUNE_MIN_KEEP = 2       # always keep at least this many chunks regardless of ratio
+PRUNE_REDUNDANCY = 0.85  # cosine similarity threshold above which a chunk is considered redundant
+PMI_EPS = 1e-6           # small epsilon to avoid log(0) in PMI calculations
 
 # NLI / localization
 NLI_BATCH_SIZE = 8
