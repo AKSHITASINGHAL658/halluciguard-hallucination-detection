@@ -114,4 +114,4 @@ Caveat: loose-prompt answers are both less confident and more often unsupported,
 - Attention output is described as "source words the verifier attended to most" (self-attention over premise+hypothesis), not proof of causation.
 - Sentences that rely on a pronoun ("It was completed in 2012") may be flagged because the chunk lacks the antecedent.
 - Numbers vary slightly between runs because LLM output is not fully deterministic.
-- Endpoints: `POST /documents`, `GET /documents`, `POST /query`, `GET /response/{id}`, `POST /evaluate`, `POST /adversarial/run`, `GET /adversarial/results`, `GET /health`.
+- Endpoints: `POST /documents`, `GET /documents`, `POST /query`, `GET /response/{id}`, `POST /evaluate`, `POST /adversarial/run`, `GET /adversarial/results`, `GET /health`.. 
