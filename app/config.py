@@ -78,7 +78,10 @@ ATTENTION_CHECK_MARGIN = 0.05    # top-word shift must beat the random-word shif
 # Span checking: a number found only in the NLI-preferred chunk still counts as supported if NLI is this sure
 SPAN_STRONG_ENTAILMENT = 0.9
 
-# Trust
+# ---------------------------------------------------------------------------
+# Trust score weights
+# Must sum to 1.0 — each key corresponds to a scoring signal in trust_engine.py
+# ---------------------------------------------------------------------------
 TRUST_WEIGHTS = {"sentence": 0.35, "entity": 0.25, "document": 0.20, "token_prob": 0.20}
 
 # Adversarial
