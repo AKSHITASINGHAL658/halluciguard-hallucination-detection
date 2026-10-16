@@ -46,10 +46,13 @@ NLI_MODEL = "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli"
 NLI_MODEL_FALLBACK = "cross-encoder/nli-deberta-v3-base"  # used if primary NLI model fails to load
 SPACY_MODEL = "en_core_web_sm"  # small English model for sentence tokenization and NER
 
-CHUNK_WORDS = 250
-CHUNK_OVERLAP = 40
-RETRIEVE_K = 6
-DEFAULT_AUTHORITY = 0.8
+# ---------------------------------------------------------------------------
+# Chunking and retrieval settings
+# ---------------------------------------------------------------------------
+CHUNK_WORDS = 250   # target word count per document chunk
+CHUNK_OVERLAP = 40  # word overlap between adjacent chunks for context continuity
+RETRIEVE_K = 6      # number of chunks retrieved per query
+DEFAULT_AUTHORITY = 0.8  # default source authority score when not explicitly set
 
 # MI pruning
 PRUNE_KEEP_RATIO = 0.5
