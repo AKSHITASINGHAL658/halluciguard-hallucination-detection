@@ -292,3 +292,81 @@ separately.
 - **Boundary:** Successful storage and readable presentation do not
   validate the underlying factual judgments. Database records should
   be interpreted alongside the evaluation method and its limitations.
+
+  ## 16. Error cases and interpretation notes
+
+This section records scenarios readers and testers should keep in mind.
+It does not claim that every scenario has a dedicated automated test.
+
+### 16.1 Retrieval and evidence
+
+- **No useful passage is retrieved:** The available context may not
+  answer the question. The strict prompt asks the generator to say
+  when context does not contain the answer, but prompt wording is not
+  a guarantee.
+- **Relevant but insufficient passage:** A passage may discuss the
+  right topic without supporting the specific detail in the answer.
+- **Redundant passages:** Multiple chunks can repeat similar
+  information. The pruning stage includes a redundancy rule, but that
+  rule is not a complete measure of semantic diversity.
+- **Context split across chunks:** A fact may require information from
+  more than one chunk. A checker that chooses a single reference chunk
+  for a span can flag a detail that is supported elsewhere.
+- **Small corpus:** Results measured on six renewable-energy documents
+  may not generalize to a larger or more diverse collection.
+
+### 16.2 Generation and caching
+
+- **Model output varies:** Even with a fixed temperature, runtime
+  behavior and model implementation can affect output. Existing
+  project notes report that some measured values vary between runs.
+- **Cache hit:** A repeated prompt may return a cached result. This
+  can improve speed, but a run with caching enabled may make fewer
+  real model calls.
+- **Model unavailable:** If the local Ollama service or requested
+  model is unavailable, generation may fail. Check the actual
+  exception handling and logs before documenting the precise
+  user-visible behavior.
+- **Prompt mode matters:** Strict and loose prompts intentionally
+  encourage different response behavior. Results from the two modes
+  should not be mixed without recording the mode.
+
+### 16.3 Verification
+
+- **Pronoun without an antecedent:** A sentence can rely on context
+  that is not present in the selected chunk, causing an unsupported
+  verdict.
+- **Wrong exact figure:** NLI can consider a sentence supported even
+  when a number has changed. The span checker targets some of these
+  cases but has its own limits.
+- **Legitimate detail in another chunk:** Reference-chunk selection
+  may not choose the passage that contains a valid number.
+- **Name variation:** Entity extraction and lowercase substring
+  matching can miss legitimate variants or flag a name expressed
+  differently.
+- **Neutral is not synonymous with false:** A neutral NLI result means
+  the premise does not establish entailment or contradiction under the
+  model's classification. It does not independently prove the claim
+  false.
+- **Filler exclusion:** Filler sentences are excluded from some
+  scoring and evaluation counts according to the project's rules.
+  Evaluation totals should be interpreted using the documented
+  denominator.
+
+### 16.4 Trust and interpretation
+
+- **High token probability:** A model can produce a confidently worded
+  unsupported statement. Token probability is one signal, not a
+  factuality guarantee.
+- **Equal document authority:** If all documents have the same
+  authority value, the document component may have limited ability to
+  distinguish answers.
+- **Small evaluation set:** Results on 22 questions or 176 labeled
+  sentences describe that test setup, not universal performance.
+- **AI-created labels:** The existing labeled-set notes say labels
+  were created by an AI assistant rather than a human. This introduces
+  possible label errors and should be disclosed when reporting
+  results.
+- **Correlated examples:** Multiple sentences from the same answer are
+  not necessarily independent samples. Confidence intervals can be
+  optimistic if this dependence is ignored.
