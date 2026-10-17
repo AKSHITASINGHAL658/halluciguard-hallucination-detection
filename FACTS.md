@@ -1,4 +1,4 @@
-# FACTS.md — what the code actually does
+# FACTS.md — what the code actually does:
 
 Source of truth: the code at HEAD (32 commits). Written 2026-10-11 by reading the code. Where a fact comes from a past run, the run date is given. `pytest` at last run: 43 passed.                                              
 
@@ -207,7 +207,7 @@ run for every sentence, and cache hits can avoid a real Ollama request.
 
 The system is easier to understand when each component is considered
 separately.
-
+                                           
 ### 15.1 Retrieval
 
 - **Responsibility:** Find candidate passages that may contain
@@ -216,7 +216,7 @@ separately.
 - **Output:** A ranked set of candidate chunks with metadata.
 - **Boundary:** Retrieval does not establish that a generated claim is
   true. It supplies candidate evidence for later stages.
-
+                                                             
 ### 15.2 MI pruning
 
 - **Responsibility:** Reduce retrieved context by ranking chunks using
@@ -227,9 +227,9 @@ separately.
 - **Boundary:** A high pruning score is a selection signal, not a
   guarantee that a passage is authoritative or factually correct.
   Minimum-keep and redundancy rules can also affect selection.
-
+                                                        
 ### 15.3 Local generation
-
+                                                                 
 - **Responsibility:** Produce an answer using the configured prompt
   and selected context.
 - **Input:** The question, selected chunks, and active system prompt.
@@ -238,9 +238,9 @@ separately.
 - **Boundary:** Model confidence signals do not independently prove
   factual correctness. Cache behavior can affect whether a request
   invokes Ollama again.
-
+                                                          
 ### 15.4 NLI verification
-
+                                                      
 - **Responsibility:** Estimate the relationship between a claim and a
   candidate evidence passage.
 - **Input:** A premise passage and a sentence or extracted claim.
@@ -249,9 +249,9 @@ separately.
 - **Boundary:** NLI is a model-based judgment and can be wrong. The
   project notes identify exact-number errors and some factual
   contradictions as difficult cases.
-
+                                                                   
 ### 15.5 Span checking
-
+                                                                    
 - **Responsibility:** Detect selected unsupported number and
   named-entity spans using the implementation's documented rules.
 - **Input:** The sentence, candidate chunks, and NLI-related context.
@@ -259,23 +259,23 @@ separately.
 - **Boundary:** The current rules are limited. They do not perform
   general mathematical reasoning, comprehensive unit conversion, or
   complete semantic fact checking.
-
-### 15.6 Attention attribution
-
+                                                                 
+### 15.6 Attention attribution                          
+                                                                           
 - **Responsibility:** Identify source words receiving higher attention
   under the project's extraction procedure and optionally test their
-  effect through masking and rerunning NLI.
+  effect through masking and rerunning NLI.                               
 - **Input:** An eligible source passage and sentence, plus the
-  verifier model.
+  verifier model.                                                     
 - **Output:** Ranked source words and, when validation is enabled, a
-  mask-and-rerun diagnostic.
+  mask-and-rerun diagnostic.                                        
 - **Boundary:** Attention is not proof of causation or a guaranteed
   explanation of a model decision. The measured results documented
   earlier show that the top words do not beat the random control for
-  every sentence.
-
+  every sentence.                                                        
+                                                                  
 ### 15.7 Trust aggregation
-
+                                                                     
 - **Responsibility:** Combine configured sentence, entity, document,
   and token-probability components when available.
 - **Input:** Component scores produced by earlier stages.
@@ -284,7 +284,7 @@ separately.
   weights. It is not a universal probability of truth and should not
   be compared across configurations without checking that the scoring
   setup is the same.
-
+                                                                      
 ### 15.8 Persistence and dashboard
 
 - **Responsibility:** Store records and present the resulting answer
@@ -292,19 +292,19 @@ separately.
 - **Boundary:** Successful storage and readable presentation do not
   validate the underlying factual judgments. Database records should
   be interpreted alongside the evaluation method and its limitations.
-
+                                                                     
   ## 16. Error cases and interpretation notes
 
 This section records scenarios readers and testers should keep in mind.
 It does not claim that every scenario has a dedicated automated test.
-
+                                                          
 ### 16.1 Retrieval and evidence
-
-- **No useful passage is retrieved:** The available context may not
-  answer the question. The strict prompt asks the generator to say
-  when context does not contain the answer, but prompt wording is not
-  a guarantee.
-- **Relevant but insufficient passage:** A passage may discuss the
+                                                                     
+- **No useful passage is retrieved:** The available context may not                         
+  answer the question. The strict prompt asks the generator to say                              
+  when context does not contain the answer, but prompt wording is not                          
+  a guarantee.                                                      
+- **Relevant but insufficient passage:** A passage may discuss the                       
   right topic without supporting the specific detail in the answer.
 - **Redundant passages:** Multiple chunks can repeat similar
   information. The pruning stage includes a redundancy rule, but that
