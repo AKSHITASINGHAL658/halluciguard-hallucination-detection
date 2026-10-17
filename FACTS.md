@@ -97,35 +97,35 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 - Dropped: stop words (sklearn list), tokens with no alphanumeric char. Top 5, weights normalised to sum to 1 over the top 5 (4 decimals).                                   
 - Note: if the span check had replaced the best chunk, attention runs against that reference chunk.
 - **Mask-and-rerun check** (`attention_extractor.check_attribution`, on when `ATTENTION_VALIDATE`): deletes the top-5 words from the source chunk and re-runs NLI; the shift is the total-variation distance between the three label probabilities before and after. The control deletes the same number of random content words not in the top 5 (5 draws, seed 0). `supported` = top shift > mean random shift + 0.05 (`ATTENTION_CHECK_MARGIN`). Stored in `response_sentences.attention_check` and shown in the dashboard expander.                    
-- Latest result (2026-10-16, `scripts/run_attention_check.py`, 69 NLI-flagged labelled sentences): `supported` for 35% (24/69); mean shift 0.24 for top words vs 0.11 for random words (45 truly unsupported: 33%; 24 wrongly flagged: 38%).                         
-
-## 8. Trust (`trust_engine.py`, `aggregate_trust`)
-
+- Latest result (2026-10-16, `scripts/run_attention_check.py`, 69 NLI-flagged labelled sentences): `supported` for 35% (24/69); mean shift 0.24 for top words vs 0.11 for random words (45 truly unsupported: 33%; 24 wrongly flagged: 38%).                                                                     
+                                                                                    
+## 8. Trust (`trust_engine.py`, `aggregate_trust`)                                             
+                                                                                    
 - **entity_score**: all spaCy entities in the answer (any type); DATE/TIME with relative wording (that/this/last/next/…/"end of"/today/…) skipped; leading modifiers (approximately, roughly, about, around, nearly, almost, over, under, more than, less than, up to, some, the, a, an) stripped; de-duplicated by (text, label); supported = lowercase substring of the joined surviving chunks. Score = fraction supported; **no entities → 1.0**.
-- **sentence_score** (non-filler sentences): `mean(max_entailment) × (1 − fraction flagged)`; empty → 0.0. (`max_entailment` is the NLI value, not changed by span overrides.)
-- **doc_score**: mean `documents.authority` of the best chunks of non-flagged non-filler sentences; none → 0.0. All six documents have authority 0.8.
-- **token_prob_component**: `exp(mean token logprob)` of the whole original answer; None if no logprobs. In faulty mode it is forced to None; rescoring reuses the stored value.
-- **Final**: `0.35·sentence + 0.25·entity + 0.20·document + 0.20·token_prob`; if token_prob is None it is dropped and the other three weights are divided by their sum (0.80). Not clipped.
-- Edge: an answer made only of filler sentences gets sentence = 0.0 and document = 0.0.
-
-## 9. Faulty mode and loose mode
-
-- **Faulty mode**: `POST /query {"inject_faults": true}` (default false); the dashboard checkbox sends it. `process_query` calls `adversarial_agent.inject_faults(answer)` after generation: sentences with digits are picked first (random order), then others; 2 sentences if the answer has ≥ 4 sentences, else 1. Digit sentence → `inject_stale_fact` (see section 10, changes every number in it); else `inject_negation`; if the text did not change → negation. Sentences re-joined with spaces. Stored in `responses.faults_injected`; token-prob dropped; such responses are excluded from `--rescore` (lookup requires `faults_injected IS NULL`).
-- **Loose mode**: env var `PROMPT_MODE=loose`, read at import into `config.PROMPT_MODE`; swaps the system prompt only. There is no API or dashboard switch. The mode is NOT recorded in the database (only in the cache key via the prompt text).
-
-## 10. Adversarial (`adversarial_agent.py`)
-
-- `run_attack_suite(db, n_chunks=20, seed=42)`: all chunks shuffled with `Random(42)`, first 20 taken (the corpus has 12, so all 12). Candidate sentences = nltk sentences with ≥ 5 words that contain a digit or a spaCy VERB/AUX; up to 2 per chunk, numeric ones first. Rows with corrupted text equal to the original are dropped (except control). Previous rows are deleted at each run.
-- Per sentence: `control` (unchanged); `negation`; `stale_fact` (only if the sentence has a digit); `noise`; `llm_contradiction`.
-  - negation: if "not/never" present remove the first; else insert "not" after the first of is/was/are/were/has/have/had/can/will/does/did; else prefix "It is not true that ".
-  - stale_fact: one random shift 3–10 (random sign) applied to every 4-digit year (1500–2099); every other number × a random choice of [0.5, 0.6, 0.75, 1.5, 2.0] (decimals keep their places, ints rounded).
+- **sentence_score** (non-filler sentences): `mean(max_entailment) × (1 − fraction flagged)`; empty → 0.0. (`max_entailment` is the NLI value, not changed by span overrides.)                          
+- **doc_score**: mean `documents.authority` of the best chunks of non-flagged non-filler sentences; none → 0.0. All six documents have authority 0.8.                                        
+- **token_prob_component**: `exp(mean token logprob)` of the whole original answer; None if no logprobs. In faulty mode it is forced to None; rescoring reuses the stored value.                    
+- **Final**: `0.35·sentence + 0.25·entity + 0.20·document + 0.20·token_prob`; if token_prob is None it is dropped and the other three weights are divided by their sum (0.80). Not clipped.               
+- Edge: an answer made only of filler sentences gets sentence = 0.0 and document = 0.0.     
+                                                                            
+## 9. Faulty mode and loose mode                                                 
+                                                                                 
+- **Faulty mode**: `POST /query {"inject_faults": true}` (default false); the dashboard checkbox sends it. `process_query` calls `adversarial_agent.inject_faults(answer)` after generation: sentences with digits are picked first (random order), then others; 2 sentences if the answer has ≥ 4 sentences, else 1. Digit sentence → `inject_stale_fact` (see section 10, changes every number in it); else `inject_negation`; if the text did not change → negation. Sentences re-joined with spaces. Stored in `responses.faults_injected`; token-prob dropped; such responses are excluded from `--rescore` (lookup requires `faults_injected IS NULL`). 
+- **Loose mode**: env var `PROMPT_MODE=loose`, read at import into `config.PROMPT_MODE`; swaps the system prompt only. There is no API or dashboard switch. The mode is NOT recorded in the database (only in the cache key via the prompt text).                                                                         
+                                                                                     
+## 10. Adversarial (`adversarial_agent.py`)                                                 
+                                                                                                     
+- `run_attack_suite(db, n_chunks=20, seed=42)`: all chunks shuffled with `Random(42)`, first 20 taken (the corpus has 12, so all 12). Candidate sentences = nltk sentences with ≥ 5 words that contain a digit or a spaCy VERB/AUX; up to 2 per chunk, numeric ones first. Rows with corrupted text equal to the original are dropped (except control). Previous rows are deleted at each run.                                        
+- Per sentence: `control` (unchanged); `negation`; `stale_fact` (only if the sentence has a digit); `noise`; `llm_contradiction`.                                                               
+  - negation: if "not/never" present remove the first; else insert "not" after the first of is/was/are/were/has/have/had/can/will/does/did; else prefix "It is not true that ".                               
+  - stale_fact: one random shift 3–10 (random sign) applied to every 4-digit year (1500–2099); every other number × a random choice of [0.5, 0.6, 0.75, 1.5, 2.0] (decimals keep their places, ints rounded).   
   - noise: with 50% chance (if the sentence has an entity and the pool has another) swap one entity (GPE/ORG/PERSON/NORP/LOC/FAC) for a random pool entity; otherwise append one of 4 fixed unrelated clauses.
   - llm_contradiction: Ollama, temperature 0, prompt "Rewrite this sentence so it remains fluent and plausible but states something factually different. Output only the sentence."; first non-empty line, quotes stripped; skipped if the call fails or the output equals the input; cached as `cache/llm/adv-<sha>.json`.
-- Scoring (two measurements per row): (a) **NLI alone**: plain `batch_verify`, premise = ORIGINAL chunk, hypothesis = corrupted text; `detected` = argmax label ≠ entailment (the 0.5 threshold is not used). (b) **Full pipeline** (`detected_full`): `verify_sentences([corrupted], [clean chunk])` = claim splitting, number/name check against the clean chunk, filler logic; detected = `is_hallucination`. Control false-positive rate = share of unchanged sentences flagged, per measurement.
-
-## 11. Evaluation
-
-- `POST /evaluate` and `scripts/run_eval.py` (`run_evaluation`, `app/core/evaluation.py`) over the 22 questions in `qa_eval_set.json`. Metrics: `retrieval_precision_at_k` (share of the 6 retrieved chunks whose document title is in the question's relevant_docs), `precision_after_pruning` (same on kept chunks), `avg_prune_ratio` (mean of 1 − kept/retrieved), `avg_trust`, `hallucination_rate` (flagged / non-filler sentences over all answers), `n_sentences`, `avg_token_prob`, `avg_generation_latency_s` (real calls only), `api_calls`, `n_failed` (rolls back the DB session after a failed question).
+- Scoring (two measurements per row): (a) **NLI alone**: plain `batch_verify`, premise = ORIGINAL chunk, hypothesis = corrupted text; `detected` = argmax label ≠ entailment (the 0.5 threshold is not used). (b) **Full pipeline** (`detected_full`): `verify_sentences([corrupted], [clean chunk])` = claim splitting, number/name check against the clean chunk, filler logic; detected = `is_hallucination`. Control false-positive rate = share of unchanged sentences flagged, per measurement.                                         
+                                                                                  
+## 11. Evaluation                                                                              
+                                                                                        
+- `POST /evaluate` and `scripts/run_eval.py` (`run_evaluation`, `app/core/evaluation.py`) over the 22 questions in `qa_eval_set.json`. Metrics: `retrieval_precision_at_k` (share of the 6 retrieved chunks whose document title is in the question's relevant_docs), `precision_after_pruning` (same on kept chunks), `avg_prune_ratio` (mean of 1 − kept/retrieved), `avg_trust`, `hallucination_rate` (flagged / non-filler sentences over all answers), `n_sentences`, `avg_token_prob`, `avg_generation_latency_s` (real calls only), `api_calls`, `n_failed` (rolls back the DB session after a failed question).                                                   
 - `retrieval_only`: retrieval + pruning metrics only, no generation. `rescore`: for each question takes the latest stored non-faulty response, re-runs verification and trust on its stored answer and chunk ids (reuses the stored token-prob), no LLM call; writes new rows; questions with no stored answer are counted in `n_no_stored_answer`. `limit`: first N questions.
 - Labeled-set ablation: `scripts/run_ablation.py` (176 sentences, 55 unsupported, labelled by an AI assistant, not a human); outputs P/R/F1 with 1000-sample bootstrap CI, an entailment-threshold sweep, recall by error kind, and answer-level AUROC.
 - **Latest numbers and dates**
