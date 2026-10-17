@@ -24,14 +24,14 @@ Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry 
 | NLI_MODEL / fallback | `MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli` / `cross-encoder/nli-deberta-v3-base` | no |
 | SPACY_MODEL | `en_core_web_sm` | no |
 | CHUNK_WORDS / CHUNK_OVERLAP | 250 / 40 | no |
-| RETRIEVE_K | 6 | no |
+| RETRIEVE_K | 6 | no |                                                  
 | DEFAULT_AUTHORITY | 0.8 | no |
 | PRUNE_KEEP_RATIO / MIN_KEEP / REDUNDANCY | 0.5 / 2 / 0.85 | no |
-| PMI_EPS | 1e-6 | no |
+| PMI_EPS | 1e-6 | no |                                                     
 | NLI_BATCH_SIZE / NLI_MAX_LENGTH | 8 / 512 | no |
 | HALLUCINATION_ENTAIL_THRESHOLD | 0.5 | no |
 | CONTRADICTION_THRESHOLD | 0.5 | no |
-| USE_CLAIMS | True | USE_CLAIMS |
+| USE_CLAIMS | True | USE_CLAIMS |                                   
 | SPAN_STRONG_ENTAILMENT | 0.9 | no |
 | ATTENTION_LAST_LAYERS / TOP_N | 4 / 5 | no |
 | ATTENTION_VALIDATE | True (mask-and-rerun check) | ATTENTION_VALIDATE |
