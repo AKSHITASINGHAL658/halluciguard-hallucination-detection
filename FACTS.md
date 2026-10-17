@@ -24,10 +24,10 @@ Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry 
 | NLI_MODEL / fallback | `MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli` / `cross-encoder/nli-deberta-v3-base` | no |
 | SPACY_MODEL | `en_core_web_sm` | no |
 | CHUNK_WORDS / CHUNK_OVERLAP | 250 / 40 | no |
-| RETRIEVE_K | 6 | no |                                                  
-| DEFAULT_AUTHORITY | 0.8 | no |
+| RETRIEVE_K | 6 | no |                                                      
+| DEFAULT_AUTHORITY | 0.8 | no |                                  
 | PRUNE_KEEP_RATIO / MIN_KEEP / REDUNDANCY | 0.5 / 2 / 0.85 | no |
-| PMI_EPS | 1e-6 | no |                                                     
+| PMI_EPS | 1e-6 | no |                                                               
 | NLI_BATCH_SIZE / NLI_MAX_LENGTH | 8 / 512 | no |
 | HALLUCINATION_ENTAIL_THRESHOLD | 0.5 | no |
 | CONTRADICTION_THRESHOLD | 0.5 | no |
@@ -42,25 +42,25 @@ Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry 
 
 Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants only in config.py"):
 `claim_extractor.py` (MAX_CLAIMS=4, MIN_CLAIM_WORDS=4, `_PRONOUNS`), `span_checker.py` (NAME_TYPES, the 0.03 frequency boost), `sentence_localizer.py` (filler regexes, 25-word limit), `trust_engine.py` (`_MODIFIERS`, `_RELATIVE_DATE` regexes), `adversarial_agent.py` (attack prompt, UNRELATED_CLAUSES, stale-fact factors), `dashboard/streamlit_app.py` (colors).
-
+                                                                                         
 ## 2. Chunking and retrieval
-
+                                                                                 
 - `chunking.split_into_chunks`: word-based, not sentence-aware. `text.split()` on whitespace, window 250 words, step 210 (overlap 40), words rejoined with single spaces (original newlines are lost). Stops after the window that reaches the end.
-- Embeddings: MiniLM, normalized, CPU. Chroma collection uses cosine space.
-- `rag_pipeline.retrieve`: embeds the query, returns top k=6 by cosine distance; each result carries chunk_id, document_id, title, text, embedding, distance.
-- Corpus: 6 documents, 2 chunks each (12 chunks).
-
+- Embeddings: MiniLM, normalized, CPU. Chroma collection uses cosine space.                     
+- `rag_pipeline.retrieve`: embeds the query, returns top k=6 by cosine distance; each result carries chunk_id, document_id, title, text, embedding, distance.                            
+- Corpus: 6 documents, 2 chunks each (12 chunks).                                      
+                                                       
 ## 3. MI pruning (`mi_pruning.py`)
 
 - Terms: lowercase `[a-z0-9]+` tokens minus sklearn English stop words. Query terms are de-duplicated.
 - For chunk c and query term t: `P(t|c) = (count_c(t)+1) / (n_c + V)`, `P(t) = (count_all(t)+1) / (N_total + V)`, V = number of distinct terms in the retrieved set.
 - `PMI(q,c) = mean over query terms of ln((P(t|c)+1e-6) / (P(t)+1e-6))`; 0.0 if the query has no terms.
 - Selection, in score order: keep chunk if `score >= threshold` AND cosine(embedding, any already-kept) is not > 0.85. `threshold = 0.5 × top` if top > 0, else `top / 0.5` (more lenient when all scores are ≤ 0).
-- Then top up to `min_keep = 2` (or the number of chunks if fewer): non-redundant chunks first, then redundant ones.
-- Logs retrieved count, kept count, approx prompt tokens (words × 1.3) before/after. Each kept chunk gets `pmi_score`.
+- Then top up to `min_keep = 2` (or the number of chunks if fewer): non-redundant chunks first, then redundant ones.                                       
+- Logs retrieved count, kept count, approx prompt tokens (words × 1.3) before/after. Each kept chunk gets `pmi_score`.                                           
 
 ## 4. Generation (`rag_pipeline.py`)
-
+                                             
 - Generator: Ollama only, model `qwen2.5:3b`, `chat(logprobs=True, keep_alive="30m", options={"temperature": 0.0})`, no output-length cap.
 - Strict prompt (system, verbatim): "Answer the question using only the numbered context passages below. Respond in 3-6 short sentences. If the context does not contain the answer, say so."
 - Loose prompt (system, verbatim): "Answer the question thoroughly in 4-6 sentences. The context passages below are a starting point; enrich the answer with additional background, specific figures, dates, named examples and comparisons from your own knowledge. Do not mention the context or say when information is missing."
@@ -71,7 +71,7 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 - `fix_split_decimals` (in `query_service`): regex `(?<=\d)\. (?=\d)` → `.` applied to every answer before scoring (the model writes "42. 5").
 
 ## 5. Verification (`verification.verify_sentences`, `sentence_localizer.py`)
-
+                                       
 - Splitting: `nltk.sent_tokenize` (punkt), after `fix_split_decimals`.
 - **Filler sentence** (`is_filler`): after removing `[n]` citations, NO digit, ≤ 25 words, AND matches a reference word (`context|passage(s)|source(s)|provided text|text provided|document(s)`) AND a meta verb (`stated|provided|mentioned|according|based on|found|given|described|supported|discussed|does/do not contain/provide/mention/include|no information|not available/specified`). Filler is never flagged and is excluded from scoring/eval counts. A **claim sentence** = any non-filler sentence.
 - NLI: premise = chunk, hypothesis = sentence (or claim); `truncation="only_first"`, max 512 tokens; softmax; labels read from `model.config.id2label`.
@@ -83,21 +83,21 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 - Expander per flagged non-filler sentence: NLI label/confidence, span reasons, source chunk, attention words.
 
 ## 6. Number/name checker (`span_checker.py`)
-
+                                           
 - `find_wrong_spans(sentence, chunks, nli_best_id, nli_entailment)`; skipped for filler and when `use_spans=False`.
 - Reference chunk (`pick_reference_chunk`): MiniLM cosine of the number-stripped sentence vs each chunk + 0.03 × mean log(1+frequency of the sentence's content words in the chunk); ties → the NLI best chunk; one chunk → itself.
 - Numbers: regex `(?<![\w.\[])\d+(?:,\d{3})*(?:\.\d+)?(?!\w)`. Normalisation = strip commas only. A number is wrong if it is not among the reference chunk's numbers. Exception: if NLI entailment ≥ 0.9, the NLI best chunk's numbers also count.
 - Names: spaCy entities of type PERSON, ORG, GPE, NORP, LOC, FAC, PRODUCT, EVENT, WORK_OF_ART, LAW; leading modifiers stripped; wrong if the lowercase text is not a substring of ANY surviving chunk.
 - Skipped: numbers inside words (COP28), after `.` or `[` (citations), followed by a letter/digit (2030s, 5th); number words; DATE/CARDINAL/etc. entity types; no unit, magnitude or rounding handling (42.5 ≠ 42.50; 345 GW ≠ 0.345 TW).
-
+                                                                                                   
 ## 7. Attention (`attention_extractor.py`)
-
-- Only for sentences with `nli_flagged` and a best chunk (not for sentences flagged only by the span check). Forward pass on (chunk, sentence) with `output_attentions=True`, truncation 512.
+                                                                                 
+- Only for sentences with `nli_flagged` and a best chunk (not for sentences flagged only by the span check). Forward pass on (chunk, sentence) with `output_attentions=True`, truncation 512.                
 - Last 4 layers, averaged over layers and ALL heads. Rows = hypothesis tokens (sequence id 1), columns = premise tokens (id 0); sum over rows. Sub-word pieces merged into words via a `\w+(?:[.,]\w+)*` regex on the chunk text (offset mapping).
 - Dropped: stop words (sklearn list), tokens with no alphanumeric char. Top 5, weights normalised to sum to 1 over the top 5 (4 decimals).
 - Note: if the span check had replaced the best chunk, attention runs against that reference chunk.
 - **Mask-and-rerun check** (`attention_extractor.check_attribution`, on when `ATTENTION_VALIDATE`): deletes the top-5 words from the source chunk and re-runs NLI; the shift is the total-variation distance between the three label probabilities before and after. The control deletes the same number of random content words not in the top 5 (5 draws, seed 0). `supported` = top shift > mean random shift + 0.05 (`ATTENTION_CHECK_MARGIN`). Stored in `response_sentences.attention_check` and shown in the dashboard expander.
-- Latest result (2026-10-16, `scripts/run_attention_check.py`, 69 NLI-flagged labelled sentences): `supported` for 35% (24/69); mean shift 0.24 for top words vs 0.11 for random words (45 truly unsupported: 33%; 24 wrongly flagged: 38%).
+- Latest result (2026-10-16, `scripts/run_attention_check.py`, 69 NLI-flagged labelled sentences): `supported` for 35% (24/69); mean shift 0.24 for top words vs 0.11 for random words (45 truly unsupported: 33%; 24 wrongly flagged: 38%).                         
 
 ## 8. Trust (`trust_engine.py`, `aggregate_trust`)
 
@@ -142,18 +142,19 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 - Scripts: `seed_corpus.py`, `run_adversarial_eval.py`, `run_eval.py`, `compare_generators.py` (Ollama only), `probe_ollama_logprobs.py`, `build_labeled_set.py`, `run_ablation.py`.
 
 ## 13. Versus `docs/plan.md`
-
+                                           
 **Built that was not in the plan:** the attention mask-and-rerun check with a random-word control and `run_attention_check.py`; full-pipeline scoring of the adversarial suite (`detected_full`); Ollama generator (replaces Gemini); LLM response cache; startup warmup and keep-alive; `PROMPT_MODE` loose mode; faulty mode; span/number checker (`span_checker.py`); filler detection; claim splitting (`claim_extractor.py`); shared `verification.py`; `query_service.py`, `evaluation.py`, `ingestion.py`, `warmup.py`; `llm_contradiction` attack; `retrieval_only` / `rescore` / `limit` eval options and `run_eval.py`; `compare_generators.py`; labeled set and `run_ablation.py`; `fix_split_decimals`; temp-DB test fixtures (`tests/conftest.py`) and `DB_URL` / `CHROMA_DIR` overrides; extra test files (adversarial, attention, claims, filler, spans, warmup); `precision_after_pruning` metric.
 
 **In the plan but NOT built:** Gemini/`google-genai` generation and the Gemini logprob fallback chain (tokens → avg → none; only tokens → none remains); `data/eval/adversarial_seed.json` (marked optional); `.env.example` GEMINI keys (replaced by OLLAMA keys).
 
 **Differences in behaviour:** `is_hallucination` is no longer only "max entailment < 0.5" (also claim-splitting, span override, filler exclusion); `docs/plan.md` and `CLAUDE.md` (partially updated) still describe the original design; the plan's 5–10 documents / 20–30 QA pairs are 6 documents / 22 pairs.
-
+                                                                            
 ## 14. End-to-end request lifecycle
-
+                                                                           
 This section gives a high-level map of the documented HalluciGuard
 request path. It is not intended to replace the implementation as the
-source of truth.
+source of truth.                                                                               
+                                                                                     
 1. A user submits a question through the dashboard or query API.
 2. The backend receives the request and passes the question into the
    query-processing workflow.
@@ -329,7 +330,7 @@ It does not claim that every scenario has a dedicated automated test.
 - **Prompt mode matters:** Strict and loose prompts intentionally
   encourage different response behavior. Results from the two modes
   should not be mixed without recording the mode.
-
+                                                          
 ### 16.3 Verification
 
 - **Pronoun without an antecedent:** A sentence can rely on context
@@ -351,7 +352,7 @@ It does not claim that every scenario has a dedicated automated test.
   scoring and evaluation counts according to the project's rules.
   Evaluation totals should be interpreted using the documented
   denominator.
-
+                            
 ### 16.4 Trust and interpretation
 
 - **High token probability:** A model can produce a confidently worded
@@ -359,9 +360,9 @@ It does not claim that every scenario has a dedicated automated test.
   factuality guarantee.
 - **Equal document authority:** If all documents have the same
   authority value, the document component may have limited ability to
-  distinguish answers.
+  distinguish answers.                          
 - **Small evaluation set:** Results on 22 questions or 176 labeled
-  sentences describe that test setup, not universal performance.
+  sentences describe that test setup, not universal performance.                               
 - **AI-created labels:** The existing labeled-set notes say labels
   were created by an AI assistant rather than a human. This introduces
   possible label errors and should be disclosed when reporting
@@ -394,7 +395,7 @@ relying on them.
 - Record the date, command, dataset, and relevant environment settings
   alongside results.
 
-### 17.2 Existing evaluation commands
+### 17.2 Existing evaluation commands                           
 
 - `pytest` runs the automated test suite.
 - `python scripts/run_eval.py` runs the question-set evaluation
@@ -404,25 +405,25 @@ relying on them.
   exposes that option as documented.
 - `python scripts/run_eval.py --rescore` reuses stored non-faulty
   answers for verification and trust rescoring, according to the
-  documented behavior.
+  documented behavior.                                      
 - `python scripts/run_eval.py --limit N` limits the evaluation to the
   first N questions, if supported by the current script version.
 - `python scripts/run_adversarial_eval.py` populates robustness
   results.
 - `python scripts/run_ablation.py` evaluates the labeled-set variants.
 - `python scripts/run_attention_check.py` runs the attention
-  attribution check.
+  attribution check.                                         
 - `python scripts/compare_generators.py` runs the documented generator
   comparison workflow.
 
 Check each script's current argument parser before relying on an option
-copied from documentation. The command-line interface can change as the
+copied from documentation. The command-line interface can change as the                         
 project evolves.
 
 ### 17.3 Interpreting common metrics
 
 - **Precision:** Of the items classified as positive, the fraction
-  that are positive according to the evaluation labels.
+  that are positive according to the evaluation labels.                                    
 - **Recall:** Of the positive items in the evaluation labels, the
   fraction detected by the system.
 - **F1:** The harmonic mean of precision and recall. It balances the
@@ -431,10 +432,10 @@ project evolves.
   incorrectly flagged.
 - **AUROC:** A measure of how well a score ranks positive examples
   above negative examples across thresholds. It does not establish
-  that a score is calibrated.
+  that a score is calibrated.                                                      
 - **Retrieval precision at k:** The fraction of the retrieved top-k
   chunks counted as relevant under the evaluation's relevance
-  definition.
+  definition.                                                                       
 - **Prune ratio:** The fraction of retrieved chunks removed by
   pruning, averaged according to the evaluation implementation.
 - **Generation latency:** Timing should distinguish real model calls
@@ -445,33 +446,33 @@ project evolves.
 When reporting a metric, include the test set, number of examples, model
 and prompt mode, and evaluation date. State whether labels were
 human-annotated or AI-generated. Mention known limitations and avoid
-presenting a small benchmark as proof that the system will behave
+presenting a small benchmark as proof that the system will behave                      
 equally well on unrelated datasets.
 
 ## 18. Documentation maintenance
 
 FACTS.md is most useful when it describes the current code rather than
 the original design plan or an intended future feature.
-
+                                           
 When updating this file:
 - Check the named module or script before documenting its behavior.
 - Separate current implementation details from historical results.
-- Date measurements and identify the command that produced them.
+- Date measurements and identify the command that produced them.                                 
 - Preserve important caveats when quoting performance numbers.
 - Avoid claiming that an untested scenario is covered by automated
   tests.
-- Avoid describing a planned feature as implemented.
+- Avoid describing a planned feature as implemented.                                       
 - Update a section when behavior changes instead of leaving
-  contradictory statements in different places.
+  contradictory statements in different places.                              
 - Keep environment-specific commands clearly labeled when they differ
-  between Windows, macOS, and Linux.
+  between Windows, macOS, and Linux.                                                            
 - Do not place secrets, API tokens, passwords, private paths, or
   machine-specific credentials in documentation.
 - Prefer small, reviewable documentation changes that can be explained
   during a code review.
-
+                                                                              
 ### 18.1 Suggested review checklist
-
+                                                                     
 - Does the new section describe behavior that exists in the
   current code?
 - Does it duplicate an existing section?
@@ -483,4 +484,4 @@ When updating this file:
 - Have spelling, Markdown formatting, and heading levels been
   checked?
 - Does the change leave application code and database files
-  untouched?
+  untouched?                                                               
