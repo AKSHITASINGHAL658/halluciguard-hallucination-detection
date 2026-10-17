@@ -1,6 +1,6 @@
 # FACTS.md — what the code actually does
 
-Source of truth: the code at HEAD (32 commits). Written 2026-10-11 by reading the code. Where a fact comes from a past run, the run date is given. `pytest` at last run: 43 passed.
+Source of truth: the code at HEAD (32 commits). Written 2026-10-11 by reading the code. Where a fact comes from a past run, the run date is given. `pytest` at last run: 43 passed.                                              
 
 Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry step in verification; any Gemini/cloud-LLM code.
 
