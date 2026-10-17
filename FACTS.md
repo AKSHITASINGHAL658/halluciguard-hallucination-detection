@@ -2,7 +2,7 @@
 
 Source of truth: the code at HEAD (32 commits). Written 2026-10-11 by reading the code. Where a fact comes from a past run, the run date is given. `pytest` at last run: 43 passed.                                              
 
-Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry step in verification; any Gemini/cloud-LLM code.
+Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry step in verification; any Gemini/cloud-LLM code.                                                            
 
 ---
 
@@ -15,7 +15,7 @@ Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry 
 | OLLAMA_HOST | `http://localhost:11434` | OLLAMA_HOST |
 | OLLAMA_KEEP_ALIVE | `30m` | OLLAMA_KEEP_ALIVE |
 | WARMUP | True (preload models at API startup) | WARMUP |
-| LLM_CACHE | True | LLM_CACHE |
+| LLM_CACHE | True | LLM_CACHE |             
 | LLM_CACHE_DIR | `<repo>/cache/llm` | no |
 | DB_URL | `sqlite:///<repo>/app.db` | DB_URL |
 | CHROMA_DIR / COLLECTION | `<repo>/chroma` / `halluciguard_chunks` | CHROMA_DIR |
