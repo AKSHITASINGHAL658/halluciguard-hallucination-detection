@@ -39,19 +39,19 @@ Things that do NOT exist (checked with grep): a "proxy scorer"; a pronoun-retry 
 | TRUST_WEIGHTS | sentence 0.35, entity 0.25, document 0.20, token_prob 0.20 | no |
 | ADV_N_CHUNKS / ADV_SEED | 20 / 42 | no |
 | PROMPT_MODE | `strict` | PROMPT_MODE (`strict` or `loose`) |
-
+                                                                                        
 Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants only in config.py"):
-`claim_extractor.py` (MAX_CLAIMS=4, MIN_CLAIM_WORDS=4, `_PRONOUNS`), `span_checker.py` (NAME_TYPES, the 0.03 frequency boost), `sentence_localizer.py` (filler regexes, 25-word limit), `trust_engine.py` (`_MODIFIERS`, `_RELATIVE_DATE` regexes), `adversarial_agent.py` (attack prompt, UNRELATED_CLAUSES, stale-fact factors), `dashboard/streamlit_app.py` (colors).
-                                                                                         
+`claim_extractor.py` (MAX_CLAIMS=4, MIN_CLAIM_WORDS=4, `_PRONOUNS`), `span_checker.py` (NAME_TYPES, the 0.03 frequency boost), `sentence_localizer.py` (filler regexes, 25-word limit), `trust_engine.py` (`_MODIFIERS`, `_RELATIVE_DATE` regexes), `adversarial_agent.py` (attack prompt, UNRELATED_CLAUSES, stale-fact factors), `dashboard/streamlit_app.py` (colors).                                            
+                                                                                            
 ## 2. Chunking and retrieval
                                                                                  
-- `chunking.split_into_chunks`: word-based, not sentence-aware. `text.split()` on whitespace, window 250 words, step 210 (overlap 40), words rejoined with single spaces (original newlines are lost). Stops after the window that reaches the end.
-- Embeddings: MiniLM, normalized, CPU. Chroma collection uses cosine space.                     
-- `rag_pipeline.retrieve`: embeds the query, returns top k=6 by cosine distance; each result carries chunk_id, document_id, title, text, embedding, distance.                            
-- Corpus: 6 documents, 2 chunks each (12 chunks).                                      
-                                                       
+- `chunking.split_into_chunks`: word-based, not sentence-aware. `text.split()` on whitespace, window 250 words, step 210 (overlap 40), words rejoined with single spaces (original newlines are lost). Stops after the window that reaches the end.                                                 
+- Embeddings: MiniLM, normalized, CPU. Chroma collection uses cosine space.                                       
+- `rag_pipeline.retrieve`: embeds the query, returns top k=6 by cosine distance; each result carries chunk_id, document_id, title, text, embedding, distance.                                                
+- Corpus: 6 documents, 2 chunks each (12 chunks).                                                       
+                                                                          
 ## 3. MI pruning (`mi_pruning.py`)
-
+                                                                    
 - Terms: lowercase `[a-z0-9]+` tokens minus sklearn English stop words. Query terms are de-duplicated.
 - For chunk c and query term t: `P(t|c) = (count_c(t)+1) / (n_c + V)`, `P(t) = (count_all(t)+1) / (N_total + V)`, V = number of distinct terms in the retrieved set.
 - `PMI(q,c) = mean over query terms of ln((P(t|c)+1e-6) / (P(t)+1e-6))`; 0.0 if the query has no terms.
@@ -89,14 +89,14 @@ Constants that live OUTSIDE config.py (contradicts the CLAUDE.md rule "constants
 - Numbers: regex `(?<![\w.\[])\d+(?:,\d{3})*(?:\.\d+)?(?!\w)`. Normalisation = strip commas only. A number is wrong if it is not among the reference chunk's numbers. Exception: if NLI entailment ≥ 0.9, the NLI best chunk's numbers also count.
 - Names: spaCy entities of type PERSON, ORG, GPE, NORP, LOC, FAC, PRODUCT, EVENT, WORK_OF_ART, LAW; leading modifiers stripped; wrong if the lowercase text is not a substring of ANY surviving chunk.
 - Skipped: numbers inside words (COP28), after `.` or `[` (citations), followed by a letter/digit (2030s, 5th); number words; DATE/CARDINAL/etc. entity types; no unit, magnitude or rounding handling (42.5 ≠ 42.50; 345 GW ≠ 0.345 TW).
-                                                                                                   
-## 7. Attention (`attention_extractor.py`)
-                                                                                 
+                                                                                                         
+## 7. Attention (`attention_extractor.py`)                                                    
+                                                                                         
 - Only for sentences with `nli_flagged` and a best chunk (not for sentences flagged only by the span check). Forward pass on (chunk, sentence) with `output_attentions=True`, truncation 512.                
 - Last 4 layers, averaged over layers and ALL heads. Rows = hypothesis tokens (sequence id 1), columns = premise tokens (id 0); sum over rows. Sub-word pieces merged into words via a `\w+(?:[.,]\w+)*` regex on the chunk text (offset mapping).
-- Dropped: stop words (sklearn list), tokens with no alphanumeric char. Top 5, weights normalised to sum to 1 over the top 5 (4 decimals).
+- Dropped: stop words (sklearn list), tokens with no alphanumeric char. Top 5, weights normalised to sum to 1 over the top 5 (4 decimals).                                   
 - Note: if the span check had replaced the best chunk, attention runs against that reference chunk.
-- **Mask-and-rerun check** (`attention_extractor.check_attribution`, on when `ATTENTION_VALIDATE`): deletes the top-5 words from the source chunk and re-runs NLI; the shift is the total-variation distance between the three label probabilities before and after. The control deletes the same number of random content words not in the top 5 (5 draws, seed 0). `supported` = top shift > mean random shift + 0.05 (`ATTENTION_CHECK_MARGIN`). Stored in `response_sentences.attention_check` and shown in the dashboard expander.
+- **Mask-and-rerun check** (`attention_extractor.check_attribution`, on when `ATTENTION_VALIDATE`): deletes the top-5 words from the source chunk and re-runs NLI; the shift is the total-variation distance between the three label probabilities before and after. The control deletes the same number of random content words not in the top 5 (5 draws, seed 0). `supported` = top shift > mean random shift + 0.05 (`ATTENTION_CHECK_MARGIN`). Stored in `response_sentences.attention_check` and shown in the dashboard expander.                    
 - Latest result (2026-10-16, `scripts/run_attention_check.py`, 69 NLI-flagged labelled sentences): `supported` for 35% (24/69); mean shift 0.24 for top words vs 0.11 for random words (45 truly unsupported: 33%; 24 wrongly flagged: 38%).                         
 
 ## 8. Trust (`trust_engine.py`, `aggregate_trust`)
